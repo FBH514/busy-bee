@@ -1,6 +1,7 @@
 import './css/Reset.css';
 import './css/Template.scss';
 import './css/Navbar.scss';
+import './css/Insert.scss';
 import Navbar from "./components/Navbar";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Insert from "./components/Insert";

@@ -13,10 +13,9 @@ function Insert() {
             {name: "url", type: "text", placeholder: "URL"}
         ]
 
-
         return (
             <div id="insert-input-fields">
-                <div className="insert-input-fields-wrapper">
+                <div id="insert-input-fields-wrapper">
                     {Input.map((input, index) => {
                         return (
                             <div className="input-field" key={index}>
@@ -24,7 +23,7 @@ function Insert() {
                             </div>
                         )
                     })}
-                    <div className="button">
+                    <div className="button" id={"insert-submit-button"}>
                         <button type="submit">Submit</button>
                     </div>
                 </div>
