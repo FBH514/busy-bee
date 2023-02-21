@@ -58,8 +58,20 @@
         background-color: #ffffff;
         color: #333333;
       }
-    }
 
+      &:disabled {
+        background: rgba(245, 245, 245, 0.1);
+        color: #333333;
+      }
+
+      &:disabled::after {
+          content: "Locked";
+      }
+
+      &:not(:disabled)::after {
+          content: "Submit";
+      }
+    }
   }
 }
 
@@ -73,7 +85,7 @@
                     rgba(245, 245, 245, 0)
     );
     outline: none;
-    border: 1px solid rgba(245, 245, 245, 0.1);
+    border: 3px solid rgba(55, 55, 55, 0.1);
     //border: none;
     height: 50px;
     width: 100%;
@@ -85,5 +97,37 @@
     &::placeholder {
       color: darkorange;
     }
+  }
+}
+
+#insert-content-right {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#insert-preview {
+  width: 100%;
+  height: 100%;
+}
+
+#insert-preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+
+  h2 {
+    height: 50px;
+    padding: 0 1rem;
+    font-size: 1.5rem;
+    color: darkorange;
   }
 }
