@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Insert from "./components/Insert";
 import React from "react";
+import View from "./components/View";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
             <Navbar/>
             <Routes>
                 <Route path="/" element={<Insert/>}/>
+                <Route path="/view" element={<View/>}/>
             </Routes>
         </Router>
     );

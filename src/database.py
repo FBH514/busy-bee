@@ -17,11 +17,12 @@ class Database:
         self.cursor.execute('CREATE TABLE IF NOT EXISTS careers '
                             '('
                             'id INTEGER PRIMARY KEY,'
-                            ' title TEXT,'
-                            ' location TEXT,'
-                            ' employer TEXT,'
-                            ' description TEXT,'
-                            ' url TEXT'
+                            'date TEXT,'
+                            'title TEXT,'
+                            'location TEXT,'
+                            'employer TEXT,'
+                            'description TEXT,'
+                            'url TEXT'
                             ')'
                             )
 
@@ -39,8 +40,7 @@ class Database:
         :return: None
         """
         with self.conn:
-            self.cursor.execute('INSERT INTO careers VALUES (NULL, :title, :location, :employer, :description, :url)',
-                                data)
+            self.cursor.execute('INSERT INTO careers VALUES (NULL, :date, :title, :location, :employer, :description, :url)', data)
 
     def view(self) -> list:
         """
