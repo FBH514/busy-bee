@@ -14,12 +14,17 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["POST", "PUT", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 load_dotenv()
 db = Database(os.getenv('DB_NAME'))
+
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 # /v1/careers
 @app.post("/v1/careers")
@@ -42,5 +47,9 @@ async def create_career(request: Request) -> dict:
         'description': description,
         'url': url
     }
-    db.insert(data)
-    return {'message': 'Career created successfully'}
+    try:
+        db.insert(data)
+        return {'success': True}
+    except Exception as e:
+        print(e)
+        return {'success': False}

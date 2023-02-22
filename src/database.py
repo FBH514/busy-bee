@@ -38,8 +38,9 @@ class Database:
         :param data:
         :return: None
         """
-        self.cursor.execute('INSERT INTO careers VALUES '
-                            '(:id, :title, :location, :employer, :description, :url)', data)
+        with self.conn:
+            self.cursor.execute('INSERT INTO careers VALUES (NULL, :title, :location, :employer, :description, :url)',
+                                data)
 
     def view(self) -> list:
         """
@@ -64,3 +65,7 @@ class Database:
         :return: None
         """
         pass
+
+
+if __name__ == '__main__':
+    db = Database('careers-tracker.db')

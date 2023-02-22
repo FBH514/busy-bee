@@ -2,10 +2,7 @@ import {useEffect, useState} from "react";
 
 function Insert() {
 
-    const [data, setData] = useState({});
-
-    function POSTData() {
-        console.log(data);
+    function POSTData(data: any) {
         fetch('http://localhost:8000/v1/careers/', {
             method: 'POST',
             headers: {
@@ -76,9 +73,7 @@ function Insert() {
                             type="submit"
                             disabled={lock}
                             onClick={() => {
-                                console.log(inputValues);
-                                setData(inputValues);
-                                POSTData();
+                                POSTData(inputValues);
                             }}
                         ></button>
                     </div>
