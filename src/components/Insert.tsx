@@ -2,10 +2,21 @@ import {useEffect, useState} from "react";
 
 function Insert() {
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
 
     function POSTData() {
-        // TODO: POST data to the database
+        console.log(data);
+        fetch('http://localhost:8000/v1/careers/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            console.log(data);
+        });
     }
 
     function InputFields() {
@@ -61,7 +72,15 @@ function Insert() {
                         )
                     })}
                     <div className="button" id={"insert-submit-button"}>
-                        <button type="submit" disabled={lock}></button>
+                        <button
+                            type="submit"
+                            disabled={lock}
+                            onClick={() => {
+                                console.log(inputValues);
+                                setData(inputValues);
+                                POSTData();
+                            }}
+                        ></button>
                     </div>
                 </div>
             </div>
