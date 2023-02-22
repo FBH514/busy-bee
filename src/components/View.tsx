@@ -1,37 +1,28 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 function View() {
 
     const [data, setData] = useState([]);
     const api = "http://localhost:8000/v1/careers";
 
-    useEffect(() => {
-        if (data.length === 0) {
-            fetch(api).then((response) => {
+    function GETData() {
+        fetch(api)
+            .then((response) => {
                 return response.json()
-            }).then(data => {
+            })
+            .then((data) => {
                 setData(data['careers']);
             })
-        }
-    }, [data]);
+    }
+
+    window.onload = GETData;
 
     function Table() {
-
         return (
             <table id={"view-table"}>
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Title</th>
-                    <th>Location</th>
-                    <th>Employer</th>
-                    <th>Description</th>
-                    <th>URL</th>
-                </tr>
-                </thead>
                 <tbody>
                 {data.map((item: any, index: any) => (
-                    <tr key={index}>
+                    <tr key={item[0]}>
                         <td>{item[1]}</td>
                         <td>{item[2]}</td>
                         <td>{item[3]}</td>
