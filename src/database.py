@@ -17,7 +17,7 @@ class Database:
         self.cursor.execute('CREATE TABLE IF NOT EXISTS careers '
                             '('
                             'id INTEGER PRIMARY KEY,'
-                            'date TEXT,'
+                            'applied TEXT,'
                             'title TEXT,'
                             'location TEXT,'
                             'employer TEXT,'
@@ -36,19 +36,24 @@ class Database:
     def insert(self, data: dict) -> None:
         """
         Inserts data into the database
-        :param data:
+        :param data: dict
         :return: None
         """
         with self.conn:
-            self.cursor.execute('INSERT INTO careers VALUES (NULL, :date, :title, :location, :employer, :description, :url)', data)
+            self.cursor.execute(
+                'INSERT INTO careers VALUES '
+                '(NULL, :applied, :title, :location, :employer, :description, :url)',
+                data
+            )
 
     def view(self) -> list:
         """
         Views all the data in the database
         :return: None
         """
-        self.cursor.execute('SELECT * FROM careers')
-        return self.cursor.fetchall()
+        with self.conn:
+            self.cursor.execute('SELECT * FROM careers')
+            return self.cursor.fetchall()
 
     def update(self, data: dict) -> None:
         """
@@ -65,7 +70,3 @@ class Database:
         :return: None
         """
         pass
-
-
-if __name__ == '__main__':
-    db = Database('careers-tracker.db')

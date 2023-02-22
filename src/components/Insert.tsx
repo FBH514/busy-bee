@@ -86,11 +86,11 @@ function Insert() {
         return (
             <div id="insert-preview">
                 <div id="insert-preview-wrapper">
-                    <h2 id={"title-preview"}>to do</h2>
-                    <h2 id={"location-preview"}>to do </h2>
-                    <h2 id={"employer-preview"}>to do</h2>
-                    <h2 id={"description-preview"}>to do</h2>
-                    <h2 id={"url-preview"}>to do</h2>
+                    <h2 id={"title-preview"}></h2>
+                    <h2 id={"location-preview"}></h2>
+                    <h2 id={"employer-preview"}></h2>
+                    <h2 id={"description-preview"}></h2>
+                    <h2 id={"url-preview"}></h2>
                 </div>
             </div>
         )

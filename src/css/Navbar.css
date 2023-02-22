@@ -28,7 +28,7 @@
 #navbar-ul li a {
   font-size: 1.5rem;
   font-weight: 500;
-  color: #fff;
+  color: #f5f5f5;
   text-decoration: none;
   cursor: pointer;
 }
@@ -36,12 +36,12 @@
 #navbar-logo {
   font-size: 3rem;
   font-weight: 700;
-  color: #fff;
+  color: #f5f5f5;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 #navbar-logo:hover {
-  color: #f5f5f5;
+  transform: scale(80%);
 }
 
 /*# sourceMappingURL=Navbar.css.map */

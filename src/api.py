@@ -47,23 +47,23 @@ async def create_career(request: Request) -> dict:
     :return: dict
     """
     response = await request.json()
-    date = time.strftime("%Y-%m-%d"),
+    date = time.strftime("%Y-%m-%d")
     title = response['title']
     location = response['location']
     employer = response['employer']
     description = response['description']
     url = response['url']
     data = {
-        'date': date,
+        'applied': date,
         'title': title,
         'location': location,
         'employer': employer,
         'description': description,
         'url': url
     }
-    try:
-        db.insert(data)
-        return {'success': True}
-    except Exception as e:
-        print(e)
-        return {'success': False}
+
+    db.insert(data)
+    return {'message': "Success!"}
+    # except Exception as e:
+    #     print(e)
+    #     return {'message': "Failed"}

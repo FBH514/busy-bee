@@ -5,23 +5,24 @@ function View() {
     const [data, setData] = useState([]);
     const api = "http://localhost:8000/v1/careers";
 
-    function GETData() {
-        fetch(api)
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                setData(data['careers']);
-            })
-    }
+    // function GETData() {
+    //     fetch(api)
+    //         .then((response) => {
+    //             return response.json()
+    //         })
+    //         .then((data) => {
+    //             setData(data['careers']);
+    //         })
+    // }
 
-    window.onload = GETData;
+    // window.onload = GETData;
 
     function Table() {
+
         return (
             <table id={"view-table"}>
                 <tbody>
-                {data.map((item: any, index: any) => (
+                {data.map((item: any) => (
                     <tr key={item[0]}>
                         <td>{item[1]}</td>
                         <td>{item[2]}</td>
