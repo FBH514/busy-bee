@@ -2,8 +2,11 @@ import {useEffect, useState} from "react";
 
 function Insert() {
 
-    // left side: insert
-    // right side: preview
+    const [data, setData] = useState([]);
+
+    function POSTData() {
+        // TODO: POST data to the database
+    }
 
     function InputFields() {
         const [inputValues, setInputValues] = useState({
@@ -12,13 +15,6 @@ function Insert() {
             employer: "",
             description: "",
             url: "",
-        });
-        const [previewValues, setPreviewValues] = useState({
-            title: "input-title",
-            location: "input-location",
-            employer: "input-employer",
-            description: "input-description",
-            url: "input-url",
         });
         const [lock, setLock] = useState(true);
 
@@ -45,11 +41,6 @@ function Insert() {
             document.getElementById("description-preview")!.innerHTML = inputValues.description;
             document.getElementById("url-preview")!.innerHTML = inputValues.url;
         }, [inputValues]);
-
-
-        function RemoveLock() {
-            setLock(false);
-        }
 
         return (
             <div id="insert-input-fields">
