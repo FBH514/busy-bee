@@ -29,7 +29,7 @@ body {
   background-size: cover;
   z-index: -1;
 }
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1600px) {
   #root:after {
     background-size: 200%;
   }

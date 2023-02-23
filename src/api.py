@@ -21,8 +21,8 @@ app.add_middleware(
 )
 
 load_dotenv()
-db = Database(os.getenv('DB_NAME'))
-
+# db = Database(os.getenv('DB_NAME'))
+db = Database('mock.db')
 
 @app.get("/")
 async def root():
@@ -61,9 +61,10 @@ async def create_career(request: Request) -> dict:
         'description': description,
         'url': url
     }
-
-    db.insert(data)
-    return {'message': "Success!"}
-    # except Exception as e:
-    #     print(e)
-    #     return {'message': "Failed"}
+    try:
+        db.insert(data)
+        db.insert(data)
+        return {'status': "Success!"}
+    except Exception as e:
+        print(e)
+        return {'status': "Failed!"}

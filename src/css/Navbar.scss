@@ -43,7 +43,15 @@
 #navbar-logo {
   font-size: 3rem;
   font-weight: 700;
-  color: #f5f5f5;
+  // #B68D40
+  // #D6AD60
+  background: linear-gradient(
+                  -90deg,
+                  rgba(214, 173, 96, 1),
+                  rgba(182, 141, 64, 1)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 

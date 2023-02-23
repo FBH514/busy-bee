@@ -2,21 +2,10 @@ import {useEffect, useState} from "react";
 
 function Insert() {
 
-    function POSTData(data: any) {
-        fetch('http://localhost:8000/v1/careers/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(response => {
-            return response.json();
-        }).then(data => {
-            console.log(data);
-        });
-    }
 
     function InputFields() {
+
+        const [lock, setLock] = useState(true);
         const [inputValues, setInputValues] = useState({
             title: "",
             location: "",
@@ -24,8 +13,6 @@ function Insert() {
             description: "",
             url: "",
         });
-        const [lock, setLock] = useState(true);
-
         const Input = [
             {name: "title", type: "text", placeholder: "Title"},
             {name: "location", type: "text", placeholder: "Location"},
@@ -43,12 +30,79 @@ function Insert() {
         }, [inputValues]);
 
         useEffect(() => {
-            document.getElementById("title-preview")!.innerHTML = inputValues.title;
-            document.getElementById("location-preview")!.innerHTML = inputValues.location;
-            document.getElementById("employer-preview")!.innerHTML = inputValues.employer;
-            document.getElementById("description-preview")!.innerHTML = inputValues.description;
-            document.getElementById("url-preview")!.innerHTML = inputValues.url;
+            const title = document.getElementById("title-preview");
+            const location = document.getElementById("location-preview")
+            const employer = document.getElementById("employer-preview")
+            const description = document.getElementById("description-preview")
+            const url = document.getElementById("url-preview")
+            const gold = "rgba(214, 173, 96, 0.2)";
+
+            if (inputValues['title'] !== "") {
+                title!.innerHTML = inputValues['title'];
+                title!.style.color = "#D6AD60";
+            }
+            else {
+                title!.innerHTML = "Title";
+                title!.style.color = gold;
+            }
+            if (inputValues['location'] !== "") {
+                location!.innerHTML = inputValues['location'];
+                location!.style.color = "#D6AD60";
+            }
+            else {
+                location!.innerHTML = "Location";
+                location!.style.color = gold;
+            }
+            if (inputValues['employer'] !== "") {
+                employer!.innerHTML = inputValues['employer'];
+                employer!.style.color = "#D6AD60";
+            }
+            else {
+                employer!.innerHTML = "Employer";
+                employer!.style.color = gold;
+            }
+            if (inputValues['description'] !== "") {
+                description!.innerHTML = inputValues['description'];
+                description!.style.color = "#D6AD60";
+            }
+            else {
+                description!.innerHTML = "Description";
+                description!.style.color = gold;
+            }
+            if (inputValues['url'] !== "") {
+                url!.innerHTML = inputValues['url'];
+                url!.style.color = "#D6AD60";
+            }
+            else {
+                url!.innerHTML = "URL";
+                url!.style.color = gold;
+            }
         }, [inputValues]);
+
+        function POSTData(data: any) {
+            fetch('http://localhost:8000/v1/careers/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            }).then(data => {
+                console.log(data);
+                if (data['status'] === 'success') {
+                    setInputValues({
+                        title: "",
+                        location: "",
+                        employer: "",
+                        description: "",
+                        url: "",
+                    });
+                }
+            });
+        }
 
         return (
             <div id="insert-input-fields">
@@ -58,6 +112,7 @@ function Insert() {
                             <div className="input-field" key={index}>
                                 <input
                                     id={"input-" + input.name}
+                                    value={inputValues[input.name as keyof typeof inputValues]}
                                     type={input.type}
                                     name={input.name}
                                     placeholder={input.placeholder}
@@ -68,8 +123,23 @@ function Insert() {
                             </div>
                         )
                     })}
-                    <div className="button" id={"insert-submit-button"}>
+                    <div id={"insert-buttons"}>
                         <button
+                            className="buttons"
+                            id={"insert-reset"}
+                            onClick={() => {
+                                setInputValues({
+                                    title: "",
+                                    location: "",
+                                    employer: "",
+                                    description: "",
+                                    url: "",
+                                });
+                            }}
+                        >Reset</button>
+                        <button
+                            className="buttons"
+                            id={"insert-submit"}
                             type="submit"
                             disabled={lock}
                             onClick={() => {
@@ -83,19 +153,28 @@ function Insert() {
     }
 
     function Preview() {
+
+        function Header() {
+            return (
+                <header id={"insert-content-right-header"}>
+                    <h1>Preview</h1>
+                    <p>This is what the entry looks like.</p>
+                </header>
+            );
+        }
+
         return (
             <div id="insert-preview">
                 <div id="insert-preview-wrapper">
-                    <h2 id={"title-preview"}></h2>
-                    <h2 id={"location-preview"}></h2>
-                    <h2 id={"employer-preview"}></h2>
-                    <h2 id={"description-preview"}></h2>
-                    <h2 id={"url-preview"}></h2>
+                    <h2 id={"title-preview"}>Title</h2>
+                    <h2 id={"location-preview"}>Location</h2>
+                    <h2 id={"employer-preview"}>Employer</h2>
+                    <h2 id={"description-preview"}>Description</h2>
+                    <h2 id={"url-preview"}>URL</h2>
                 </div>
             </div>
         )
     }
-
 
     return (
         <div id="insert-content">
