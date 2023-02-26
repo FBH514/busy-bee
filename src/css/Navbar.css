@@ -25,10 +25,17 @@
 #navbar-ul li:hover {
   transform: scale(80%);
 }
-#navbar-ul li a {
+#navbar-ul li .nav-item {
   font-size: 1.5rem;
   font-weight: 500;
   color: #f5f5f5;
+  text-decoration: none;
+  cursor: pointer;
+}
+#navbar-ul li .nav-item-active {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #D6AD60;
   text-decoration: none;
   cursor: pointer;
 }

@@ -12,14 +12,15 @@ function Insert() {
             employer: "",
             description: "",
             url: "",
+            icon: "",
         });
-        const Input = [
-            {name: "title", type: "text", placeholder: "Title"},
-            {name: "location", type: "text", placeholder: "Location"},
-            {name: "employer", type: "text", placeholder: "Employer"},
-            {name: "description", type: "text", placeholder: "Description"},
-            {name: "url", type: "text", placeholder: "URL"}
-        ]
+        const input = [
+            {name: "title", type: "text", placeholder: "Title", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
+            {name: "location", type: "text", placeholder: "Location", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
+            {name: "employer", type: "text", placeholder: "Employer", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
+            {name: "description", type: "text", placeholder: "Description", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
+            {name: "url", type: "text", placeholder: "URL", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"}
+        ];
 
         useEffect(() => {
             if (inputValues.title !== "" && inputValues.location !== "" && inputValues.employer !== "" && inputValues.description !== "" && inputValues.url !== "") {
@@ -40,6 +41,7 @@ function Insert() {
             if (inputValues['title'] !== "") {
                 title!.innerHTML = inputValues['title'];
                 title!.style.color = "#D6AD60";
+
             }
             else {
                 title!.innerHTML = "Title";
@@ -91,7 +93,6 @@ function Insert() {
                     return response.json();
                 }
             }).then(data => {
-                console.log(data);
                 if (data['status'] === 'success') {
                     setInputValues({
                         title: "",
@@ -99,6 +100,7 @@ function Insert() {
                         employer: "",
                         description: "",
                         url: "",
+                        icon: "https://img.icons8.com/ios/32/f5f5f5/delete-sign--v1.png"
                     });
                 }
             });
@@ -107,19 +109,18 @@ function Insert() {
         return (
             <div id="insert-input-fields">
                 <div id="insert-input-fields-wrapper">
-                    {Input.map((input, index) => {
+                    {input.map((input, index) => {
                         return (
-                            <div className="input-field" key={index}>
+                            <div className="input-field" key={index} id={"input-" + input.name}>
                                 <input
-                                    id={"input-" + input.name}
+                                    // id={"input-" + input.name}
                                     value={inputValues[input.name as keyof typeof inputValues]}
                                     type={input.type}
                                     name={input.name}
                                     placeholder={input.placeholder}
-                                    onChange={(e) => {
-                                        setInputValues({...inputValues, [input.name]: e.target.value});
-                                    }}
+                                    onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
                                 />
+                                <img src={input.icon} alt={"validator"}/>
                             </div>
                         )
                     })}
@@ -134,6 +135,7 @@ function Insert() {
                                     employer: "",
                                     description: "",
                                     url: "",
+                                    icon: "https://img.icons8.com/ios/32/f5f5f5/delete-sign--v1.png"
                                 });
                             }}
                         >Reset</button>

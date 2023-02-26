@@ -1,7 +1,9 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 function Navbar() {
+
+    const location = useLocation();
 
     function List() {
 
@@ -17,7 +19,11 @@ function Navbar() {
                 {items.map((item, index) => {
                     return (
                         <li key={index}>
-                            <Link to={item.link}>{item.name}</Link>
+                            <Link
+                                className={location.pathname === item.link ? "nav-item-active" : "nav-item"}
+                                to={item.link}
+                            >{item.name}
+                            </Link>
                         </li>
                     );
                 })}

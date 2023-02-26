@@ -49,6 +49,7 @@
   gap: 1rem;
   width: 100%;
   cursor: pointer;
+  padding-right: calc(16px + 1rem);
 
   .buttons {
     transition: all 0.2s ease-in-out;
@@ -66,11 +67,6 @@
     padding: 0.5rem 1rem;
     border-radius: 5px;
     width: 100%;
-
-    &:hover {
-      background-color: #f5f5f5;
-      color: #333333;
-    }
   }
 
   #insert-submit {
@@ -92,6 +88,10 @@
 
 .input-field {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 
   input {
     background: linear-gradient(
