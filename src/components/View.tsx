@@ -17,6 +17,66 @@ function View() {
 
     // window.onload = GETData;
 
+    function Header() {
+
+        function Search() {
+            return (
+                <div id={"search"}>
+                    <input type={"text"} placeholder={"Search"}/>
+                    <button>Search</button>
+                </div>
+            );
+        }
+
+        function Filters() {
+
+            function HideOrShow() {
+                const filterList = document.querySelector(".filters-ul");
+                const active = "filters-ul-active";
+                if (filterList!.classList.contains(active)) {
+                    filterList!.classList.remove(active);
+                } else {
+                    filterList!.classList.add(active);
+                }
+            }
+
+            function List() {
+                const filters = ["Title", "Location", "Employer"]
+                return (
+                    <ul id={"filters-ul"} className={"filters-ul"}>
+                        {filters.map((filter, index) => {
+                            return (
+                                <li key={index}>
+                                    <button>{filter}</button>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                );
+            }
+
+            return (
+                <div id={"filters"}>
+                    <img
+                        src="https://img.icons8.com/external-outline-berkahicon/32/f5f5f5/external-Filters-photo-editing-outline-berkahicon.png"
+                        alt={"filter"}
+                        onClick={HideOrShow}
+                    />
+                    <List/>
+                </div>
+            );
+        }
+
+        return (
+            <div id={"view-header"}>
+                <div id={"view-header-wrapper"}>
+                    <Search/>
+                    <Filters/>
+                </div>
+            </div>
+        );
+    }
+
     function Table() {
 
         return (
@@ -40,6 +100,7 @@ function View() {
     return (
         <div id={"view-content"}>
             <div id={"view-content-wrapper"}>
+                <Header/>
                 <Table/>
             </div>
         </div>
