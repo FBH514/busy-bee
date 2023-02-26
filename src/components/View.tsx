@@ -19,10 +19,19 @@ function View() {
 
     function Header() {
 
+        function RandomPlaceholder() {
+            const placeholders = [
+                "Search for title",
+                "Search for location",
+                "Search for employer",
+            ]
+            return placeholders[Math.floor(Math.random() * placeholders.length)];
+        }
+
         function Search() {
             return (
                 <div id={"search"}>
-                    <input type={"text"} placeholder={"Search"}/>
+                    <input type={"text"} placeholder={RandomPlaceholder()}/>
                     <button>Search</button>
                 </div>
             );
@@ -57,11 +66,9 @@ function View() {
 
             return (
                 <div id={"filters"}>
-                    <img
-                        src="https://img.icons8.com/external-outline-berkahicon/32/f5f5f5/external-Filters-photo-editing-outline-berkahicon.png"
-                        alt={"filter"}
-                        onClick={HideOrShow}
-                    />
+                    <button onClick={HideOrShow}>
+                        <img src="https://img.icons8.com/ios-filled/24/333333/sorting-options.png" alt={"filters"}/>
+                    </button>
                     <List/>
                 </div>
             );
