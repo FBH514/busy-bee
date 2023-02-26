@@ -1,5 +1,4 @@
 import os
-import json
 import time
 
 from dotenv import load_dotenv
@@ -16,13 +15,11 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    # allow_methods=["POST", "PUT", "DELETE"],
     allow_headers=["Content-Type", "Authorization"],
 )
 
 load_dotenv()
-# db = Database(os.getenv('DB_NAME'))
-db = Database('mock.db')
+db = Database(os.getenv('DB_NAME'))
 
 @app.get("/")
 async def root():
@@ -62,7 +59,6 @@ async def create_career(request: Request) -> dict:
         'url': url
     }
     try:
-        db.insert(data)
         db.insert(data)
         return {'status': "Success!"}
     except Exception as e:

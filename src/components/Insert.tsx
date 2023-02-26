@@ -6,14 +6,16 @@ function Insert() {
     function InputFields() {
 
         const [lock, setLock] = useState(true);
+
         const [inputValues, setInputValues] = useState({
             title: "",
             location: "",
             employer: "",
             description: "",
             url: "",
-            icon: "",
+            icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png",
         });
+
         const input = [
             {name: "title", type: "text", placeholder: "Title", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
             {name: "location", type: "text", placeholder: "Location", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
@@ -100,7 +102,7 @@ function Insert() {
                         employer: "",
                         description: "",
                         url: "",
-                        icon: "https://img.icons8.com/ios/32/f5f5f5/delete-sign--v1.png"
+                        icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"
                     });
                 }
             });
@@ -118,9 +120,11 @@ function Insert() {
                                     type={input.type}
                                     name={input.name}
                                     placeholder={input.placeholder}
-                                    onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
+                                    onChange={(e) => {
+                                        setInputValues({...inputValues, [input.name]: e.target.value});
+                                    }}
                                 />
-                                <img src={input.icon} alt={"validator"}/>
+                                <img src={inputValues['icon']} alt={"validator"}/>
                             </div>
                         )
                     })}
