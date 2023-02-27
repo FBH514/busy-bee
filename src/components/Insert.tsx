@@ -13,19 +13,24 @@ function Insert() {
             employer: "",
             description: "",
             url: "",
-            icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png",
+            icon: "",
         });
 
         const input = [
-            {name: "title", type: "text", placeholder: "Title", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
-            {name: "location", type: "text", placeholder: "Location", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
-            {name: "employer", type: "text", placeholder: "Employer", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
-            {name: "description", type: "text", placeholder: "Description", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"},
-            {name: "url", type: "text", placeholder: "URL", icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"}
+            {name: "title", type: "text", placeholder: "Title"},
+            {name: "location", type: "text", placeholder: "Location"},
+            {name: "employer", type: "text", placeholder: "Employer"},
+            {name: "description", type: "text", placeholder: "Description"},
+            {name: "url", type: "text", placeholder: "URL"}
         ];
 
         useEffect(() => {
+
+        })
+
+        useEffect(() => {
             if (inputValues.title !== "" && inputValues.location !== "" && inputValues.employer !== "" && inputValues.description !== "" && inputValues.url !== "") {
+                setInputValues({...inputValues, icon: "https://img.icons8.com/ios-glyphs/16/f5f5f5/checkmark--v1.png"});
                 setLock(false);
             } else {
                 setLock(true);
@@ -43,7 +48,6 @@ function Insert() {
             if (inputValues['title'] !== "") {
                 title!.innerHTML = inputValues['title'];
                 title!.style.color = "#D6AD60";
-
             }
             else {
                 title!.innerHTML = "Title";
@@ -102,7 +106,7 @@ function Insert() {
                         employer: "",
                         description: "",
                         url: "",
-                        icon: "https://img.icons8.com/ios/16/f5f5f5/delete-sign--v1.png"
+                        icon: ""
                     });
                 }
             });
@@ -124,7 +128,7 @@ function Insert() {
                                         setInputValues({...inputValues, [input.name]: e.target.value});
                                     }}
                                 />
-                                <img src={inputValues['icon']} alt={"validator"}/>
+                                {inputValues['icon'] !== "" && <img src={inputValues['icon']} alt=""/>}
                             </div>
                         )
                     })}
