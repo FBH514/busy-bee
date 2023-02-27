@@ -55,6 +55,46 @@ class Database:
             self.cursor.execute('SELECT * FROM careers')
             return self.cursor.fetchall()
 
+    def view_title(self, title: str) -> list:
+        """
+        Views all the data in the database
+        :param title: str
+        :return: list
+        """
+        with self.conn:
+            self.cursor.execute(
+                'SELECT * FROM careers WHERE title like :title',
+                {'title': f'%{title}%'}
+            )
+            return self.cursor.fetchall()
+
+    def view_location(self, location: str) -> list:
+        """
+        Views all the data in the database
+        :param location: str
+        :return: list
+        """
+        with self.conn:
+            self.cursor.execute(
+                'SELECT * FROM careers WHERE location like :location',
+                {'location': f'%{location}%'}
+            )
+            return self.cursor.fetchall()
+
+    def view_employer(self, employer: str) -> list:
+        """
+        Views all the data in the database
+        :param employer: str
+        :return: list
+        """
+        with self.conn:
+            self.cursor.execute(
+                'SELECT * FROM careers WHERE employer like :employer',
+                {'employer': f'%{employer}%'}
+            )
+            return self.cursor.fetchall()
+
+
     def update(self, data: dict) -> None:
         """
         Updates data in the database
@@ -70,3 +110,7 @@ class Database:
         :return: None
         """
         pass
+
+
+if __name__ == '__main__':
+    db = Database('careers-tracker.db')

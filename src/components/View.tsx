@@ -26,10 +26,24 @@ function View() {
         }
 
         function Search() {
+
+            function HandleSearch() {
+                const search = document.getElementById("search-input") as HTMLInputElement;
+                const searchValue = search.value;
+                console.log(searchValue);
+            }
+
+
             return (
                 <div id={"search"}>
-                    <input type={"text"} placeholder={RandomPlaceholder()}/>
-                    <button>Search</button>
+                    <input
+                        type={"text"}
+                        placeholder={RandomPlaceholder()}
+                        id={"search-input"}
+                    />
+                    <button
+                        onClick={HandleSearch}
+                    >Search</button>
                 </div>
             );
         }
