@@ -55,6 +55,25 @@ class Database:
             self.cursor.execute('SELECT * FROM careers')
             return self.cursor.fetchall()
 
+    def view_one(self, data: str) -> list:
+        """
+        Views one item from the database
+        :param data: str
+        :return: None
+        """
+        with self.conn:
+            self.cursor.execute(
+                'SELECT * FROM careers WHERE '
+                'applied=? OR '
+                'title=? OR '
+                'location=? OR '
+                'employer=? OR '
+                'description=? OR '
+                'url=?',
+                (data, data, data, data, data, data)
+            )
+            return self.cursor.fetchall()
+
     def view_title(self, title: str) -> list:
         """
         Views all the data in the database

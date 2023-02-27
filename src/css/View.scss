@@ -23,7 +23,7 @@
 
 #view-header-wrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   width: 100%;
@@ -242,4 +242,22 @@
 
 #url {
   width: 8rem;
+}
+
+#right-side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+#left-side {
+  height: 100%;
+  width: 100%;
+  padding: 0.5rem 0;
+  p{
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #D6AD60;
+  }
 }

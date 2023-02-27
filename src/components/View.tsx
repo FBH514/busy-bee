@@ -3,16 +3,20 @@ import {useEffect, useState} from "react";
 function View() {
 
     const [data, setData] = useState([]);
+    const [results, setResults] = useState(0);
+    const [term, setTerm] = useState("");
     const api = "http://localhost:8000/v1/careers";
 
-    // make a hook with the api call above
     useEffect(() => {
         if (data.length === 0) {
             fetch(api)
                 .then(response => response.json())
-                .then(data => setData(data))
+                .then(data => {
+                    setData(data)
+                    setResults(data.length)
+                })
         }
-    }, []);
+    }, [data]);
 
     function Header() {
 
@@ -30,9 +34,21 @@ function View() {
             function HandleSearch() {
                 const search = document.getElementById("search-input") as HTMLInputElement;
                 const searchValue = search.value;
-                console.log(searchValue);
+                if (searchValue.length > 0) {
+                    fetch("http://localhost:8000/v1/careers/search/" + searchValue)
+                        .then(response => response.json())
+                        .then(data => {
+                            setData(data)
+                            setResults(data.length)
+                            if (data.length === 0) {
+                                setTerm("No results found for " + searchValue)
+                            }
+                            else {
+                                setTerm(searchValue)
+                            }
+                        });
+                }
             }
-
 
             return (
                 <div id={"search"}>
@@ -88,8 +104,13 @@ function View() {
         return (
             <div id={"view-header"}>
                 <div id={"view-header-wrapper"}>
-                    <Search/>
-                    <Filters/>
+                    <div id={"left-side"}>
+                        <p>{results} results for {term}</p>
+                    </div>
+                    <div id={"right-side"}>
+                        <Search/>
+                        <Filters/>
+                    </div>
                 </div>
             </div>
         );
