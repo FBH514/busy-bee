@@ -33,6 +33,7 @@ function Insert() {
                 setInputValues({...inputValues, icon: "https://img.icons8.com/ios-glyphs/16/f5f5f5/checkmark--v1.png"});
                 setLock(false);
             } else {
+                // setInputValues({...inputValues, icon: ""});
                 setLock(true);
             }
         }, [inputValues]);

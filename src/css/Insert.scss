@@ -67,6 +67,10 @@
     padding: 0.5rem 1rem;
     border-radius: 5px;
     width: 100%;
+
+    &:hover {
+      transform: scale(90%);
+    }
   }
 
   #insert-submit {
