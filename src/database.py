@@ -70,7 +70,15 @@ class Database:
                 'employer like :employer OR '
                 'description like :description OR '
                 'url like :url',
-                (data, data, data, data, data, data)
+                {
+                    'applied': f'%{data}%',
+                    'title': f'%{data}%',
+                    'location': f'%{data}%',
+                    'employer': f'%{data}%',
+                    'description': f'%{data}%',
+                    'url': f'%{data}%'
+                }
+
             )
             return self.cursor.fetchall()
 
@@ -113,7 +121,6 @@ class Database:
             )
             return self.cursor.fetchall()
 
-
     def update(self, data: dict) -> None:
         """
         Updates data in the database
@@ -133,3 +140,4 @@ class Database:
 
 if __name__ == '__main__':
     db = Database('careers-tracker.db')
+    print(db.view_one('software'))

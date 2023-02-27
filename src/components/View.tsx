@@ -105,11 +105,11 @@ function View() {
             <div id={"view-header"}>
                 <div id={"view-header-wrapper"}>
                     <div id={"left-side"}>
-                        <p>{results} results for {term}</p>
+                        {term !== "" ? <p>{results} Results for {term}</p> : <p>All {results} results</p>}
                     </div>
                     <div id={"right-side"}>
                         <Search/>
-                        <Filters/>
+                        {/*<Filters/>*/}
                     </div>
                 </div>
             </div>
