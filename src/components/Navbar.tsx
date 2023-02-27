@@ -9,9 +9,9 @@ function Navbar() {
 
         const items = [
             {name: 'Insert', link: '/'},
-            {name: 'View', link: '/view'},
-            {name: 'Update', link: '/update'},
-            {name: 'Delete', link: '/delete'},
+            {name: 'View', link: '/view'}
+            // {name: 'Update', link: '/update'},
+            // {name: 'Delete', link: '/delete'},
         ];
 
         return (

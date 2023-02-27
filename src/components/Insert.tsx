@@ -37,8 +37,7 @@ function Insert() {
             location: "",
             employer: "",
             description: "",
-            url: "",
-            icon: "",
+            url: ""
         });
 
         const input = [
@@ -55,10 +54,8 @@ function Insert() {
 
         useEffect(() => {
             if (inputValues.title !== "" && inputValues.location !== "" && inputValues.employer !== "" && inputValues.description !== "" && inputValues.url !== "") {
-                setInputValues({...inputValues, icon: "https://img.icons8.com/ios-glyphs/16/f5f5f5/checkmark--v1.png"});
                 setLock(false);
             } else {
-                // setInputValues({...inputValues, icon: ""});
                 setLock(true);
             }
         }, [inputValues]);
@@ -125,14 +122,14 @@ function Insert() {
                     return response.json();
                 }
             }).then(data => {
-                if (data['status'] === 'success') {
+                console.log(data);
+                if (data['status'] === 'Success!') {
                     setInputValues({
                         title: "",
                         location: "",
                         employer: "",
                         description: "",
-                        url: "",
-                        icon: ""
+                        url: ""
                     });
                 }
             });
@@ -153,7 +150,6 @@ function Insert() {
                                         setInputValues({...inputValues, [input.name]: e.target.value});
                                     }}
                                 />
-                                {inputValues['icon'] !== "" && <img src={inputValues['icon']} alt=""/>}
                             </div>
                         )
                     })}
@@ -167,8 +163,7 @@ function Insert() {
                                     location: "",
                                     employer: "",
                                     description: "",
-                                    url: "",
-                                    icon: "https://img.icons8.com/ios/32/f5f5f5/delete-sign--v1.png"
+                                    url: ""
                                 });
                             }}
                         >Reset</button>

@@ -19,8 +19,8 @@ app.add_middleware(
 )
 
 load_dotenv()
-db = Database('mock.db')
-# db = Database(os.getenv('DB_NAME'))
+# db = Database('mock.db')
+db = Database(os.getenv('DB_NAME'))
 
 
 # /v1/careers
