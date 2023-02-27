@@ -64,12 +64,12 @@ class Database:
         with self.conn:
             self.cursor.execute(
                 'SELECT * FROM careers WHERE '
-                'applied=? OR '
-                'title=? OR '
-                'location=? OR '
-                'employer=? OR '
-                'description=? OR '
-                'url=?',
+                'applied like :applied OR '
+                'title like :title OR '
+                'location like :location OR '
+                'employer like :employer OR '
+                'description like :description OR '
+                'url like :url',
                 (data, data, data, data, data, data)
             )
             return self.cursor.fetchall()
