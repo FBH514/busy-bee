@@ -60,6 +60,17 @@ function View() {
                     <button
                         onClick={HandleSearch}
                     >Search</button>
+                    <button
+                        onClick={() => {
+                            fetch(api)
+                                .then(response => response.json())
+                                .then(data => {
+                                    setData(data)
+                                    setResults(data.length)
+                                    setTerm("")
+                                })
+                        }}
+                    >Reset</button>
                 </div>
             );
         }

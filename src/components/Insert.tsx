@@ -2,6 +2,31 @@ import {useEffect, useState} from "react";
 
 function Insert() {
 
+    const Message = () => {
+        return (
+            <div className={"message"}>
+                <p id={"insert-message"}></p>
+            </div>
+        );
+    }
+
+    const ChangeMessage = (message: string) => {
+        const mess = document.getElementById("insert-message");
+        mess!.innerHTML = message;
+    }
+
+    const ActiveMessage = (bool = false) => {
+        const message = document.getElementsByClassName("message")[0];
+        if (bool) {
+            message.classList.add("active");
+            setTimeout(() => {
+                message.classList.remove("active");
+                ChangeMessage("");
+            }, 5000);
+        } else {
+            message.classList.remove("active");
+        }
+    }
 
     function InputFields() {
 
@@ -120,7 +145,6 @@ function Insert() {
                         return (
                             <div className="input-field" key={index} id={"input-" + input.name}>
                                 <input
-                                    // id={"input-" + input.name}
                                     value={inputValues[input.name as keyof typeof inputValues]}
                                     type={input.type}
                                     name={input.name}
@@ -155,6 +179,8 @@ function Insert() {
                             disabled={lock}
                             onClick={() => {
                                 POSTData(inputValues);
+                                ChangeMessage("Successfully added a new career!");
+                                ActiveMessage(true);
                             }}
                         ></button>
                     </div>
@@ -164,15 +190,6 @@ function Insert() {
     }
 
     function Preview() {
-
-        function Header() {
-            return (
-                <header id={"insert-content-right-header"}>
-                    <h1>Preview</h1>
-                    <p>This is what the entry looks like.</p>
-                </header>
-            );
-        }
 
         return (
             <div id="insert-preview">
@@ -190,6 +207,7 @@ function Insert() {
     return (
         <div id="insert-content">
             <div id={"insert-content-wrapper"}>
+                <Message/>
                 <div id={"insert-content-left"}>
                     <InputFields/>
                 </div>

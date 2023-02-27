@@ -165,3 +165,42 @@
     max-width: 100%;
   }
 }
+
+.message {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  height: 10vh;
+  width: 40vw;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #D6AD60;
+  background: rgba(45, 45, 45, 0.8);
+  border: #333333 solid 1px;
+  border-radius: 5px;
+  padding: 1rem 2rem;
+  z-index: 999;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+
+  img {
+    opacity: 0;
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.message.active {
+  opacity: 1;
+  width: 50vw;
+
+  img {
+    opacity: 1;
+  }
+}
