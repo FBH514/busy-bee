@@ -21,46 +21,53 @@ app.add_middleware(
 load_dotenv()
 db = Database(os.getenv('DB_NAME'))
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
 
 # /v1/careers
 @app.get("/v1/careers")
-async def get_careers() -> dict:
+async def get_careers() -> list:
     """
     Returns all the careers in the database.
     :return: dict
     """
-    return {"careers": db.view()}
+    data = {"careers": []}
+    for item in db.view():
+        data["careers"].append({
+            "id": item[0],
+            "applied": item[1],
+            "title": item[2],
+            "location": item[3],
+            "employer": item[4],
+            "description": item[5],
+            "url": item[6]
+        })
+    return data["careers"]
 
 
-# /v1/careers
-@app.post("/v1/careers")
-async def create_career(request: Request) -> dict:
-    """
-    Creates a new career
-    :return: dict
-    """
-    response = await request.json()
-    date = time.strftime("%Y-%m-%d")
-    title = response['title']
-    location = response['location']
-    employer = response['employer']
-    description = response['description']
-    url = response['url']
-    data = {
-        'applied': date,
-        'title': title,
-        'location': location,
-        'employer': employer,
-        'description': description,
-        'url': url
-    }
-    try:
-        db.insert(data)
-        return {'status': "Success!"}
-    except Exception as e:
-        print(e)
-        return {'status': "Failed!"}
+# # /v1/careers
+# @app.post("/v1/careers")
+# async def create_career(request: Request) -> dict:
+#     """
+#     Creates a new career
+#     :return: dict
+#     """
+#     response = await request.json()
+#     date = time.strftime("%Y-%m-%d")
+#     title = response['title']
+#     location = response['location']
+#     employer = response['employer']
+#     description = response['description']
+#     url = response['url']
+#     data = {
+#         'applied': date,
+#         'title': title,
+#         'location': location,
+#         'employer': employer,
+#         'description': description,
+#         'url': url
+#     }
+#     try:
+#         db.insert(data)
+#         return {'status': "Success!"}
+#     except Exception as e:
+#         print(e)
+#         return {'status': "Failed!"}

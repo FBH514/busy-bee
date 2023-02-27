@@ -1,21 +1,18 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function View() {
 
     const [data, setData] = useState([]);
     const api = "http://localhost:8000/v1/careers";
 
-    // function GETData() {
-    //     fetch(api)
-    //         .then((response) => {
-    //             return response.json()
-    //         })
-    //         .then((data) => {
-    //             setData(data['careers']);
-    //         })
-    // }
-
-    // window.onload = GETData;
+    // make a hook with the api call above
+    useEffect(() => {
+        if (data.length === 0) {
+            fetch(api)
+                .then(response => response.json())
+                .then(data => setData(data))
+        }
+    }, []);
 
     function Header() {
 
@@ -85,23 +82,33 @@ function View() {
     }
 
     function Table() {
-
         return (
             <table id={"view-table"}>
+                <thead>
+                <tr>
+                    <th id={"applied"}>Applied</th>
+                    <th id={"title"}>Title</th>
+                    <th id={"location"}>Location</th>
+                    <th id={"employer"}>Employer</th>
+                    <th id={"description"}>Description</th>
+                    <th id={"url"}>URL</th>
+                </tr>
+                </thead>
                 <tbody>
-                {data.map((item: any) => (
-                    <tr key={item[0]}>
-                        <td>{item[1]}</td>
-                        <td>{item[2]}</td>
-                        <td>{item[3]}</td>
-                        <td>{item[4]}</td>
-                        <td>{item[5]}</td>
-                        <td>{item[6]}</td>
-                    </tr>
-                ))}
+                {data.length > 0 &&
+                    data.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item["applied"]}</td>
+                            <td>{item["title"]}</td>
+                            <td>{item["location"]}</td>
+                            <td>{item["employer"]}</td>
+                            <td>{item["description"]}</td>
+                            <td>{item["url"]}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
-        )
+        );
     }
 
     return (

@@ -13,6 +13,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
 }
 
 #view-header {
@@ -173,31 +174,35 @@
 
 #view-table {
   width: 100%;
+  table-layout: fixed;
+  border-radius: 5px;
+  overflow: hidden;
   border-collapse: collapse;
   border-spacing: 0;
-  font-size: 1rem;
-  margin: 0;
-  padding: 0;
-  table-layout: fixed;
-  color: #333333;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  //background: #C49991;
-  //position: relative;
-  //z-index: 1;
+}
+
+#view-table tr {
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  height: 3rem;
+  text-align: left;
 }
 
 #view-table thead {
-  background: #333;
-  color: #f5f5f5;
+  color: #333333;
   font-weight: 800;
   font-size: 1.5rem;
   height: 3rem;
-  width: 100%;
-  //display: flex;
-  //flex-direction: row;
-  //justify-content: flex-start;
-  //align-items: center;
+  padding: 0.5rem;
+  background: #D6AD60;
+  overflow: hidden;
+
+  tr {
+    height: 3rem;
+  }
+}
+
+#view-table th {
   padding: 0.5rem;
 }
 
@@ -207,49 +212,34 @@
                   rgba(245, 245, 245, 0.05),
                   rgba(245, 245, 245, 0.0)
   );
-  color: #333333;
-  font-size: 1rem;
-  font-weight: 400;
 }
 
-#view-table tr {
-  transition: all 0.3s ease;
+#view-table td {
+  color: #f5f5f5;
+  font-size: 1.2rem;
+  font-weight: 400;
+  overflow: hidden;
   padding: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 1rem;
+  transition: 0.3s all ease-in-out;
+  white-space: nowrap;
+}
 
-  td {
-    color: #D6AD60;
-    height: 5rem;
-    width: 100%;
-    font-size: 1.2rem;
-    font-weight: 400;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    //overflow-y: scroll;
-    overflow: hidden;
-    padding: 0.5rem;
-    transition: 0.3s all ease-in-out;
+#applied {
+  width: 8rem;
+}
 
-    // blur the bottom of the cell
-    &:after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-                      180deg,
-                      rgba(245, 245, 245, 0.05),
-                      rgba(245, 245, 245, 0.0)
-      );
-      z-index: 2;
-    }
-  }
+#title {
+  width: 20rem;
+}
+
+#location {
+  width: 8rem;
+}
+
+#description {
+  width: 20rem;
+}
+
+#url {
+  width: 8rem;
 }
