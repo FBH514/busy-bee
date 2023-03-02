@@ -50,6 +50,12 @@ function View() {
                 }
             }
 
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    HandleSearch();
+                }
+            });
+
             return (
                 <div id={"search"}>
                     <input
@@ -71,43 +77,6 @@ function View() {
                                 })
                         }}
                     >Reset</button>
-                </div>
-            );
-        }
-
-        function Filters() {
-
-            function HideOrShow() {
-                const filterList = document.querySelector(".filters-ul");
-                const active = "filters-ul-active";
-                if (filterList!.classList.contains(active)) {
-                    filterList!.classList.remove(active);
-                } else {
-                    filterList!.classList.add(active);
-                }
-            }
-
-            function List() {
-                const filters = ["Title", "Location", "Employer"]
-                return (
-                    <ul id={"filters-ul"} className={"filters-ul"}>
-                        {filters.map((filter, index) => {
-                            return (
-                                <li key={index}>
-                                    <button>{filter}</button>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                );
-            }
-
-            return (
-                <div id={"filters"}>
-                    <button onClick={HideOrShow}>
-                        <img src="https://img.icons8.com/ios-filled/24/333333/sorting-options.png" alt={"filters"}/>
-                    </button>
-                    <List/>
                 </div>
             );
         }
