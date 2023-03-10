@@ -104,24 +104,24 @@ function View() {
             <table id={"view-table"}>
                 <thead>
                 <tr>
-                    <th id={"applied"}>Applied</th>
-                    <th id={"title"}>Title</th>
-                    <th id={"location"}>Location</th>
-                    <th id={"employer"}>Employer</th>
-                    <th id={"description"}>Description</th>
-                    <th id={"url"}>URL</th>
+                    <th className={"applied"}>Applied</th>
+                    <th className={"title"}>Title</th>
+                    <th className={"location"}>Location</th>
+                    <th className={"employer"}>Employer</th>
+                    <th className={"description"}>Description</th>
+                    <th className={"url"}>URL</th>
                 </tr>
                 </thead>
                 <tbody>
                 {data.length > 0 &&
                     data.map((item, index) => (
                         <tr key={index}>
-                            <td>{item["applied"]}</td>
-                            <td>{item["title"]}</td>
-                            <td>{item["location"]}</td>
-                            <td>{item["employer"]}</td>
-                            <td>{item["description"]}</td>
-                            <td>{item["url"]}</td>
+                            <td className={"applied"}>{item["applied"]}</td>
+                            <td className={"title"}>{item["title"]}</td>
+                            <td className={"location"}>{item["location"]}</td>
+                            <td className={"employer"}>{item["employer"]}</td>
+                            <td className={"description"}>{item["description"]}</td>
+                            <td className={"url"}>{item["url"]}</td>
                         </tr>
                     ))}
                 </tbody>

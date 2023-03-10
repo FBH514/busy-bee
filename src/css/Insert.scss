@@ -2,6 +2,12 @@
   height: calc(100vh - 80px);
   padding: 1rem 2rem;
   overflow: hidden;
+
+  @media screen and (max-width: 991px) {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 1rem;
+  }
 }
 
 #insert-content-wrapper {
@@ -11,6 +17,10 @@
   justify-items: center;
   height: 100%;
   gap: 5rem;
+
+  @media screen and (max-width: 991px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 #insert-content-left {
@@ -153,6 +163,10 @@
   width: 100%;
   overflow: hidden;
 
+  @media screen and (max-width: 991px) {
+    align-items: center;
+  }
+
   h2 {
     padding: 0 1rem;
     font-size: 1.5rem;
@@ -160,6 +174,10 @@
     height: 50px;
     overflow: hidden;
     max-width: 100%;
+
+    @media screen and (max-width: 991px) {
+      text-align: center;
+    }
   }
 }
 

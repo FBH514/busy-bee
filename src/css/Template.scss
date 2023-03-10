@@ -19,6 +19,10 @@ body {
                   #1c1e25,
                   rgba(var(--color-dark), 1)
   );
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 #root {
@@ -45,6 +49,10 @@ body {
 
     @media screen and (min-width: 1600px) {
       background-size: 200%;
+    }
+
+    @media screen and (max-width: 991px) {
+      animation: none;
     }
 
     @keyframes bg-move {
