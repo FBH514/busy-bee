@@ -21,9 +21,10 @@
   list-style: none;
   margin: 0 1rem;
   transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
 #navbar-ul li:hover {
-  transform: scale(80%);
+  transform: scale(90%);
 }
 #navbar-ul li .nav-item {
   font-size: 1.5rem;
@@ -48,9 +49,6 @@
   -webkit-text-fill-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-}
-#navbar-logo:hover {
-  transform: scale(80%);
 }
 
 /*# sourceMappingURL=Navbar.css.map */

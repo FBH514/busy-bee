@@ -25,9 +25,10 @@
     list-style: none;
     margin: 0 1rem;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 
     &:hover {
-      transform: scale(80%);
+      transform: scale(90%);
     }
 
     .nav-item {
@@ -51,8 +52,6 @@
 #navbar-logo {
   font-size: 3rem;
   font-weight: 700;
-  // #B68D40
-  // #D6AD60
   background: linear-gradient(
                   -90deg,
                   rgba(214, 173, 96, 1),
@@ -62,8 +61,4 @@
   -webkit-text-fill-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(80%);
-  }
 }

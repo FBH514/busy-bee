@@ -49,10 +49,6 @@ function Insert() {
         ];
 
         useEffect(() => {
-
-        })
-
-        useEffect(() => {
             if (inputValues.title !== "" && inputValues.location !== "" && inputValues.employer !== "" && inputValues.description !== "" && inputValues.url !== "") {
                 setLock(false);
             } else {
@@ -134,6 +130,15 @@ function Insert() {
                 }
             });
         }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const submit = document.getElementById("insert-submit");
+                if (submit && !lock) {
+                    submit.click();
+                }
+            }
+        });
 
         return (
             <div id="insert-input-fields">
