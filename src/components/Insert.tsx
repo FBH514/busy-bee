@@ -2,6 +2,50 @@ import {useEffect, useState} from "react";
 
 function Insert() {
 
+    const [results, setResults] = useState(0);
+    const [location, setLocation] = useState("");
+    const [times, setTimes] = useState(0);
+    const [fetched, setFetched] = useState(false);
+    const api = "http://localhost:8000/v1/careers/";
+
+    function Header () {
+
+
+        useEffect(() => {
+            if (!fetched) {
+                fetch(api)
+                    .then(response => response.json())
+                    .then(data => {
+                        setResults(data.length)
+                    })
+                fetch(api + "data/locations")
+                    .then(response => response.json())
+                    .then(data => {
+                        setLocation(data.name)
+                        setTimes(data.value)
+                    })
+                setFetched(true);
+            }
+        });
+
+        const date = new Date();
+        const formattedDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+
+        return(
+            <div id={"insert-header"}>
+                <div id={"insert-header-wrapper"}>
+                    <h1 id={"insert-header-title"}>{formattedDate}</h1>
+                    <h2>{location} is the most applied with {times} appearances.</h2>
+                    <h2>{results} applications.</h2>
+                </div>
+            </div>
+        );
+    }
+
     const Message = () => {
         return (
             <div className={"message"}>
@@ -170,6 +214,7 @@ function Insert() {
                                     description: "",
                                     url: ""
                                 });
+                                setFetched(false);
                             }}
                         >Reset</button>
                         <button
@@ -204,9 +249,9 @@ function Insert() {
         )
     }
 
-    return (
-        <div id="insert-content">
-            <div id={"insert-content-wrapper"}>
+    function Body() {
+        return(
+            <div id={"insert-content-body"}>
                 <Message/>
                 <div id={"insert-content-left"}>
                     <InputFields/>
@@ -214,6 +259,15 @@ function Insert() {
                 <div id={"insert-content-right"}>
                     <Preview/>
                 </div>
+            </div>
+        );
+    }
+
+    return (
+        <div id="insert-content">
+            <div id={"insert-content-wrapper"}>
+                <Header/>
+                <Body/>
             </div>
         </div>
     );

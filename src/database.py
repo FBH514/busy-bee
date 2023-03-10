@@ -121,6 +121,17 @@ class Database:
             )
             return self.cursor.fetchall()
 
+    def most_applied_location(self) -> list:
+        """
+        Views the most applied location.
+        :return: list
+        """
+        with self.conn:
+            self.cursor.execute(
+                "SELECT location, COUNT(location) AS location_count FROM careers GROUP BY location ORDER BY location_count DESC"
+            )
+            return self.cursor.fetchall()
+
     def update(self, data: dict) -> None:
         """
         Updates data in the database
@@ -140,4 +151,4 @@ class Database:
 
 if __name__ == '__main__':
     db = Database('careers-tracker.db')
-    print(db.view_one('software'))
+    print(db.most_applied_location())

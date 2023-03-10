@@ -107,6 +107,7 @@ async def get_careers_by_query(query: str):
         })
     return data["careers"]
 
+
 # /v1/careers/{employer}
 @app.get("/v1/careers/{employer}")
 async def get_careers_by_location(employer: str):
@@ -126,6 +127,16 @@ async def get_careers_by_location(employer: str):
             "url": item[6]
         })
     return data["careers"]
+
+
+@app.get("/v1/careers/data/locations")
+async def get_most_applied_locations() -> dict:
+    """
+    Returns the most applied locations in the database.
+    :return: dict
+    """
+    result = db.most_applied_location()
+    return {"name": result[0][0], "value": result[0][1]}
 
 
 # /v1/careers

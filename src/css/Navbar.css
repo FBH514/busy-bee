@@ -94,11 +94,15 @@
   text-decoration: none;
   color: rgba(var(--color-primary));
   cursor: pointer;
+  transition: 0.3s all ease-in-out;
 }
 @media screen and (max-width: 991px) {
   #navbar-logo-wrapper h1, #navbar-logo-wrapper a {
     font-size: 1.5rem;
   }
+}
+#navbar-logo-wrapper h1:hover, #navbar-logo-wrapper a:hover {
+  color: rgba(var(--color-secondary), 1);
 }
 #navbar-logo-wrapper button {
   outline: none;

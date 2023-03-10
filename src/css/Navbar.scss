@@ -97,10 +97,14 @@
     text-decoration: none;
     color: rgba(var(--color-primary));
     cursor: pointer;
-
+    transition: 0.3s all ease-in-out;
 
     @media screen and (max-width: 991px) {
       font-size: 1.5rem;
+    }
+
+    &:hover {
+      color: rgba(var(--color-secondary), 1);
     }
   }
 
