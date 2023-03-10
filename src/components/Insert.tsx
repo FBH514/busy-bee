@@ -62,11 +62,11 @@ function Insert() {
             const employer = document.getElementById("employer-preview")
             const description = document.getElementById("description-preview")
             const url = document.getElementById("url-preview")
-            const gold = "rgba(214, 173, 96, 0.2)";
+            const gold = "rgba(85, 142, 248, 0.2)";
 
             if (inputValues['title'] !== "") {
                 title!.innerHTML = inputValues['title'];
-                title!.style.color = "#D6AD60";
+                title!.style.color = "#558EF8";
             }
             else {
                 title!.innerHTML = "Title";
@@ -74,7 +74,7 @@ function Insert() {
             }
             if (inputValues['location'] !== "") {
                 location!.innerHTML = inputValues['location'];
-                location!.style.color = "#D6AD60";
+                location!.style.color = "#558EF8";
             }
             else {
                 location!.innerHTML = "Location";
@@ -82,7 +82,7 @@ function Insert() {
             }
             if (inputValues['employer'] !== "") {
                 employer!.innerHTML = inputValues['employer'];
-                employer!.style.color = "#D6AD60";
+                employer!.style.color = "#558EF8";
             }
             else {
                 employer!.innerHTML = "Employer";
@@ -90,7 +90,7 @@ function Insert() {
             }
             if (inputValues['description'] !== "") {
                 description!.innerHTML = inputValues['description'];
-                description!.style.color = "#D6AD60";
+                description!.style.color = "#558EF8";
             }
             else {
                 description!.innerHTML = "Description";
@@ -98,7 +98,7 @@ function Insert() {
             }
             if (inputValues['url'] !== "") {
                 url!.innerHTML = inputValues['url'];
-                url!.style.color = "#D6AD60";
+                url!.style.color = "#558EF8";
             }
             else {
                 url!.innerHTML = "URL";

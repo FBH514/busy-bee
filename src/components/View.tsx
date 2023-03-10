@@ -64,9 +64,13 @@ function View() {
                         id={"search-input"}
                     />
                     <button
+                        className={"header-buttons"}
+                        id={"search-button"}
                         onClick={HandleSearch}
                     >Search</button>
                     <button
+                        className={"header-buttons"}
+                        id={"reset-button"}
                         onClick={() => {
                             fetch(api)
                                 .then(response => response.json())
@@ -89,7 +93,6 @@ function View() {
                     </div>
                     <div id={"right-side"}>
                         <Search/>
-                        {/*<Filters/>*/}
                     </div>
                 </div>
             </div>

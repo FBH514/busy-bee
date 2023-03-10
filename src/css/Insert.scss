@@ -49,15 +49,10 @@
   gap: 1rem;
   width: 100%;
   cursor: pointer;
-  //padding-right: calc(16px + 1rem);
 
   .buttons {
     transition: all 0.2s ease-in-out;
-    background: linear-gradient(
-                    -45deg,
-                    rgba(214, 173, 96, 1),
-                    rgba(182, 141, 64, 1)
-    );
+    background: rgba(var(--color-primary));
     height: 50px;
     border: none;
     outline: none;
@@ -67,17 +62,15 @@
     padding: 0.5rem 1rem;
     border-radius: 5px;
     width: 100%;
-
-    &:hover {
-      box-shadow: #333333 0 0 2rem;
-    }
+    color: rgba(var(--color-dark));
   }
 
   #insert-submit {
+    background: rgba(var(--color-secondary));
+    color: rgba(var(--color-dark));
 
     &:disabled {
-      background: rgba(245, 245, 245, 0.1);
-      color: #333333;
+      background: rgba(var(--color-primary), 0.1);
     }
 
     &:disabled::after {
@@ -100,8 +93,8 @@
   input {
     background: linear-gradient(
                     -90deg,
-                    rgba(245, 245, 245, 0.1),
-                    rgba(245, 245, 245, 0)
+                    rgba(var(--color-light), 0.1),
+                    rgba(var(--color-light), 0)
     );
     outline: none;
     border: none;
@@ -110,19 +103,23 @@
     border-radius: 5px;
     padding: 0 1rem;
     font-size: 1.5rem;
-    color: #f5f5f5;
+    color: rgba(var(--color-light));
     transition: all 0.3s ease-in-out;
 
     &:focus {
       background: linear-gradient(
                       -90deg,
-                      rgba(245, 245, 245, 0.2),
-                      rgba(245, 245, 245, 0.1)
+                      rgba(var(--color-light), 0.2),
+                      rgba(var(--color-light), 0.1)
       );
+
+      &::placeholder {
+        color: rgba(var(--color-secondary));
+      }
     }
 
     &::placeholder {
-      color: #D6AD60;
+      color: rgba(var(--color-primary))
     }
   }
 }
@@ -159,7 +156,7 @@
   h2 {
     padding: 0 1rem;
     font-size: 1.5rem;
-    color: rgba(214, 173, 96, 0.2);
+    color: rgba(var(--color-primary));
     height: 50px;
     overflow: hidden;
     max-width: 100%;
@@ -180,8 +177,8 @@
   width: 40vw;
   font-size: 1.5rem;
   font-weight: 300;
-  color: #D6AD60;
-  background: rgba(45, 45, 45, 0.8);
+  color: rgba(var(--color-secondary));
+  background: rgba(var(--color-dark), 0.8);
   border: #333333 solid 1px;
   border-radius: 5px;
   padding: 1rem 2rem;
@@ -198,7 +195,7 @@
 
 .message.active {
   opacity: 1;
-  width: 50vw;
+  //width: 50vw;
 
   img {
     opacity: 1;
