@@ -1,7 +1,6 @@
 #navbar {
   background: linear-gradient(-90deg, rgba(245, 245, 245, 0.1), rgba(245, 245, 245, 0));
   border-bottom-right-radius: 5px;
-  height: 80px;
   z-index: 333;
 }
 
@@ -10,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 2rem;
+  padding: 0.5rem 2rem;
 }
 
 #navbar-ul {
@@ -42,7 +41,7 @@
 }
 
 #navbar-logo {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 700;
   background: linear-gradient(-90deg, rgb(214, 173, 96), rgb(182, 141, 64));
   -webkit-background-clip: text;

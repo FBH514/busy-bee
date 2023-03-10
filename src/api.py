@@ -28,7 +28,7 @@ db = Database(os.getenv('DB_NAME'))
 async def get_careers() -> list:
     """
     Returns all the careers in the database.
-    :return: dict
+    :return: list
     """
     data = {"careers": []}
     for item in db.view():
@@ -41,6 +41,7 @@ async def get_careers() -> list:
             "description": item[5],
             "url": item[6]
         })
+    data['careers'].reverse()
     return data["careers"]
 
 
