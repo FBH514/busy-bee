@@ -9,7 +9,8 @@ function Navbar() {
 
         const items = [
             {name: 'Insert', link: '/'},
-            {name: 'View', link: '/view'}
+            {name: 'View', link: '/view'},
+            {name: 'Resources', link: '/resources'}
             // {name: 'Update', link: '/update'},
             // {name: 'Delete', link: '/delete'},
         ];
