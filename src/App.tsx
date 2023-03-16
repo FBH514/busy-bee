@@ -10,17 +10,24 @@ import Insert from "./components/Insert";
 import View from "./components/View";
 import Resources from "./components/Resources";
 import React from "react";
+import {QueryClient, QueryClientProvider} from "react-query";
+import {ReactQueryDevtools} from "react-query/devtools";
+
+const client = new QueryClient();
 
 function App() {
     return (
-        <Router>
-            <Navbar/>
-            <Routes>
-                <Route path="/" element={<Insert/>}/>
-                <Route path="/view" element={<View/>}/>
-                <Route path="/resources" element={<Resources/>}/>
-            </Routes>
-        </Router>
+        <QueryClientProvider client={client}>
+            <Router>
+                <Navbar/>
+                <Routes>
+                    <Route path="/" element={<Insert/>}/>
+                    <Route path="/view" element={<View/>}/>
+                    <Route path="/resources" element={<Resources/>}/>
+                </Routes>
+            </Router>
+        <ReactQueryDevtools initialIsOpen={false}/>
+        </QueryClientProvider>
     );
 }
 

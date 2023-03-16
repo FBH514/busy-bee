@@ -1,46 +1,55 @@
 import {useEffect, useState} from "react";
+import {useQuery} from "react-query";
 
 function Insert() {
 
-    const [results, setResults] = useState(0);
-    const [location, setLocation] = useState("");
-    const [times, setTimes] = useState(0);
-    const [fetched, setFetched] = useState(false);
     const api = "http://localhost:8000/v1/careers/";
+    const locations = "http://localhost:8000/v1/careers/data/locations";
 
-    function Header () {
+    function Header() {
 
+        async function FetchResults() {
+            const response = await fetch(api);
+            return await response.json();
+        }
 
-        useEffect(() => {
-            if (!fetched) {
-                fetch(api)
-                    .then(response => response.json())
-                    .then(data => {
-                        setResults(data.length)
-                    })
-                fetch(api + "data/locations")
-                    .then(response => response.json())
-                    .then(data => {
-                        setLocation(data.name)
-                        setTimes(data.value)
-                    })
-                setFetched(true);
-            }
+        async function FetchLocations() {
+            const response = await fetch(locations);
+            return await response.json();
+        }
+
+        const {isLoading: isLoadingCareers, data: dataResults} = useQuery('results', FetchResults, {
+            cacheTime: 24 * 60 * 60 * 1000,
         });
+        const {isLoading: isLoadingLocations, data: dataLocations} = useQuery('locations', FetchLocations, {
+            cacheTime: 24 * 60 * 60 * 1000,
+        });
+
+        console.log(dataLocations);
+
+        if (isLoadingCareers || isLoadingLocations) {
+            return (
+                <div id={"insert-header"}>
+                    <div id={"insert-header-wrapper"}>
+                        <h3 id={'loading'}>{"Loading..."}</h3>
+                    </div>
+                </div>
+            );
+        }
 
         const date = new Date();
         const formattedDate = date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
         });
 
-        return(
+        return (
             <div id={"insert-header"}>
                 <div id={"insert-header-wrapper"}>
                     <h1 id={"insert-header-title"}>{formattedDate}</h1>
-                    <h2>{location} is the most applied with {times} appearances.</h2>
-                    <h2>{results} applications.</h2>
+                    <h2>{dataLocations.name} is the most applied with {dataLocations.value} appearances.</h2>
+                    <h2>{dataResults.length} applications.</h2>
                 </div>
             </div>
         );
@@ -106,47 +115,42 @@ function Insert() {
             const employer = document.getElementById("employer-preview")
             const description = document.getElementById("description-preview")
             const url = document.getElementById("url-preview")
-            const gold = "rgba(85, 142, 248, 0.2)";
+            const blue = "rgba(85, 142, 248, 0.2)";
 
             if (inputValues['title'] !== "") {
                 title!.innerHTML = inputValues['title'];
                 title!.style.color = "#558EF8";
-            }
-            else {
+            } else {
                 title!.innerHTML = "Title";
-                title!.style.color = gold;
+                title!.style.color = blue;
             }
             if (inputValues['location'] !== "") {
                 location!.innerHTML = inputValues['location'];
                 location!.style.color = "#558EF8";
-            }
-            else {
+            } else {
                 location!.innerHTML = "Location";
-                location!.style.color = gold;
+                location!.style.color = blue;
             }
             if (inputValues['employer'] !== "") {
                 employer!.innerHTML = inputValues['employer'];
                 employer!.style.color = "#558EF8";
-            }
-            else {
+            } else {
                 employer!.innerHTML = "Employer";
-                employer!.style.color = gold;
+                employer!.style.color = blue;
             }
             if (inputValues['description'] !== "") {
                 description!.innerHTML = inputValues['description'];
                 description!.style.color = "#558EF8";
-            }
-            else {
+            } else {
                 description!.innerHTML = "Description";
-                description!.style.color = gold;
+                description!.style.color = blue;
             }
             if (inputValues['url'] !== "") {
                 url!.innerHTML = inputValues['url'];
                 url!.style.color = "#558EF8";
-            }
-            else {
+            } else {
                 url!.innerHTML = "URL";
-                url!.style.color = gold;
+                url!.style.color = blue;
             }
         }, [inputValues]);
 
@@ -214,9 +218,9 @@ function Insert() {
                                     description: "",
                                     url: ""
                                 });
-                                setFetched(false);
                             }}
-                        >Reset</button>
+                        >Reset
+                        </button>
                         <button
                             className="buttons"
                             id={"insert-submit"}
@@ -250,7 +254,7 @@ function Insert() {
     }
 
     function Body() {
-        return(
+        return (
             <div id={"insert-content-body"}>
                 <Message/>
                 <div id={"insert-content-left"}>

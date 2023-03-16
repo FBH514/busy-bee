@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
+from starlette.responses import Response
 
 from database import Database
 
@@ -25,11 +26,14 @@ db = Database(os.getenv('DB_NAME'))
 
 # /v1/careers
 @app.get("/v1/careers")
-async def get_careers() -> list:
+async def get_careers(response: Response) -> list:
     """
     Returns all the careers in the database.
+    :param response: Response
     :return: list
     """
+    response.headers['Cache-Control'] = "public, max-age=86400"
+    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
     data = {"careers": []}
     for item in db.view():
         data["careers"].append({
@@ -47,11 +51,15 @@ async def get_careers() -> list:
 
 # /v1/careers/{title}
 @app.get("/v1/careers/{title}")
-async def get_careers_by_location(title: str):
+async def get_careers_by_location(title: str, response: Response):
     """
     Returns all the careers in the database.
+    :param title: str
+    :param response: Response
     :return: dict
     """
+    response.headers['Cache-Control'] = "public, max-age=86400"
+    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
     data = {"careers": []}
     for item in db.view_title(title):
         data["careers"].append({
@@ -68,11 +76,15 @@ async def get_careers_by_location(title: str):
 
 # /v1/careers/{location}
 @app.get("/v1/careers/{location}")
-async def get_careers_by_location(location: str):
+async def get_careers_by_location(location: str, response: Response):
     """
     Returns all the careers in the database.
+    :param location: str
+    :param response: Response
     :return: dict
     """
+    response.headers['Cache-Control'] = "public, max-age=86400"
+    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
     data = {"careers": []}
     for item in db.view_location(location):
         data["careers"].append({
@@ -89,11 +101,15 @@ async def get_careers_by_location(location: str):
 
 # /v1/careers/search/{query}
 @app.get("/v1/careers/search/{query}")
-async def get_careers_by_query(query: str):
+async def get_careers_by_query(query: str, response: Response):
     """
     Returns all the careers in the database.
+    :param query: str
+    :param response: Response
     :return: dict
     """
+    response.headers['Cache-Control'] = "public, max-age=86400"
+    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
     data = {"careers": []}
     for item in db.view_one(query):
         data["careers"].append({
@@ -110,11 +126,15 @@ async def get_careers_by_query(query: str):
 
 # /v1/careers/{employer}
 @app.get("/v1/careers/{employer}")
-async def get_careers_by_location(employer: str):
+async def get_careers_by_location(employer: str, response: Response):
     """
     Returns all the careers in the database.
+    :param employer: str
+    :param response: Response
     :return: dict
     """
+    response.headers['Cache-Control'] = "public, max-age=86400"
+    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
     data = {"careers": []}
     for item in db.view_employer(employer):
         data["careers"].append({
@@ -130,11 +150,14 @@ async def get_careers_by_location(employer: str):
 
 
 @app.get("/v1/careers/data/locations")
-async def get_most_applied_locations() -> dict:
+async def get_most_applied_locations(response: Response) -> dict:
     """
     Returns the most applied locations in the database.
+    :param response: Response
     :return: dict
     """
+    response.headers['Cache-Control'] = "public, max-age=86400"
+    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
     result = db.most_applied_location()
     return {"name": result[0][0], "value": result[0][1]}
 

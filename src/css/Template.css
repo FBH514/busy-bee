@@ -62,4 +62,12 @@ body ::-webkit-scrollbar {
   }
 }
 
+#loading {
+  font-size: 1.5rem;
+  background: rgba(245, 245, 245, 0.8);
+  padding: 0.5rem;
+  border-radius: 5px;
+  color: #252834;
+}
+
 /*# sourceMappingURL=Template.css.map */
