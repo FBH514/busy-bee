@@ -66,13 +66,17 @@ function View() {
                         className={"header-buttons"}
                         id={"search-button"}
                         onClick={HandleSearch}
-                    >Search
+                    >
+                        Search
+                        <img src="https://img.icons8.com/ios-glyphs/24/363946/search--v1.png" alt={"search"}/>
                     </button>
                     <button
                         className={"header-buttons"}
                         id={"reset-button"}
                         onClick={fetchData}
-                    >Reset
+                    >
+                        Reset
+                        <img src="https://img.icons8.com/ios/24/363946/recurring-appointment.png" alt={"reset"}/>
                     </button>
                 </div>
             );
@@ -133,7 +137,21 @@ function View() {
                         <td className={"location"}>{item["location"]}</td>
                         <td className={"employer"}>{item["employer"]}</td>
                         <td className={"description"}>{item["description"]}</td>
-                        <td className={"url"}>{item["url"]}</td>
+                        <td className={"url"}>
+                            <img
+                                id={"copy" + index}
+                                src="https://img.icons8.com/material-rounded/16/DCDFF0/copy.png"
+                                alt={"copy"}
+                                onClick={() => {
+                                    navigator.clipboard.writeText(
+                                        item["url"]
+                                    );
+                                    const img = document.getElementById("copy" + index) as HTMLImageElement;
+                                    img.src = "https://img.icons8.com/material/16/DCDFF0/checkmark--v1.png"
+                                }}
+                            />
+                            {item["url"]}
+                        </td>
                     </tr>
                 ))}
                 </tbody>

@@ -10,7 +10,7 @@
 
 #resources-content-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -22,11 +22,11 @@
 
   a {
     text-decoration: none;
-    color: rgba(var(--color-light));
+    color: rgba(var(--color-dark));
     background: linear-gradient(
                     180deg,
                     rgba(var(--color-primary), 1),
-                    rgba(var(--color-primary), 0)
+                    rgba(var(--color-primary), 1)
     );
     height: 100%;
     border-radius: 5px;
@@ -43,7 +43,7 @@
       background: linear-gradient(
                     180deg,
                     rgba(var(--color-secondary), 1),
-                    rgba(var(--color-secondary), 0)
+                    rgba(var(--color-secondary), 1)
     );
     }
   }

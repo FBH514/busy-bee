@@ -25,8 +25,6 @@ function Insert() {
             cacheTime: 24 * 60 * 60 * 1000,
         });
 
-        console.log(dataLocations);
-
         if (isLoadingCareers || isLoadingLocations) {
             return (
                 <div id={"insert-header"}>
@@ -44,12 +42,37 @@ function Insert() {
             day: 'numeric',
         });
 
+        const targetDate = new Date("2022-12-14");
+        const timeElapsed = date.getTime() - targetDate.getTime();
+        const daysElapsed = timeElapsed / (1000 * 60 * 60 * 24);
+        const roundedDaysElapsed = Number(daysElapsed.toFixed(2));
+
         return (
             <div id={"insert-header"}>
                 <div id={"insert-header-wrapper"}>
-                    <h1 id={"insert-header-title"}>{formattedDate}</h1>
-                    <h2>{dataLocations.name} is the most applied with {dataLocations.value} appearances.</h2>
-                    <h2>{dataResults.length} applications.</h2>
+                    <div className="insight">
+                        <h2 id={"insert-header-title"}>{formattedDate}</h2>
+                    </div>
+                    <div className="insight">
+                        <h2>Most applied: {dataLocations.name}, {dataLocations.value}</h2>
+                    </div>
+                    <div className="insight">
+                        <h2>{dataResults.length} applications.</h2>
+                    </div>
+                    <div className="insight">
+                        <h2>{roundedDaysElapsed} days since graduation.</h2>
+                    </div>
+                    <div className="insight">
+                        <h2>{Number(dataResults.length / daysElapsed).toFixed(2)} applications per day.</h2>
+                    </div>
+                    <div className="insight">
+                        <iframe
+                            title={"dot"}
+                            src="https://global-mind.org/gcpdot/gcp.html"
+                            height="24" width="24" scrolling="no" frameBorder="0">
+                        </iframe>
+                        <h2>{"Global Consciousness Project"}</h2>
+                    </div>
                 </div>
             </div>
         );
@@ -75,7 +98,7 @@ function Insert() {
             setTimeout(() => {
                 message.classList.remove("active");
                 ChangeMessage("");
-            }, 5000);
+            }, 2000);
         } else {
             message.classList.remove("active");
         }
@@ -219,7 +242,9 @@ function Insert() {
                                     url: ""
                                 });
                             }}
-                        >Reset
+                        >
+                            Reset
+                            <img src="https://img.icons8.com/ios/24/363946/recurring-appointment.png" alt={"reset"}/>
                         </button>
                         <button
                             className="buttons"
@@ -231,7 +256,9 @@ function Insert() {
                                 ChangeMessage("Successfully added a new career!");
                                 ActiveMessage(true);
                             }}
-                        ></button>
+                        >
+                            {lock ? <img src="https://img.icons8.com/ios-glyphs/24/363946/lock--v1.png" alt={"padlock"}/> : <img src="https://img.icons8.com/material/24/363946/checkmark--v1.png" alt={"unlock"}/>}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -243,11 +270,31 @@ function Insert() {
         return (
             <div id="insert-preview">
                 <div id="insert-preview-wrapper">
-                    <h2 id={"title-preview"}>Title</h2>
-                    <h2 id={"location-preview"}>Location</h2>
-                    <h2 id={"employer-preview"}>Employer</h2>
-                    <h2 id={"description-preview"}>Description</h2>
-                    <h2 id={"url-preview"}>URL</h2>
+                    <div className="insert-preview-h2">
+                        <h2 id={"title-preview"}>Title</h2>
+                    </div>
+                    <div className="insert-preview-h2">
+                        <h2 id={"location-preview"}>Location</h2>
+                    </div>
+                    <div className="insert-preview-h2">
+                        <h2 id={"employer-preview"}>Employer</h2>
+                    </div>
+                    <div className="insert-preview-h2">
+                        <h2 id={"description-preview"}>Description</h2>
+                    </div>
+                    <div className="insert-preview-h2">
+                        <h2 id={"url-preview"}>URL</h2>
+                    </div>
+                    <div className="insert-preview-h2">
+                        <button
+                            className="buttons"
+                            id={"insert-view"}
+                            onClick={() => window.location.href = "/view"}
+                        >
+                            View
+                            <img src="https://img.icons8.com/ios-glyphs/24/363946/search--v1.png" alt={"search"}/>
+                        </button>
+                    </div>
                 </div>
             </div>
         )

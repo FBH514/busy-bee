@@ -1,11 +1,13 @@
 function Resources() {
 
     const resources = [
-        {title: "Glassdoor", link: "https://glassdoor.ca", image: "https://img.icons8.com/external-tal-revivo-bold-tal-revivo/24/E7EFFF/external-glassdoor-a-website-where-current-and-former-employees-anonymously-review-companies-logo-bold-tal-revivo.png"},
-        {title: "LinkedIn", link: "https://linkedin.com/", image: "https://img.icons8.com/ios-filled/24/E7EFFF/linkedin.png"},
-        {title: "Indeed", link: "https://indeed.ca/", image: "https://img.icons8.com/windows/24/E7EFFF/indeed.png"},
-        {title: "Wellfound", link: "https://angel.co/jobs", image: "https://img.icons8.com/ios/24/E7EFFF/angel-with-sword.png"},
-        {title: "Fishbowl", link: "https://www.fishbowlapp.com", image: "https://img.icons8.com/external-icons-smashing-stocks/24/E7EFFF/external-Fishbowl-hobbies-icons-icons-smashing-stocks.png"},
+        {title: "Glassdoor", link: "https://glassdoor.ca", image: "https://img.icons8.com/external-tal-revivo-bold-tal-revivo/24/363946/external-glassdoor-a-website-where-current-and-former-employees-anonymously-review-companies-logo-bold-tal-revivo.png"},
+        {title: "LinkedIn", link: "https://linkedin.com/", image: "https://img.icons8.com/ios-filled/24/363946/linkedin.png"},
+        {title: "Indeed", link: "https://indeed.ca/", image: "https://img.icons8.com/windows/24/363946/indeed.png"},
+        {title: "Wellfound", link: "https://angel.co/jobs"},
+        {title: "Fishbowl", link: "https://www.fishbowlapp.com"},
+        {title: "Monster", link: "https://www.monster.ca"},
+        {title: "ITjobs.ca", link: "https://www.itjobs.ca/en/"}
     ]
 
     return (
@@ -20,7 +22,7 @@ function Resources() {
                             target={"_blank"}
                         >
                             {item.title}
-                            <img src={item.image} alt={item.title}/>
+                            <img src={item.image ? item.image : "https://img.icons8.com/ios-glyphs/24/363946/search--v1.png"} alt={item.title}/>
                         </a>
                     )
                 })}

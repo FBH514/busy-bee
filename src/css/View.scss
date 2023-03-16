@@ -91,14 +91,16 @@
   height: 3rem;
   color: #333333;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 
   @media screen and (max-width: 991px) {
     width: 100%;
   }
 
   &:hover {
-    transform: scale(90%);
+    background: rgba(var(--color-light)) !important;
   }
 
   &:focus {
@@ -197,7 +199,16 @@
 }
 
 .url {
-  width: 8rem;
+  //width: 8rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-overflow: ellipsis;
+
+  img:hover {
+    transform: scale(90%);
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 991px) {
     display: none;
