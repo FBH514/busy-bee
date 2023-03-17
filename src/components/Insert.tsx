@@ -51,7 +51,8 @@ function Insert() {
             <div id={"insert-header"}>
                 <div id={"insert-header-wrapper"}>
                     <div className="insight">
-                        <img src="https://img.icons8.com/fluency-systems-regular/24/DCDFF0/tear-off-calendar.png" alt={"calender"}/>
+                        <img src="https://img.icons8.com/fluency-systems-regular/24/DCDFF0/tear-off-calendar.png"
+                             alt={"calender"}/>
                         <h2 id={"insert-header-title"}>{formattedDate}</h2>
                     </div>
                     <div className="insight">
@@ -63,11 +64,14 @@ function Insert() {
                         <h2>{dataResults.length} applications.</h2>
                     </div>
                     <div className="insight">
-                        <img src="https://img.icons8.com/pastel-glyph/24/DCDFF0/graduation-cap--v3.png" alt={"graduation"}/>
+                        <img src="https://img.icons8.com/pastel-glyph/24/DCDFF0/graduation-cap--v3.png"
+                             alt={"graduation"}/>
                         <h2>{roundedDaysElapsed} days since graduation.</h2>
                     </div>
                     <div className="insight">
-                        <img src="https://img.icons8.com/external-outlines-amoghdesign/24/DCDFF0/external-analysis-education-vol-01-outlines-amoghdesign.png" alt={"ratio"}/>
+                        <img
+                            src="https://img.icons8.com/external-outlines-amoghdesign/24/DCDFF0/external-analysis-education-vol-01-outlines-amoghdesign.png"
+                            alt={"ratio"}/>
                         <h2>{Number(dataResults.length / daysElapsed).toFixed(2)} applications per day.</h2>
                     </div>
                     <div className="insight">
@@ -207,13 +211,17 @@ function Insert() {
             });
         }
 
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                const submit = document.getElementById("insert-submit");
-                if (submit && !lock) {
-                    submit.click();
+        useEffect(() => {
+            function HandleClick(e: any) {
+                if (e.key === "Enter") {
+                    const submit = document.getElementById("insert-submit");
+                    if (submit && !lock) {
+                        submit.click();
+                    }
                 }
             }
+            document.addEventListener('keydown', HandleClick);
+            return () => document.removeEventListener('keydown', HandleClick);
         });
 
         return (
@@ -262,7 +270,9 @@ function Insert() {
                                 ActiveMessage(true);
                             }}
                         >
-                            {lock ? <img src="https://img.icons8.com/ios-glyphs/24/363946/lock--v1.png" alt={"padlock"}/> : <img src="https://img.icons8.com/material/24/363946/checkmark--v1.png" alt={"unlock"}/>}
+                            {lock ?
+                                <img src="https://img.icons8.com/ios-glyphs/24/363946/lock--v1.png" alt={"padlock"}/> :
+                                <img src="https://img.icons8.com/material/24/363946/checkmark--v1.png" alt={"unlock"}/>}
                         </button>
                     </div>
                 </div>
