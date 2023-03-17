@@ -94,6 +94,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  transition: 0.3s all ease-in-out;
 
   @media screen and (max-width: 991px) {
     width: 100%;
@@ -108,8 +109,22 @@
   }
 }
 
+#reset-button {
+
+  &:hover {
+    img {
+      transition: 0.3s all ease-in-out;
+      transform: rotate(90deg);
+    }
+  }
+}
+
 #search-button {
   background: rgba(var(--color-secondary));
+}
+
+#reset-button img {
+  transition: rotate 0.3s ease-in-out;
 }
 
 #view-table {

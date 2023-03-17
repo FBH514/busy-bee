@@ -51,18 +51,23 @@ function Insert() {
             <div id={"insert-header"}>
                 <div id={"insert-header-wrapper"}>
                     <div className="insight">
+                        <img src="https://img.icons8.com/fluency-systems-regular/24/DCDFF0/tear-off-calendar.png" alt={"calender"}/>
                         <h2 id={"insert-header-title"}>{formattedDate}</h2>
                     </div>
                     <div className="insight">
+                        <img src="https://img.icons8.com/ios/24/DCDFF0/place-marker--v1.png" alt={"location"}/>
                         <h2>Most applied: {dataLocations.name}, {dataLocations.value}</h2>
                     </div>
                     <div className="insight">
+                        <img src="https://img.icons8.com/ios/24/DCDFF0/overview-pages-3.png" alt={"applications"}/>
                         <h2>{dataResults.length} applications.</h2>
                     </div>
                     <div className="insight">
+                        <img src="https://img.icons8.com/pastel-glyph/24/DCDFF0/graduation-cap--v3.png" alt={"graduation"}/>
                         <h2>{roundedDaysElapsed} days since graduation.</h2>
                     </div>
                     <div className="insight">
+                        <img src="https://img.icons8.com/external-outlines-amoghdesign/24/DCDFF0/external-analysis-education-vol-01-outlines-amoghdesign.png" alt={"ratio"}/>
                         <h2>{Number(dataResults.length / daysElapsed).toFixed(2)} applications per day.</h2>
                     </div>
                     <div className="insight">
