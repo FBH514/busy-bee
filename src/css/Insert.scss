@@ -318,12 +318,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  height: 10vh;
-  width: 40vw;
   font-size: 1.5rem;
-  font-weight: 300;
-  color: rgba(var(--color-secondary));
-  background: rgba(var(--color-dark), 0.3);
+  color: rgba(var(--color-dark));
+  background: rgba(var(--color-secondary), 0.8);
   border: #252834 solid 1px;
   border-radius: 5px;
   padding: 1rem 2rem;
@@ -340,7 +337,7 @@
 
 .message.active {
   opacity: 1;
-  //width: 50vw;
+  z-index: 999;
 
   img {
     opacity: 1;

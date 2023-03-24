@@ -18,7 +18,8 @@ function View() {
         fetchData().then(() => console.log("Data fetched"));
     }, [])
 
-    let {isLoading} = useQuery('results', () => {}, {
+    let {isLoading} = useQuery('results', () => {
+    }, {
         enabled: false,
         refetchOnWindowFocus: false,
         cacheTime: 24 * 60 * 60 * 1000,
@@ -118,8 +119,8 @@ function View() {
 
     function Table() {
 
-        return (
-            <table id={"view-table"}>
+        function THead() {
+            return (
                 <thead>
                 <tr>
                     <th className={"applied"}>Applied</th>
@@ -130,6 +131,11 @@ function View() {
                     <th className={"url"}>URL</th>
                 </tr>
                 </thead>
+            );
+        }
+
+        function TBody() {
+            return(
                 <tbody>
                 {dataResults.map((item: any, index: number) => (
                     <tr key={index}>
@@ -156,6 +162,13 @@ function View() {
                     </tr>
                 ))}
                 </tbody>
+            );
+        }
+
+        return (
+            <table id={"view-table"}>
+                <THead/>
+                <TBody/>
             </table>
         );
     }
