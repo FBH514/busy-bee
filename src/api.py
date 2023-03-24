@@ -191,7 +191,7 @@ async def create_career(request: Request) -> dict:
         'url': url
     }
     try:
-        db.insert(data)
+        db.insert(os.getenv("INSERT_INTO"), data)
         return {'status': "Success!"}
     except Exception as e:
         print(e)

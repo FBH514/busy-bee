@@ -34,7 +34,7 @@ class Database:
         :return: None
         """
         with self.conn:
-            self.cursor.execute(query, data)
+            self.cursor.execute(query,data)
         self.conn.commit()
 
     def view(self, query: str) -> list:
