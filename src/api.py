@@ -21,7 +21,19 @@ app.add_middleware(
 
 load_dotenv()
 # db = Database('mock.db')
-db = Database(os.getenv('DB_NAME'))
+db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
+
+def set_headers(response: Response) -> None:
+    """
+    Sets the headers for the response.
+    :param response: Response
+    :return: None
+    """
+    response.headers['Cache-Control'] = "public, max-age=86400"
+    response.headers['Expires'] = time.strftime(
+        '%a, %d %b %Y %H:%M:%S GMT',
+        time.gmtime(time.time() + 86400)
+    )
 
 
 # /v1/careers
@@ -32,10 +44,9 @@ async def get_careers(response: Response) -> list:
     :param response: Response
     :return: list
     """
-    response.headers['Cache-Control'] = "public, max-age=86400"
-    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
+    set_headers(response)
     data = {"careers": []}
-    for item in db.view():
+    for item in db.view(os.getenv("VIEW_ALL")):
         data["careers"].append({
             "id": item[0],
             "applied": item[1],
@@ -58,8 +69,7 @@ async def get_careers_by_location(title: str, response: Response):
     :param response: Response
     :return: dict
     """
-    response.headers['Cache-Control'] = "public, max-age=86400"
-    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
+    set_headers(response)
     data = {"careers": []}
     for item in db.view_title(title):
         data["careers"].append({
@@ -83,8 +93,7 @@ async def get_careers_by_location(location: str, response: Response):
     :param response: Response
     :return: dict
     """
-    response.headers['Cache-Control'] = "public, max-age=86400"
-    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
+    set_headers(response)
     data = {"careers": []}
     for item in db.view_location(location):
         data["careers"].append({
@@ -108,10 +117,9 @@ async def get_careers_by_query(query: str, response: Response):
     :param response: Response
     :return: dict
     """
-    response.headers['Cache-Control'] = "public, max-age=86400"
-    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
+    set_headers(response)
     data = {"careers": []}
-    for item in db.view_one(query):
+    for item in db.view_one(os.getenv("VIEW_ONE"), query):
         data["careers"].append({
             "id": item[0],
             "applied": item[1],
@@ -133,8 +141,7 @@ async def get_careers_by_location(employer: str, response: Response):
     :param response: Response
     :return: dict
     """
-    response.headers['Cache-Control'] = "public, max-age=86400"
-    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
+    set_headers(response)
     data = {"careers": []}
     for item in db.view_employer(employer):
         data["careers"].append({
@@ -156,9 +163,8 @@ async def get_most_applied_locations(response: Response) -> dict:
     :param response: Response
     :return: dict
     """
-    response.headers['Cache-Control'] = "public, max-age=86400"
-    response.headers['Expires'] = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime(time.time() + 86400))
-    result = db.most_applied_location()
+    set_headers(response)
+    result = db.most_applied_location(os.getenv("MOST_APPLIED_LOCATION"))
     return {"name": result[0][0], "value": result[0][1]}
 
 
