@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {useQuery} from "react-query";
+import {CSSTransition} from "react-transition-group";
 
 function Insert() {
 
@@ -330,12 +331,14 @@ function Insert() {
     }
 
     return (
-        <div id="insert-content">
-            <div id={"insert-content-wrapper"}>
-                <Header/>
-                <Body/>
+        <CSSTransition in={true} appear={true} timeout={1000} classNames="fade">
+            <div id="insert-content">
+                <div id={"insert-content-wrapper"}>
+                    <Header/>
+                    <Body/>
+                </div>
             </div>
-        </div>
+        </CSSTransition>
     );
 }
 

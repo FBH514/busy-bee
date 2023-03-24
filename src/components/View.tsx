@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {useQuery} from 'react-query';
+import {CSSTransition} from "react-transition-group";
 
 function View() {
 
@@ -160,12 +161,14 @@ function View() {
     }
 
     return (
-        <div id={"view-content"}>
-            <div id={"view-content-wrapper"}>
-                <Header/>
-                {isLoading ? <h3>{"Loading..."}</h3> : <Table/>}
+        <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
+            <div id={"view-content"}>
+                <div id={"view-content-wrapper"}>
+                    <Header/>
+                    {isLoading ? <h3>{"Loading..."}</h3> : <Table/>}
+                </div>
             </div>
-        </div>
+        </CSSTransition>
     );
 }
 

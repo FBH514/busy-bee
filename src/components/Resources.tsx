@@ -1,3 +1,5 @@
+import {CSSTransition} from "react-transition-group";
+
 function Resources() {
 
     const resources = [
@@ -11,23 +13,25 @@ function Resources() {
     ]
 
     return (
-        <div id={"resources-content"}>
-            <div id={"resources-content-wrapper"}>
-                {resources.map((item, index) => {
-                    return (
-                        <a
-                            href={item.link}
-                            key={index}
-                            rel={"noreferrer"}
-                            target={"_blank"}
-                        >
-                            {item.title}
-                            <img src={item.image ? item.image : "https://img.icons8.com/ios-glyphs/24/363946/search--v1.png"} alt={item.title}/>
-                        </a>
-                    )
-                })}
+        <CSSTransition in={true} appear={true} timeout={1000} classNames="fade">
+            <div id={"resources-content"}>
+                <div id={"resources-content-wrapper"}>
+                    {resources.map((item, index) => {
+                        return (
+                            <a
+                                href={item.link}
+                                key={index}
+                                rel={"noreferrer"}
+                                target={"_blank"}
+                            >
+                                {item.title}
+                                <img src={item.image ? item.image : "https://img.icons8.com/ios-glyphs/24/363946/search--v1.png"} alt={item.title}/>
+                            </a>
+                        )
+                    })}
+                </div>
             </div>
-        </div>
+        </CSSTransition>
     );
 }
 

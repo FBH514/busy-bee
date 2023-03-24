@@ -74,4 +74,25 @@ body ::-webkit-scrollbar {
   color: rgba(var(--color-light));
 }
 
+.fade-appear {
+  opacity: 0;
+  filter: blur(25px);
+}
+
+.fade-appear-active {
+  opacity: 1;
+  transition: all 500ms ease-in;
+  filter: blur(0);
+}
+
+.fade-exit {
+  opacity: 0;
+}
+
+.fade-exit-active {
+  opacity: 1;
+  transition: all 500ms ease-in;
+  filter: blur(25px);
+}
+
 /*# sourceMappingURL=Template.css.map */
