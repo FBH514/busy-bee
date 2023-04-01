@@ -19,12 +19,9 @@ function Insert() {
             return await response.json();
         }
 
-        const {isLoading: isLoadingCareers, data: dataResults} = useQuery('results', FetchResults, {
-            cacheTime: 24 * 60 * 60 * 1000,
-        });
-        const {isLoading: isLoadingLocations, data: dataLocations} = useQuery('locations', FetchLocations, {
-            cacheTime: 24 * 60 * 60 * 1000,
-        });
+        const caching = {cacheTime: 24 * 60 * 60 * 1000};
+        const {isLoading: isLoadingCareers, data: dataResults} = useQuery('results', FetchResults, caching)
+        const {isLoading: isLoadingLocations, data: dataLocations} = useQuery('locations', FetchLocations, caching);
 
         if (isLoadingCareers || isLoadingLocations) {
             return (
@@ -36,17 +33,26 @@ function Insert() {
             );
         }
 
-        const date = new Date();
-        const formattedDate = date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
+        function getCurrentDate() {
+            const date = new Date();
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+            });
+        }
 
-        const targetDate = new Date("2022-12-14");
-        const timeElapsed = date.getTime() - targetDate.getTime();
-        const daysElapsed = timeElapsed / (1000 * 60 * 60 * 24);
-        const roundedDaysElapsed = Number(daysElapsed.toFixed(2));
+        function completedCertification(gradDate: string) {
+            const date = new Date();
+            const targetDate = new Date(gradDate);
+            const timeElapsed = date.getTime() - targetDate.getTime();
+            const daysElapsed = timeElapsed / (1000 * 60 * 60 * 24);
+            const roundedDaysElapsed = Number(daysElapsed.toFixed(2));
+            return {"days_elapsed": daysElapsed, "rounded_days_elapsed": roundedDaysElapsed};
+        }
+
+        const gradDate = completedCertification("2022-12-14")
+        const currentDate = getCurrentDate()
 
         return (
             <div id={"insert-header"}>
@@ -54,7 +60,7 @@ function Insert() {
                     <div className="insight">
                         <img src="https://img.icons8.com/fluency-systems-regular/24/DCDFF0/tear-off-calendar.png"
                              alt={"calender"}/>
-                        <h2 id={"insert-header-title"}>{formattedDate}</h2>
+                        <h2 id={"insert-header-title"}>{currentDate}</h2>
                     </div>
                     <div className="insight">
                         <img src="https://img.icons8.com/ios/24/DCDFF0/place-marker--v1.png" alt={"location"}/>
@@ -65,15 +71,14 @@ function Insert() {
                         <h2>{dataResults.length} applications.</h2>
                     </div>
                     <div className="insight">
-                        <img src="https://img.icons8.com/pastel-glyph/24/DCDFF0/graduation-cap--v3.png"
-                             alt={"graduation"}/>
-                        <h2>{roundedDaysElapsed} days since graduation.</h2>
+                        <img src="https://img.icons8.com/pastel-glyph/24/DCDFF0/graduation-cap--v3.png" alt={"graduation"}/>
+                        <h2>{gradDate.rounded_days_elapsed} days since graduation.</h2>
                     </div>
                     <div className="insight">
                         <img
                             src="https://img.icons8.com/external-outlines-amoghdesign/24/DCDFF0/external-analysis-education-vol-01-outlines-amoghdesign.png"
                             alt={"ratio"}/>
-                        <h2>{Number(dataResults.length / daysElapsed).toFixed(2)} applications per day.</h2>
+                        <h2>{Number(dataResults.length / gradDate.days_elapsed).toFixed(2)} applications per day.</h2>
                     </div>
                     <div className="insight">
                         <iframe
@@ -103,19 +108,20 @@ function Insert() {
 
     const ActiveMessage = (bool = false) => {
         const message = document.getElementsByClassName("message")[0];
-        if (bool) {
+        if (!bool) message.classList.remove("active");
+        else {
             message.classList.add("active");
             setTimeout(() => {
                 message.classList.remove("active");
                 ChangeMessage("");
             }, 2000);
-        } else {
-            message.classList.remove("active");
         }
     }
 
     function InputFields() {
 
+        const fadedBlue = "rgba(85, 142, 248, 0.2)";
+        const blue = "rgba(85, 142, 248, 1)";
         const [lock, setLock] = useState(true);
 
         const [inputValues, setInputValues] = useState({
@@ -148,42 +154,40 @@ function Insert() {
             const employer = document.getElementById("employer-preview")
             const description = document.getElementById("description-preview")
             const url = document.getElementById("url-preview")
-            const blue = "rgba(85, 142, 248, 0.2)";
-
             if (inputValues['title'] !== "") {
                 title!.innerHTML = inputValues['title'];
-                title!.style.color = "#558EF8";
+                title!.style.color = blue;
             } else {
                 title!.innerHTML = "Title";
-                title!.style.color = blue;
+                title!.style.color = fadedBlue;
             }
             if (inputValues['location'] !== "") {
                 location!.innerHTML = inputValues['location'];
-                location!.style.color = "#558EF8";
+                location!.style.color = blue;
             } else {
                 location!.innerHTML = "Location";
-                location!.style.color = blue;
+                location!.style.color = fadedBlue;
             }
             if (inputValues['employer'] !== "") {
                 employer!.innerHTML = inputValues['employer'];
-                employer!.style.color = "#558EF8";
+                employer!.style.color = blue;
             } else {
                 employer!.innerHTML = "Employer";
-                employer!.style.color = blue;
+                employer!.style.color = fadedBlue;
             }
             if (inputValues['description'] !== "") {
                 description!.innerHTML = inputValues['description'];
-                description!.style.color = "#558EF8";
+                description!.style.color = blue;
             } else {
                 description!.innerHTML = "Description";
-                description!.style.color = blue;
+                description!.style.color = fadedBlue;
             }
             if (inputValues['url'] !== "") {
                 url!.innerHTML = inputValues['url'];
-                url!.style.color = "#558EF8";
+                url!.style.color = blue;
             } else {
                 url!.innerHTML = "URL";
-                url!.style.color = blue;
+                url!.style.color = fadedBlue;
             }
         }, [inputValues]);
 
@@ -195,20 +199,9 @@ function Insert() {
                 },
                 body: JSON.stringify(data)
             }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
+                return response.json()
             }).then(data => {
-                console.log(data);
-                if (data['status'] === 'Success!') {
-                    setInputValues({
-                        title: "",
-                        location: "",
-                        employer: "",
-                        description: "",
-                        url: ""
-                    });
-                }
+                if (data['status'] === 'Success!') resetInputValues();
             });
         }
 
@@ -216,14 +209,17 @@ function Insert() {
             function HandleClick(e: any) {
                 if (e.key === "Enter") {
                     const submit = document.getElementById("insert-submit");
-                    if (submit && !lock) {
-                        submit.click();
-                    }
+                    if (submit && !lock) submit.click();
                 }
             }
+
             document.addEventListener('keydown', HandleClick);
             return () => document.removeEventListener('keydown', HandleClick);
         });
+
+        function resetInputValues() {
+            setInputValues({title: "", location: "", employer: "", description: "", url: ""});
+        }
 
         return (
             <div id="insert-input-fields">
@@ -236,9 +232,7 @@ function Insert() {
                                     type={input.type}
                                     name={input.name}
                                     placeholder={input.placeholder}
-                                    onChange={(e) => {
-                                        setInputValues({...inputValues, [input.name]: e.target.value});
-                                    }}
+                                    onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
                                 />
                             </div>
                         )
@@ -247,15 +241,7 @@ function Insert() {
                         <button
                             className="buttons"
                             id={"insert-reset"}
-                            onClick={() => {
-                                setInputValues({
-                                    title: "",
-                                    location: "",
-                                    employer: "",
-                                    description: "",
-                                    url: ""
-                                });
-                            }}
+                            onClick={resetInputValues}
                         >
                             Reset
                             <img src="https://img.icons8.com/ios/24/363946/recurring-appointment.png" alt={"reset"}/>

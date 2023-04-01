@@ -36,38 +36,48 @@ function View() {
 
     function Header() {
 
-        function RandomPlaceholder() {
-            const placeholders = [
-                "Search for [...]",
-            ]
+        const placeholders = [
+            "Search for a life changing opportunity [...]",
+            "Search for a career that will make you fulfilled [...]",
+            "Search for a career that will make you wealthy [...]",
+            "Search for a career that will make you happy [...]",
+            "Search for a career that will make you proud [...]",
+            "Search for a career that will make you successful [...]",
+        ]
+        const [placeholder, setPlaceholder] = useState(placeholders[0]);
+        const PLACEHOLDER_DELAY = 1000 * 2
+
+        function randomPlaceholder() {
             return placeholders[Math.floor(Math.random() * placeholders.length)];
         }
 
+        useEffect(() => {
+            setInterval(() => setPlaceholder(randomPlaceholder), PLACEHOLDER_DELAY)
+        })
+
         function Search() {
 
-            function HandleSearch() {
+            function handleSearch() {
                 const search = document.getElementById("search-input") as HTMLInputElement;
                 const searchValue = search.value;
                 FetchSearch(searchValue, endpoint + searchValue).then(() => console.log("Search fetched"));
             }
 
             document.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    HandleSearch();
-                }
+                if (event.key === "Enter") handleSearch();
             });
 
             return (
                 <div id={"search"}>
                     <input
                         type={"text"}
-                        placeholder={RandomPlaceholder()}
+                        placeholder={placeholder}
                         id={"search-input"}
                     />
                     <button
                         className={"header-buttons"}
                         id={"search-button"}
-                        onClick={HandleSearch}
+                        onClick={handleSearch}
                     >
                         Search
                         <img src="https://img.icons8.com/ios-glyphs/24/363946/search--v1.png" alt={"search"}/>
@@ -135,7 +145,7 @@ function View() {
         }
 
         function TBody() {
-            return(
+            return (
                 <tbody>
                 {dataResults.map((item: any, index: number) => (
                     <tr key={index}>
@@ -150,9 +160,7 @@ function View() {
                                 src="https://img.icons8.com/material-rounded/16/DCDFF0/copy.png"
                                 alt={"copy"}
                                 onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        item["url"]
-                                    );
+                                    navigator.clipboard.writeText(item["url"]);
                                     const img = document.getElementById("copy" + index) as HTMLImageElement;
                                     img.src = "https://img.icons8.com/material/16/DCDFF0/checkmark--v1.png"
                                 }}
