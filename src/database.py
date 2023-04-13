@@ -37,44 +37,14 @@ class Database:
             self.cursor.execute(query,data)
         self.conn.commit()
 
-    def view(self, query: str) -> list:
+    def select(self, query: str) -> list:
         """
         Returns all rows in the database
         :param query: str
         :return: None
         """
         with self.conn:
-            self.cursor.execute(query)
-            return self.cursor.fetchall()
-
-    def view_one(self, query: str, data: str) -> list:
-        """
-        Views one item from the database
-        :param query: str
-        :param data: str
-        :return: None
-        """
-        data = {
-            'applied': f'%{data}%',
-            'title': f'%{data}%',
-            'location': f'%{data}%',
-            'employer': f'%{data}%',
-            'description': f'%{data}%',
-            'url': f'%{data}%'
-        }
-        with self.conn:
-            self.cursor.execute(query, data)
-            return self.cursor.fetchall()
-
-    def view_title(self, title: str) -> list:
-        """
-        Views all the data in the database
-        :param title: str
-        :return: list
-        """
-        with self.conn:
-            self.cursor.execute(os.getenv('VIEW_TITLE'), {'title': f'%{title}%'})
-            return self.cursor.fetchall()
+            return self.cursor.execute(query).fetchall()
 
     def view_location(self, location: str) -> list:
         """
@@ -83,18 +53,7 @@ class Database:
         :return: list
         """
         with self.conn:
-            self.cursor.execute(os.getenv('VIEW_LOCATION'), {'location': f'%{location}%'})
-            return self.cursor.fetchall()
-
-    def view_employer(self, employer: str) -> list:
-        """
-        Views all the data in the database
-        :param employer: str
-        :return: list
-        """
-        with self.conn:
-            self.cursor.execute(os.getenv('VIEW_EMPLOYER'), {'employer': f'%{employer}%'})
-            return self.cursor.fetchall()
+            return self.cursor.execute(os.getenv('VIEW_LOCATION'), {'location': f'%{location}%'}).fetchall()
 
     def most_applied_location(self, query: str) -> list:
         """
@@ -103,8 +62,7 @@ class Database:
         :return: list
         """
         with self.conn:
-            self.cursor.execute(query)
-            return self.cursor.fetchall()
+            return self.cursor.execute(query).fetchall()
 
     def update(self, query: str, data: dict) -> None:
         """

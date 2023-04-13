@@ -46,7 +46,7 @@ async def get_careers(response: Response) -> list:
     """
     set_headers(response)
     data = {"careers": []}
-    for item in db.view(os.getenv("VIEW_ALL")):
+    for item in db.select(os.getenv("VIEW_ALL")):
         data["careers"].append({
             "id": item[0],
             "applied": item[1],
@@ -119,7 +119,7 @@ async def get_careers_by_query(query: str, response: Response):
     """
 
     # set_headers(response)
-    data = db.view(os.getenv("VIEW_ALL"))
+    data = db.select(os.getenv("VIEW_ALL"))
     results = []
     for item in data:
         weight = 0
