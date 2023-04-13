@@ -93,7 +93,7 @@ async def get_careers_by_location(location: str, response: Response):
     :param response: Response
     :return: dict
     """
-    set_headers(response)
+    # set_headers(response)
     data = {"careers": []}
     for item in db.view_location(location):
         data["careers"].append({

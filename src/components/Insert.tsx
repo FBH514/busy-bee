@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useQuery} from "react-query";
 import {CSSTransition} from "react-transition-group";
 
@@ -6,6 +6,7 @@ function Insert() {
 
     const api = "http://localhost:8000/v1/careers/";
     const locations = "http://localhost:8000/v1/careers/data/locations";
+    const inputRef = useRef<HTMLInputElement>(null);
 
     function Header() {
 
@@ -166,7 +167,7 @@ function Insert() {
             }
 
             document.addEventListener('keydown', HandleClick);
-            return () => document.removeEventListener('keydown', HandleClick);
+            return () => document.removeEventListener('keydown', HandleClick); // clean up
         });
 
         function resetInputValues() {
@@ -211,8 +212,8 @@ function Insert() {
                         }}
                     >
                         {lock ?
-                            <img src="https://img.icons8.com/ios-glyphs/24/363946/lock--v1.png" alt={"padlock"}/> :
-                            <img src="https://img.icons8.com/material/24/363946/checkmark--v1.png" alt={"unlock"}/>}
+                            <img src="https://img.icons8.com/ios-glyphs/24/F6BD60/lock--v1.png" alt={"padlock"}/> :
+                            <img src="https://img.icons8.com/material/24/F6BD60/checkmark--v1.png" alt={"unlock"}/>}
                     </button>
                 </div>
             </div>
@@ -223,6 +224,7 @@ function Insert() {
         <CSSTransition in={true} appear={true} timeout={1000} classNames="fade">
             <div id="insert-content">
                 <div id={"insert-content-wrapper"}>
+                    <Message/>
                     <Header/>
                     <InputFields/>
                 </div>
