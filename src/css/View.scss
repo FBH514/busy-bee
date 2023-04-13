@@ -16,17 +16,17 @@
   gap: 1rem;
 }
 
+// header
 #view-header {
   width: 100%;
   height: fit-content;
 }
 
 #view-header-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: fit-content(100%) 1fr;
   gap: 1rem;
-  width: 100%;
+  padding: 2rem 0;
 
   @media screen and (max-width: 991px) {
     flex-direction: column;
@@ -36,9 +36,9 @@
 
 #search {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 
   @media screen and (max-width: 991px) {
     flex-direction: column;
@@ -47,61 +47,56 @@
 
   input {
     height: 3rem;
-    border: none;
-    width: 40vw;
-    background: linear-gradient(
-                    90deg,
-                    rgba(245, 245, 245, 0.1),
-                    rgba(245, 245, 245, 0)
-    );
+    width: 100%;
+    background: rgba(var(--black), 0.1);
+    border: 1px solid rgba(var(--black), 0.3);
     padding: 0.5rem 1rem;
     border-radius: 5px;
     font-size: 1.2rem;
-    color: rgba(var(--color-secondary));
+    color: rgba(var(--black));
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1);
 
     @media screen and (max-width: 991px) {
       width: 100%;
     }
 
     &:focus {
-      outline: none;
-      background: linear-gradient(
-                      -90deg,
-                      rgba(var(--color-light), 0.2),
-                      rgba(var(--color-light), 0.1)
-      );
+      outline: 2px solid rgba(var(--black));
+      background: rgba(var(--black), 0.3);
 
       &::placeholder {
-        color: rgba(var(--color-secondary));
+        color: rgba(var(--black));
+        font-weight: 700;
       }
     }
 
     &::placeholder {
-      color: rgba(var(--color-primary));
+      color: rgba(var(--black));
     }
   }
 }
 
 .header-buttons {
   border: none;
-  background: rgba(var(--color-primary));
+  background: rgba(var(--black));
   padding: 0.5rem 1rem;
   border-radius: 5px;
   font-size: 1.2rem;
   height: 3rem;
-  color: #333333;
+  color: rgba(var(--mustard));
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   transition: 0.3s all ease-in-out;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1);
 
   @media screen and (max-width: 991px) {
     width: 100%;
   }
 
   &:hover {
-    background: rgba(var(--color-light)) !important;
+    background: rgba(var(--white)) !important;
   }
 
   &:focus {
@@ -120,13 +115,41 @@
 }
 
 #search-button {
-  background: rgba(var(--color-secondary));
+  background: rgba(var(--secondary));
 }
 
 #reset-button img {
   transition: rotate 0.3s ease-in-out;
 }
 
+#right-side {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+#left-side {
+  height: 100%;
+  width: 100%;
+  background: rgba(var(--black), 1);
+  border-radius: 5px;
+  border: 1px solid rgba(var(--black));
+
+  p {
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(var(--mustard));
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1);
+
+    @media screen and (max-width: 991px) {
+      text-align: center;
+    }
+  }
+}
+
+// table
 #view-table {
   width: 100%;
   table-layout: fixed;
@@ -144,12 +167,12 @@
 }
 
 #view-table thead {
-  color: rgba(var(--color-primary));
+  color: rgba(var(--mustard));
   font-weight: 800;
   font-size: 1.5rem;
   height: 3rem;
   padding: 0.5rem;
-  background: rgba(var(--color-light), 0.2);
+  background: rgba(var(--primary), 1);
   overflow: hidden;
 
   tr {
@@ -162,7 +185,7 @@
 }
 
 #view-table td {
-  color: rgba(var(--color-light), 0.5);
+  color: rgba(var(--black), 1);
   font-size: 1.2rem;
   font-weight: 400;
   overflow: hidden;
@@ -170,14 +193,19 @@
   transition: 0.3s all ease-in-out;
   white-space: nowrap;
   text-overflow: ellipsis;
+  margin: 1rem 0;
 }
 
-#view-table tr {
+#view-table tbody tr {
+
+  background: rgba(var(--black), 0.1);
+  border-bottom: #333333 1px solid;
+
   &:hover {
     td {
-      color: rgba(var(--color-light));
+      color: rgba(var(--black));
     }
-    background: rgba(var(--color-light), 0.1);
+    background: rgba(var(--black), 0.3);
   }
 }
 
@@ -227,27 +255,5 @@
 
   @media screen and (max-width: 991px) {
     display: none;
-  }
-}
-
-#right-side {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-#left-side {
-  height: 100%;
-  width: 100%;
-  padding: 1rem 0;
-
-  p {
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: rgba(var(--color-primary));
-    @media screen and (max-width: 991px) {
-      text-align: center;
-    }
   }
 }

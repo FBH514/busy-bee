@@ -1,5 +1,5 @@
 #resources-content {
-  height: calc(100vh - 80px);
+  height: calc(100vh - 96px);
   padding: 1rem 2rem;
   overflow-y: scroll;
 
@@ -16,18 +16,11 @@
   height: 100%;
   gap: 2rem;
 
-  //@media screen and (min-width: 1199px) {
-  //  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  //}
-
   a {
     text-decoration: none;
-    color: rgba(var(--color-dark));
-    background: linear-gradient(
-                    180deg,
-                    rgba(var(--color-primary), 1),
-                    rgba(var(--color-primary), 1)
-    );
+    color: rgba(var(--black));
+    background: rgba(var(--black), 0.1);
+    border: 1px solid rgba(var(--black), 0.3);
     height: 100%;
     border-radius: 5px;
     padding: 1rem;
@@ -38,13 +31,10 @@
     gap: 1rem;
     transition: all 0.2s ease-in-out;
     font-size: 2rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1);
 
     &:hover {
-      background: linear-gradient(
-                    180deg,
-                    rgba(var(--color-secondary), 1),
-                    rgba(var(--color-secondary), 1)
-    );
+      background: rgba(var(--black), 0.3)
     }
   }
 }

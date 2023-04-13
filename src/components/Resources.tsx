@@ -3,9 +3,9 @@ import {CSSTransition} from "react-transition-group";
 function Resources() {
 
     const resources = [
-        {title: "Glassdoor", link: "https://glassdoor.ca", image: "https://img.icons8.com/external-tal-revivo-bold-tal-revivo/24/363946/external-glassdoor-a-website-where-current-and-former-employees-anonymously-review-companies-logo-bold-tal-revivo.png"},
-        {title: "LinkedIn", link: "https://linkedin.com/", image: "https://img.icons8.com/ios-filled/24/363946/linkedin.png"},
-        {title: "Indeed", link: "https://indeed.ca/", image: "https://img.icons8.com/windows/24/363946/indeed.png"},
+        {title: "Glassdoor", link: "https://glassdoor.ca", image: "https://img.icons8.com/external-tal-revivo-bold-tal-revivo/24/333333/external-glassdoor-a-website-where-current-and-former-employees-anonymously-review-companies-logo-bold-tal-revivo.png"},
+        {title: "LinkedIn", link: "https://linkedin.com/", image: "https://img.icons8.com/ios-filled/24/333333/linkedin.png"},
+        {title: "Indeed", link: "https://indeed.ca/", image: "https://img.icons8.com/windows/24/333333/indeed.png"},
         {title: "Wellfound", link: "https://angel.co/jobs"},
         {title: "Fishbowl", link: "https://www.fishbowlapp.com"},
         {title: "Monster", link: "https://www.monster.ca"},
@@ -25,7 +25,7 @@ function Resources() {
                                 target={"_blank"}
                             >
                                 {item.title}
-                                <img src={item.image ? item.image : "https://img.icons8.com/ios-glyphs/24/363946/search--v1.png"} alt={item.title}/>
+                                <img src={item.image ? item.image : "https://img.icons8.com/ios-glyphs/24/333333/search--v1.png"} alt={item.title}/>
                             </a>
                         )
                     })}

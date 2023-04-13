@@ -56,38 +56,37 @@ function Insert() {
 
         return (
             <div id={"insert-header"}>
-                <div id={"insert-header-wrapper"}>
-                    <div className="insight">
-                        <img src="https://img.icons8.com/fluency-systems-regular/24/DCDFF0/tear-off-calendar.png"
-                             alt={"calender"}/>
-                        <h2 id={"insert-header-title"}>{currentDate}</h2>
-                    </div>
-                    <div className="insight">
-                        <img src="https://img.icons8.com/ios/24/DCDFF0/place-marker--v1.png" alt={"location"}/>
-                        <h2>Most applied: {dataLocations.name}, {dataLocations.value}</h2>
-                    </div>
-                    <div className="insight">
-                        <img src="https://img.icons8.com/ios/24/DCDFF0/overview-pages-3.png" alt={"applications"}/>
-                        <h2>{dataResults.length} applications.</h2>
-                    </div>
-                    <div className="insight">
-                        <img src="https://img.icons8.com/pastel-glyph/24/DCDFF0/graduation-cap--v3.png" alt={"graduation"}/>
-                        <h2>{gradDate.rounded_days_elapsed} days since graduation.</h2>
-                    </div>
-                    <div className="insight">
-                        <img
-                            src="https://img.icons8.com/external-outlines-amoghdesign/24/DCDFF0/external-analysis-education-vol-01-outlines-amoghdesign.png"
-                            alt={"ratio"}/>
-                        <h2>{Number(dataResults.length / gradDate.days_elapsed).toFixed(2)} applications per day.</h2>
-                    </div>
-                    <div className="insight">
-                        <iframe
-                            title={"dot"}
-                            src="https://global-mind.org/gcpdot/gcp.html"
-                            height="24" width="24" scrolling="no" frameBorder="0">
-                        </iframe>
-                        <h2>{"Global Consciousness Project"}</h2>
-                    </div>
+                <div className="insight">
+                    <img src="https://img.icons8.com/fluency-systems-regular/24/333333/tear-off-calendar.png"
+                         alt={"calender"}/>
+                    <h2 id={"insert-header-title"}>{currentDate}</h2>
+                </div>
+                <div className="insight">
+                    <img src="https://img.icons8.com/ios/24/333333/place-marker--v1.png" alt={"location"}/>
+                    <h2>Most applied: {dataLocations.name}, {dataLocations.value}</h2>
+                </div>
+                <div className="insight">
+                    <img src="https://img.icons8.com/ios/24/333333/overview-pages-3.png" alt={"applications"}/>
+                    <h2>{dataResults.length} applications.</h2>
+                </div>
+                <div className="insight">
+                    <img src="https://img.icons8.com/pastel-glyph/24/333333/graduation-cap--v3.png"
+                         alt={"graduation"}/>
+                    <h2>{gradDate.rounded_days_elapsed} days since graduation.</h2>
+                </div>
+                <div className="insight">
+                    <img
+                        src="https://img.icons8.com/external-outlines-amoghdesign/24/333333/external-analysis-education-vol-01-outlines-amoghdesign.png"
+                        alt={"ratio"}/>
+                    <h2>{Number(dataResults.length / gradDate.days_elapsed).toFixed(2)} applications per day.</h2>
+                </div>
+                <div className="insight">
+                    <iframe
+                        title={"dot"}
+                        src="https://global-mind.org/gcpdot/gcp.html"
+                        height="24" width="24" scrolling="no" frameBorder="0">
+                    </iframe>
+                    <h2>{"Global Consciousness Project"}</h2>
                 </div>
             </div>
         );
@@ -119,11 +118,7 @@ function Insert() {
     }
 
     function InputFields() {
-
-        const fadedBlue = "rgba(85, 142, 248, 0.2)";
-        const blue = "rgba(85, 142, 248, 1)";
         const [lock, setLock] = useState(true);
-
         const [inputValues, setInputValues] = useState({
             title: "",
             location: "",
@@ -145,49 +140,6 @@ function Insert() {
                 setLock(false);
             } else {
                 setLock(true);
-            }
-        }, [inputValues]);
-
-        useEffect(() => {
-            const title = document.getElementById("title-preview");
-            const location = document.getElementById("location-preview")
-            const employer = document.getElementById("employer-preview")
-            const description = document.getElementById("description-preview")
-            const url = document.getElementById("url-preview")
-            if (inputValues['title'] !== "") {
-                title!.innerHTML = inputValues['title'];
-                title!.style.color = blue;
-            } else {
-                title!.innerHTML = "Title";
-                title!.style.color = fadedBlue;
-            }
-            if (inputValues['location'] !== "") {
-                location!.innerHTML = inputValues['location'];
-                location!.style.color = blue;
-            } else {
-                location!.innerHTML = "Location";
-                location!.style.color = fadedBlue;
-            }
-            if (inputValues['employer'] !== "") {
-                employer!.innerHTML = inputValues['employer'];
-                employer!.style.color = blue;
-            } else {
-                employer!.innerHTML = "Employer";
-                employer!.style.color = fadedBlue;
-            }
-            if (inputValues['description'] !== "") {
-                description!.innerHTML = inputValues['description'];
-                description!.style.color = blue;
-            } else {
-                description!.innerHTML = "Description";
-                description!.style.color = fadedBlue;
-            }
-            if (inputValues['url'] !== "") {
-                url!.innerHTML = inputValues['url'];
-                url!.style.color = blue;
-            } else {
-                url!.innerHTML = "URL";
-                url!.style.color = fadedBlue;
             }
         }, [inputValues]);
 
@@ -226,91 +178,41 @@ function Insert() {
                 <div id="insert-input-fields-wrapper">
                     {input.map((input, index) => {
                         return (
-                            <div className="input-field" key={index} id={"input-" + input.name}>
-                                <input
-                                    value={inputValues[input.name as keyof typeof inputValues]}
-                                    type={input.type}
-                                    name={input.name}
-                                    placeholder={input.placeholder}
-                                    onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
-                                />
-                            </div>
+                            <input
+                                className="input-field"
+                                value={inputValues[input.name as keyof typeof inputValues]}
+                                type={input.type}
+                                name={input.name}
+                                placeholder={input.placeholder}
+                                onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
+                            />
                         )
                     })}
-                    <div id={"insert-buttons"}>
-                        <button
-                            className="buttons"
-                            id={"insert-reset"}
-                            onClick={resetInputValues}
-                        >
-                            Reset
-                            <img src="https://img.icons8.com/ios/24/363946/recurring-appointment.png" alt={"reset"}/>
-                        </button>
-                        <button
-                            className="buttons"
-                            id={"insert-submit"}
-                            type="submit"
-                            disabled={lock}
-                            onClick={() => {
-                                POSTData(inputValues);
-                                ChangeMessage("Successfully added a new career!");
-                                ActiveMessage(true);
-                            }}
-                        >
-                            {lock ?
-                                <img src="https://img.icons8.com/ios-glyphs/24/363946/lock--v1.png" alt={"padlock"}/> :
-                                <img src="https://img.icons8.com/material/24/363946/checkmark--v1.png" alt={"unlock"}/>}
-                        </button>
-                    </div>
                 </div>
-            </div>
-        );
-    }
-
-    function Preview() {
-
-        return (
-            <div id="insert-preview">
-                <div id="insert-preview-wrapper">
-                    <div className="insert-preview-h2">
-                        <h2 id={"title-preview"}>Title</h2>
-                    </div>
-                    <div className="insert-preview-h2">
-                        <h2 id={"location-preview"}>Location</h2>
-                    </div>
-                    <div className="insert-preview-h2">
-                        <h2 id={"employer-preview"}>Employer</h2>
-                    </div>
-                    <div className="insert-preview-h2">
-                        <h2 id={"description-preview"}>Description</h2>
-                    </div>
-                    <div className="insert-preview-h2">
-                        <h2 id={"url-preview"}>URL</h2>
-                    </div>
-                    <div className="insert-preview-h2">
-                        <button
-                            className="buttons"
-                            id={"insert-view"}
-                            onClick={() => window.location.href = "/view"}
-                        >
-                            View
-                            <img src="https://img.icons8.com/ios-glyphs/24/363946/search--v1.png" alt={"search"}/>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    function Body() {
-        return (
-            <div id={"insert-content-body"}>
-                <Message/>
-                <div id={"insert-content-left"}>
-                    <InputFields/>
-                </div>
-                <div id={"insert-content-right"}>
-                    <Preview/>
+                <div id={"insert-buttons"}>
+                    <button
+                        className="buttons"
+                        id={"insert-reset"}
+                        onClick={resetInputValues}
+                    >
+                        <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png" alt={"reset"}/>
+                        Reset
+                    </button>
+                    <button
+                        className="buttons"
+                        id={"insert-submit"}
+                        type="submit"
+                        disabled={lock}
+                        onClick={() => {
+                            POSTData(inputValues);
+                            ChangeMessage("Successfully added a new career!");
+                            ActiveMessage(true);
+                        }}
+                    >
+                        {lock ?
+                            <img src="https://img.icons8.com/ios-glyphs/24/363946/lock--v1.png" alt={"padlock"}/> :
+                            <img src="https://img.icons8.com/material/24/363946/checkmark--v1.png" alt={"unlock"}/>}
+                    </button>
                 </div>
             </div>
         );
@@ -321,7 +223,7 @@ function Insert() {
             <div id="insert-content">
                 <div id={"insert-content-wrapper"}>
                     <Header/>
-                    <Body/>
+                    <InputFields/>
                 </div>
             </div>
         </CSSTransition>

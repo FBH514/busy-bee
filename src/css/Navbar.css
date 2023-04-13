@@ -1,7 +1,9 @@
+@charset "UTF-8";
 #navbar {
   z-index: 333;
   position: relative;
   padding: 0.5rem 2rem;
+  border-bottom: 1px solid rgba(var(--black), 0.1);
 }
 @media screen and (max-width: 991px) {
   #navbar {
@@ -33,7 +35,7 @@
   z-index: 333;
   opacity: 1;
   transform: translateX(0);
-  background: #252834;
+  background: rgba(var(--black), 0.9);
 }
 
 #navbar-list-wrapper {
@@ -49,30 +51,40 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-    top: 3.5rem;
+    top: 4rem;
     padding: 1rem 0;
     width: 100%;
   }
 }
 #navbar-list-wrapper li, #navbar-list-wrapper a {
   text-decoration: none;
-  color: rgba(var(--color-light), 0.2);
+  color: rgba(var(--black), 0.2);
   cursor: pointer;
 }
 @media screen and (max-width: 991px) {
   #navbar-list-wrapper li, #navbar-list-wrapper a {
     padding-left: 1rem;
+    color: rgba(var(--white));
   }
 }
 #navbar-list-wrapper li:hover, #navbar-list-wrapper a:hover {
-  color: rgba(var(--color-light), 0.8);
+  color: rgba(var(--primary), 0.8);
 }
 #navbar-list-wrapper .nav-item-active {
   font-size: 1.5rem;
-  font-weight: 500;
-  color: rgba(var(--color-primary));
+  color: rgba(var(--black));
   text-decoration: none;
   cursor: pointer;
+}
+@media screen and (max-width: 991px) {
+  #navbar-list-wrapper .nav-item-active {
+    color: rgba(var(--mustard));
+  }
+}
+#navbar-list-wrapper .nav-item-active:before {
+  content: "•";
+  margin-right: 0.5rem;
+  height: 2px;
 }
 
 #navbar-logo-wrapper {
@@ -87,12 +99,13 @@
   }
 }
 #navbar-logo-wrapper h1, #navbar-logo-wrapper a {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 700;
   text-decoration: none;
-  color: rgba(var(--color-primary));
+  color: rgba(var(--black));
   cursor: pointer;
   transition: 0.3s all ease-in-out;
+  font-family: "Gloria Hallelujah", cursive;
 }
 @media screen and (max-width: 991px) {
   #navbar-logo-wrapper h1, #navbar-logo-wrapper a {
@@ -100,9 +113,9 @@
   }
 }
 #navbar-logo-wrapper h1:hover, #navbar-logo-wrapper a:hover {
-  color: rgba(var(--color-secondary), 1);
+  color: rgba(var(--secondary), 1);
 }
-#navbar-logo-wrapper button {
+#navbar-logo-wrapper #mobile-menu {
   outline: none;
   background: none;
   border: none;
@@ -113,11 +126,11 @@
   align-items: center;
   justify-content: center;
 }
-#navbar-logo-wrapper button:active {
+#navbar-logo-wrapper #mobile-menu:active {
   transform: scale(0.9);
 }
 @media screen and (min-width: 992px) {
-  #navbar-logo-wrapper button {
+  #navbar-logo-wrapper #mobile-menu {
     display: none;
   }
 }

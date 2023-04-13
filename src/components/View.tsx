@@ -45,7 +45,7 @@ function View() {
             "Search for a career that will make you successful [...]",
         ]
         const [placeholder, setPlaceholder] = useState(placeholders[0]);
-        const PLACEHOLDER_DELAY = 1000 * 2
+        const PLACEHOLDER_DELAY = 1000 * 30
 
         function randomPlaceholder() {
             return placeholders[Math.floor(Math.random() * placeholders.length)];
@@ -79,16 +79,16 @@ function View() {
                         id={"search-button"}
                         onClick={handleSearch}
                     >
+                        <img src="https://img.icons8.com/ios-glyphs/24/F6BD60/search--v1.png" alt={"search"}/>
                         Search
-                        <img src="https://img.icons8.com/ios-glyphs/24/363946/search--v1.png" alt={"search"}/>
                     </button>
                     <button
                         className={"header-buttons"}
                         id={"reset-button"}
                         onClick={fetchData}
                     >
+                        <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png" alt={"reset"}/>
                         Reset
-                        <img src="https://img.icons8.com/ios/24/363946/recurring-appointment.png" alt={"reset"}/>
                     </button>
                 </div>
             );
@@ -157,12 +157,12 @@ function View() {
                         <td className={"url"}>
                             <img
                                 id={"copy" + index}
-                                src="https://img.icons8.com/material-rounded/16/DCDFF0/copy.png"
+                                src="https://img.icons8.com/material-rounded/16/333333/copy.png"
                                 alt={"copy"}
                                 onClick={() => {
                                     navigator.clipboard.writeText(item["url"]);
                                     const img = document.getElementById("copy" + index) as HTMLImageElement;
-                                    img.src = "https://img.icons8.com/material/16/DCDFF0/checkmark--v1.png"
+                                    img.src = "https://img.icons8.com/material/16/333333/checkmark--v1.png"
                                 }}
                             />
                             {item["url"]}

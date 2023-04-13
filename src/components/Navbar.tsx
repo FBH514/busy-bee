@@ -22,8 +22,6 @@ function Navbar() {
             {name: 'Insert', link: '/'},
             {name: 'View', link: '/view'},
             {name: 'Resources', link: '/resources'}
-            // {name: 'Update', link: '/update'},
-            // {name: 'Delete', link: '/delete'},
         ];
 
         return (
@@ -55,11 +53,12 @@ function Navbar() {
          function Button() {
             return (
                 <button
+                    id={"mobile-menu"}
                     className={"mobile-menu"}
                     onClick={HandleMobileMenu}
                 >
                     <img
-                        src="https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/E7EFFF/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png"
+                        src="https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/333333/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png"
                         alt={"hamburger-menu"}
                     />
                 </button>
@@ -70,7 +69,8 @@ function Navbar() {
             <div id={"navbar-logo"}>
                 <div id={"navbar-logo-wrapper"}>
                     <Button/>
-                    <Link to={"/"}>Career Tracker</Link>
+                    <Link to={"/"}>Busy Bee</Link>
+                    <img src="https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/48/333333/external-bee-nature-resource-vitaliy-gorbachev-fill-vitaly-gorbachev.png" alt="bee"/>
                 </div>
             </div>
         );

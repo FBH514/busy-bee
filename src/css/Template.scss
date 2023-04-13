@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 
 :root {
-  --color-dark: 54, 57, 70;
-  --color-light: 220, 223, 240;
-  --color-primary: 85, 142, 248;
-  --color-secondary: 212, 164, 24;
+  --white: 245, 245, 245; // hex: #F5F5F5
+  --black: 51, 51, 51; // hex: #333333
+  --mustard: 246, 189, 96; // hex: #F6BD60
+  --primary: 188, 108, 37; // hex: #BC6C25
+  --secondary: 122, 23, 16; // hex: #7A1710
 }
 
 * {
@@ -15,9 +18,9 @@
 
 body {
   background: linear-gradient(
-                  180deg,
-                  #1c1e25,
-                  rgba(var(--color-dark), 1)
+                  75deg,
+                  #FFEDCB,
+                  rgba(var(--mustard), 1)
   );
 
   ::-webkit-scrollbar {
@@ -26,47 +29,50 @@ body {
 }
 
 #root {
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   line-height: 1.5;
   max-height: 100vh;
   max-width: 100vw;
   height: 100vh;
   position: relative;
+}
 
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("../assets/images/pattern.png") no-repeat center center fixed;
-    opacity: 0.5;
-    background-size: cover;
-    mix-blend-mode: hard-light;
-    z-index: -1;
-    animation: bg-move ease-in-out 10s infinite alternate;
+#root::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  //background: url("https://images.unsplash.com/photo-1553949815-6bbea89fb801?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1004&q=80");
+  background: url("../assets/images/bee.png");
+  background-repeat: no-repeat;
+  background-position: top left;
+  opacity: 0.3;
+  background-size: cover;
+  filter: grayscale(10%) blur(5px);
+  transform: scaleX(-1);
+  z-index: -1;
+  animation: bg-move ease-in-out 10s infinite alternate;
 
-    @media screen and (min-width: 1600px) {
-      background-size: 200%;
+  @media screen and (min-width: 1600px) {
+    background-size: 200%;
+  }
+
+  @media screen and (max-width: 991px) {
+    animation: none;
+  }
+
+  @keyframes bg-move {
+    0% {
+      filter: contrast(1);
     }
-
-    @media screen and (max-width: 991px) {
-      animation: none;
-    }
-
-    @keyframes bg-move {
-      0% {
-        background-position: 100% 100%;
-        background-size: 300%;
-      }
-      100% {
-        background-position: 0 0;
-        background-size: 100%;
-      }
+    100% {
+      filter: contrast(1.5);
     }
   }
 }
+
 
 #loading {
   font-size: 1.5rem;
@@ -76,8 +82,8 @@ body {
 }
 
 ::selection {
-  background: rgba(var(--color-primary));
-  color: rgba(var(--color-light));
+  background: rgba(var(--primary));
+  color: rgba(var(--white));
 }
 
 .fade-appear {
