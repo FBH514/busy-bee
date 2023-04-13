@@ -1,10 +1,12 @@
-import {useEffect, useState} from "react";
-import {useQuery} from 'react-query';
+import {useEffect, useRef, useState} from "react";
 import {CSSTransition} from "react-transition-group";
+import {useQuery} from 'react-query';
 
 function View() {
 
     const [dataResults, setDataResults] = useState([]);
+    const [active, setActive] = useState(false);
+    const searchInput = useRef<HTMLInputElement>(null);
     const api = "http://localhost:8000/v1/careers";
     const endpoint = "http://localhost:8000/v1/careers/search/"
 
@@ -14,179 +16,120 @@ function View() {
         setDataResults(data);
     }
 
+    const {} = useQuery('results', fetchData);
+
     useEffect(() => {
-        fetchData().then(() => console.log("Data fetched"));
-    }, [])
+        const input = searchInput.current;
+        if (!input) return;
 
-    let {isLoading} = useQuery('results', () => {
-    }, {
-        enabled: false,
-        refetchOnWindowFocus: false,
-        cacheTime: 24 * 60 * 60 * 1000,
-        onSuccess: () => setDataResults(dataResults)
-    });
-
-    async function FetchSearch(searchValue: string, endpoint: string) {
-        if (searchValue.length > 0) {
-            const response = await fetch(endpoint);
-            const searchData = await response.json();
-            setDataResults(searchData); // set state of dataResults with the result of the search
-        }
-    }
-
-    function Header() {
-
-        const placeholders = [
-            "Search for a life changing opportunity [...]",
-            "Search for a career that will make you fulfilled [...]",
-            "Search for a career that will make you wealthy [...]",
-            "Search for a career that will make you happy [...]",
-            "Search for a career that will make you proud [...]",
-            "Search for a career that will make you successful [...]",
-        ]
-        const [placeholder, setPlaceholder] = useState(placeholders[0]);
-        const PLACEHOLDER_DELAY = 1000 * 30
-
-        function randomPlaceholder() {
-            return placeholders[Math.floor(Math.random() * placeholders.length)];
-        }
-
-        useEffect(() => {
-            setInterval(() => setPlaceholder(randomPlaceholder), PLACEHOLDER_DELAY)
-        })
-
-        function Search() {
-
-            function handleSearch() {
-                const search = document.getElementById("search-input") as HTMLInputElement;
-                const searchValue = search.value;
-                FetchSearch(searchValue, endpoint + searchValue).then(() => console.log("Search fetched"));
+        async function handler() {
+            const value = (input as HTMLInputElement)?.value;
+            if (value.length < 2 && !active) {
+                setDataResults([]);
+            } else if (value.length > 1) {
+                const response = await fetch(endpoint + value);
+                const data = await response.json();
+                await setDataResults(data);
+            } else {
+                setActive(true)
+                await fetchData().then();
             }
-
-            document.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") handleSearch();
-            });
-
-            return (
-                <div id={"search"}>
-                    <input
-                        type={"text"}
-                        placeholder={placeholder}
-                        id={"search-input"}
-                    />
-                    <button
-                        className={"header-buttons"}
-                        id={"search-button"}
-                        onClick={handleSearch}
-                    >
-                        <img src="https://img.icons8.com/ios-glyphs/24/F6BD60/search--v1.png" alt={"search"}/>
-                        Search
-                    </button>
-                    <button
-                        className={"header-buttons"}
-                        id={"reset-button"}
-                        onClick={fetchData}
-                    >
-                        <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png" alt={"reset"}/>
-                        Reset
-                    </button>
-                </div>
-            );
         }
 
-        function Loading() {
-            return (
-                <div id="view-header">
-                    <div id="view-header-wrapper">
-                        <div id={"left-side"}>
-                            <h3 id={"loading"}>{"Loading..."}</h3>
-                        </div>
-                        <div id={"right-side"}>
-                            <Search/>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
+        input.addEventListener("input", handler);
 
-        function Loaded() {
-            return <p>{dataResults.length} results</p>;
-        }
+        // Clean up
+        return () => {
+            input.removeEventListener("input", handler);
+        };
+    }, []);
 
-        return (
-            <div id={"view-header"}>
-                <div id={"view-header-wrapper"}>
-                    <div id={"left-side"}>
-                        {isLoading ? <Loading/> : <Loaded/>}
-                    </div>
-                    <div id={"right-side"}>
-                        <Search/>
-                    </div>
-                </div>
-            </div>
-        );
+
+    const placeholders = [
+        "Search for a life changing opportunity [...]",
+        "Search for a career that will make you fulfilled [...]",
+        "Search for a career that will make you wealthy [...]",
+        "Search for a career that will make you happy [...]",
+        "Search for a career that will make you proud [...]",
+        "Search for a career that will make you successful [...]",
+    ]
+
+    const [placeholder, setPlaceholder] = useState(placeholders[0]);
+    const PLACEHOLDER_DELAY = 1000 * 3
+
+    function randomPlaceholder() {
+        setPlaceholder(placeholders[Math.floor(Math.random() * placeholders.length)]);
     }
 
-    function Table() {
-
-        function THead() {
-            return (
-                <thead>
-                <tr>
-                    <th className={"applied"}>Applied</th>
-                    <th className={"title"}>Title</th>
-                    <th className={"location"}>Location</th>
-                    <th className={"employer"}>Employer</th>
-                    <th className={"description"}>Description</th>
-                    <th className={"url"}>URL</th>
-                </tr>
-                </thead>
-            );
+    useEffect(() => {
+        const changePlaceholder = setInterval(() => {
+            randomPlaceholder();
+        }, PLACEHOLDER_DELAY)
+        return () => {
+            clearInterval(changePlaceholder);
         }
-
-        function TBody() {
-            return (
-                <tbody>
-                {dataResults.map((item: any, index: number) => (
-                    <tr key={index}>
-                        <td className={"applied"}>{item["applied"]}</td>
-                        <td className={"title"}>{item["title"]}</td>
-                        <td className={"location"}>{item["location"]}</td>
-                        <td className={"employer"}>{item["employer"]}</td>
-                        <td className={"description"}>{item["description"]}</td>
-                        <td className={"url"}>
-                            <img
-                                id={"copy" + index}
-                                src="https://img.icons8.com/material-rounded/16/333333/copy.png"
-                                alt={"copy"}
-                                onClick={() => {
-                                    navigator.clipboard.writeText(item["url"]);
-                                    const img = document.getElementById("copy" + index) as HTMLImageElement;
-                                    img.src = "https://img.icons8.com/material/16/333333/checkmark--v1.png"
-                                }}
-                            />
-                            {item["url"]}
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            );
-        }
-
-        return (
-            <table id={"view-table"}>
-                <THead/>
-                <TBody/>
-            </table>
-        );
-    }
+    })
 
     return (
         <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
             <div id={"view-content"}>
                 <div id={"view-content-wrapper"}>
-                    <Header/>
-                    {isLoading ? <h3>{"Loading..."}</h3> : <Table/>}
+                    <div id={"view-header"}>
+                        <div id={"view-header-wrapper"}>
+                            <input
+                                type={"text"}
+                                placeholder={placeholder}
+                                id={"search-input"}
+                                ref={searchInput}
+                            />
+                            <p>{dataResults.length} results</p>
+                            <button
+                                className={"header-buttons"}
+                                id={"reset-button"}
+                                onClick={fetchData}
+                            >
+                                <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png"
+                                     alt={"reset"}/>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    <table id={"view-table"}>
+                        <thead>
+                        <tr>
+                            <th className={"applied"}>Applied</th>
+                            <th className={"title"}>Title</th>
+                            <th className={"location"}>Location</th>
+                            <th className={"employer"}>Employer</th>
+                            <th className={"description"}>Description</th>
+                            <th className={"url"}>URL</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {dataResults.map((item: any, index: number) => (
+                            <tr key={index}>
+                                <td className={"applied"}>{item["applied"]}</td>
+                                <td className={"title"}>{item["title"]}</td>
+                                <td className={"location"}>{item["location"]}</td>
+                                <td className={"employer"}>{item["employer"]}</td>
+                                <td className={"description"}>{item["description"]}</td>
+                                <td className={"url"}>
+                                    <img
+                                        id={"copy" + index}
+                                        src="https://img.icons8.com/material-rounded/16/333333/copy.png"
+                                        alt={"copy"}
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(item["url"]);
+                                            const img = document.getElementById("copy" + index) as HTMLImageElement;
+                                            img.src = "https://img.icons8.com/material/16/333333/checkmark--v1.png"
+                                        }}
+                                    />
+                                    {item["url"]}
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </CSSTransition>

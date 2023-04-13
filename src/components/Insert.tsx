@@ -67,7 +67,7 @@ function Insert() {
                 </div>
                 <div className="insight">
                     <img src="https://img.icons8.com/ios/24/333333/overview-pages-3.png" alt={"applications"}/>
-                    <h2>{dataResults.length} applications.</h2>
+                    <h2>{dataResults?.length} applications.</h2>
                 </div>
                 <div className="insight">
                     <img src="https://img.icons8.com/pastel-glyph/24/333333/graduation-cap--v3.png"
@@ -78,7 +78,7 @@ function Insert() {
                     <img
                         src="https://img.icons8.com/external-outlines-amoghdesign/24/333333/external-analysis-education-vol-01-outlines-amoghdesign.png"
                         alt={"ratio"}/>
-                    <h2>{Number(dataResults.length / gradDate.days_elapsed).toFixed(2)} applications per day.</h2>
+                    <h2>{Number(dataResults?.length / gradDate.days_elapsed).toFixed(2)} applications per day.</h2>
                 </div>
                 <div className="insight">
                     <iframe
@@ -179,6 +179,7 @@ function Insert() {
                     {input.map((input, index) => {
                         return (
                             <input
+                                key={index}
                                 className="input-field"
                                 value={inputValues[input.name as keyof typeof inputValues]}
                                 type={input.type}

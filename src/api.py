@@ -117,19 +117,32 @@ async def get_careers_by_query(query: str, response: Response):
     :param response: Response
     :return: dict
     """
-    set_headers(response)
-    data = {"careers": []}
-    for item in db.view_one(os.getenv("VIEW_ONE"), query):
-        data["careers"].append({
+
+    # set_headers(response)
+    data = db.view(os.getenv("VIEW_ALL"))
+    results = []
+    for item in data:
+        weight = 0
+        if query.lower() in item[3].lower():
+            weight += 5
+        if query.lower() in item[4].lower():
+            weight += 5
+        if query.lower() in item[5].strip().lower():
+            weight += 2
+        results.append({
             "id": item[0],
             "applied": item[1],
             "title": item[2],
             "location": item[3],
             "employer": item[4],
             "description": item[5],
-            "url": item[6]
+            "url": item[6],
+            "weight": weight
         })
-    return data["careers"]
+
+    results = [item for item in results if item["weight"] > 0]
+    results.sort(key=lambda x: x["weight"], reverse=True)
+    return results
 
 
 # /v1/careers/{employer}
