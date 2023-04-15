@@ -1,4 +1,3 @@
-import os
 import sqlite3
 
 
@@ -45,15 +44,6 @@ class Database:
         """
         with self.conn:
             return self.cursor.execute(query).fetchall()
-
-    def view_location(self, location: str) -> list:
-        """
-        Views all the data in the database
-        :param location: str
-        :return: list
-        """
-        with self.conn:
-            return self.cursor.execute(os.getenv('VIEW_LOCATION'), {'location': f'%{location}%'}).fetchall()
 
     def most_applied_location(self, query: str) -> list:
         """

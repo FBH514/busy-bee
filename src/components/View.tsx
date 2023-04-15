@@ -8,7 +8,7 @@ function View() {
     const [active, setActive] = useState(false);
     const searchInput = useRef<HTMLInputElement>(null);
     const api = "http://localhost:8000/v1/careers";
-    const endpoint = "http://localhost:8000/v1/careers/search/"
+    const ENDPOINT = "http://localhost:8000/v1/careers/search/"
 
     async function fetchData() {
         const response = await fetch(api);
@@ -27,7 +27,7 @@ function View() {
             if (value.length < 2 && !active) {
                 setDataResults([]);
             } else if (value.length > 1) {
-                const response = await fetch(endpoint + value);
+                const response = await fetch(ENDPOINT + value);
                 const data = await response.json();
                 await setDataResults(data);
             } else {
@@ -39,10 +39,8 @@ function View() {
         input.addEventListener("input", handler);
 
         // Clean up
-        return () => {
-            input.removeEventListener("input", handler);
-        };
-    }, []);
+        return () => input.removeEventListener("input", handler);
+    }, [active]);
 
 
     const placeholders = [

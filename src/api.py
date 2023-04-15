@@ -9,6 +9,7 @@ from starlette.responses import Response
 
 from database import Database
 
+load_dotenv()
 app = FastAPI()
 
 app.add_middleware(
@@ -19,21 +20,15 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization"],
 )
 
-load_dotenv()
-# db = Database('mock.db')
-db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
 
+MAX_AGE = 86400
 def set_headers(response: Response) -> None:
     """
     Sets the headers for the response.
     :param response: Response
     :return: None
     """
-    response.headers['Cache-Control'] = "public, max-age=86400"
-    response.headers['Expires'] = time.strftime(
-        '%a, %d %b %Y %H:%M:%S GMT',
-        time.gmtime(time.time() + 86400)
-    )
+    response.headers['Cache-Control'] = f"public, max-age={MAX_AGE}"
 
 
 # /v1/careers
@@ -46,6 +41,7 @@ async def get_careers(response: Response) -> list:
     """
     set_headers(response)
     data = {"careers": []}
+    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
     for item in db.select(os.getenv("VIEW_ALL")):
         data["careers"].append({
             "id": item[0],
@@ -60,75 +56,35 @@ async def get_careers(response: Response) -> list:
     return data["careers"]
 
 
-# /v1/careers/{title}
-@app.get("/v1/careers/{title}")
-async def get_careers_by_location(title: str, response: Response):
+# /v1/careers/remote
+@app.get(f"/v1/careers/remote")
+def get_remote_percentage(response: Response) -> float:
     """
-    Returns all the careers in the database.
-    :param title: str
+    Returns the percentage of remote work applications.
     :param response: Response
-    :return: dict
+    :return: float
     """
     set_headers(response)
-    data = {"careers": []}
-    for item in db.view_title(title):
-        data["careers"].append({
-            "id": item[0],
-            "applied": item[1],
-            "title": item[2],
-            "location": item[3],
-            "employer": item[4],
-            "description": item[5],
-            "url": item[6]
-        })
-    return data["careers"]
-
-
-# /v1/careers/{location}
-@app.get("/v1/careers/{location}")
-async def get_careers_by_location(location: str, response: Response):
-    """
-    Returns all the careers in the database.
-    :param location: str
-    :param response: Response
-    :return: dict
-    """
-    # set_headers(response)
-    data = {"careers": []}
-    for item in db.view_location(location):
-        data["careers"].append({
-            "id": item[0],
-            "applied": item[1],
-            "title": item[2],
-            "location": item[3],
-            "employer": item[4],
-            "description": item[5],
-            "url": item[6]
-        })
-    return data["careers"]
+    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
+    return db.select(os.getenv("REMOTE"))[0][0]
 
 
 # /v1/careers/search/{query}
 @app.get("/v1/careers/search/{query}")
-async def get_careers_by_query(query: str, response: Response):
+async def get_careers_by_query(query: str) -> list:
     """
     Returns all the careers in the database.
     :param query: str
-    :param response: Response
-    :return: dict
+    :return: list
     """
-
-    # set_headers(response)
+    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
     data = db.select(os.getenv("VIEW_ALL"))
     results = []
     for item in data:
         weight = 0
-        if query.lower() in item[3].lower():
-            weight += 5
-        if query.lower() in item[4].lower():
-            weight += 5
-        if query.lower() in item[5].strip().lower():
-            weight += 2
+        if query.lower() in item[3].lower(): weight += 5
+        if query.lower() in item[4].lower(): weight += 5
+        if query.lower() in item[5].strip().lower(): weight += 2
         results.append({
             "id": item[0],
             "applied": item[1],
@@ -145,30 +101,7 @@ async def get_careers_by_query(query: str, response: Response):
     return results
 
 
-# /v1/careers/{employer}
-@app.get("/v1/careers/{employer}")
-async def get_careers_by_location(employer: str, response: Response):
-    """
-    Returns all the careers in the database.
-    :param employer: str
-    :param response: Response
-    :return: dict
-    """
-    set_headers(response)
-    data = {"careers": []}
-    for item in db.view_employer(employer):
-        data["careers"].append({
-            "id": item[0],
-            "applied": item[1],
-            "title": item[2],
-            "location": item[3],
-            "employer": item[4],
-            "description": item[5],
-            "url": item[6]
-        })
-    return data["careers"]
-
-
+# /v1/careers/data/locations
 @app.get("/v1/careers/data/locations")
 async def get_most_applied_locations(response: Response) -> dict:
     """
@@ -177,6 +110,7 @@ async def get_most_applied_locations(response: Response) -> dict:
     :return: dict
     """
     set_headers(response)
+    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
     result = db.most_applied_location(os.getenv("MOST_APPLIED_LOCATION"))
     return {"name": result[0][0], "value": result[0][1]}
 
@@ -204,6 +138,7 @@ async def create_career(request: Request) -> dict:
         'url': url
     }
     try:
+        db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
         db.insert(os.getenv("INSERT_INTO"), data)
         return {'status': "Success!"}
     except Exception as e:

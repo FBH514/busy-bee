@@ -1,30 +1,63 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {useQuery} from "react-query";
 import {CSSTransition} from "react-transition-group";
 
-function Insert() {
+interface Career {
+    id: number;
+    applied: string;
+    title: string;
+    location: string;
+    employer: string;
+    description: string;
+    url: string;
+}
 
-    const api = "http://localhost:8000/v1/careers/";
-    const locations = "http://localhost:8000/v1/careers/data/locations";
-    const inputRef = useRef<HTMLInputElement>(null);
+interface Location {
+    name: string;
+    value: number;
+}
 
-    function Header() {
+interface InputProps {
+    name: string;
+    type: string;
+    placeholder: string;
+}
 
-        async function FetchResults() {
-            const response = await fetch(api);
+interface Certification {
+    elapsed: number;
+    rounded: number;
+}
+
+function Insert(): JSX.Element {
+
+    const YOUR_GRADUATION: string = "2022-12-14"
+    const ENDPOINT: string = "http://localhost:8000/v1/careers/";
+    const remote: string = "http://localhost:8000/v1/careers/remote";
+    const locations: string = "http://localhost:8000/v1/careers/data/locations";
+
+    function Header(): JSX.Element {
+
+        async function getResults(): Promise<Career[] | undefined> {
+            const response = await fetch(ENDPOINT);
             return await response.json();
         }
 
-        async function FetchLocations() {
+        async function getLocations(): Promise<Location> {
             const response = await fetch(locations);
             return await response.json();
         }
 
-        const caching = {cacheTime: 24 * 60 * 60 * 1000};
-        const {isLoading: isLoadingCareers, data: dataResults} = useQuery('results', FetchResults, caching)
-        const {isLoading: isLoadingLocations, data: dataLocations} = useQuery('locations', FetchLocations, caching);
+        async function getRemote(): Promise<number> {
+            const response = await fetch(remote);
+            return await response.json();
+        }
 
-        if (isLoadingCareers || isLoadingLocations) {
+        const CACHE = {cacheTime: 24 * 60 * 60 * 1000};
+        const {isLoading: isLoadingCareers, data: dataResults} = useQuery('results', getResults, CACHE)
+        const {isLoading: isLoadingLocations, data: dataLocations} = useQuery('locations', getLocations, CACHE);
+        const {isLoading: isLoadingRemote, data: dataRemote} = useQuery('remote', getRemote, CACHE);
+
+        if (isLoadingCareers || isLoadingLocations || isLoadingRemote) {
             return (
                 <div id={"insert-header"}>
                     <div id={"insert-header-wrapper"}>
@@ -34,7 +67,7 @@ function Insert() {
             );
         }
 
-        function getCurrentDate() {
+        function getCurrentDate(): string {
             const date = new Date();
             return date.toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -43,57 +76,47 @@ function Insert() {
             });
         }
 
-        function completedCertification(gradDate: string) {
+        function completedCertification(gradDate: string): Certification {
             const date = new Date();
             const targetDate = new Date(gradDate);
             const timeElapsed = date.getTime() - targetDate.getTime();
             const daysElapsed = timeElapsed / (1000 * 60 * 60 * 24);
             const roundedDaysElapsed = Number(daysElapsed.toFixed(2));
-            return {"days_elapsed": daysElapsed, "rounded_days_elapsed": roundedDaysElapsed};
+            return {elapsed: daysElapsed, rounded: roundedDaysElapsed};
         }
 
-        const gradDate = completedCertification("2022-12-14")
-        const currentDate = getCurrentDate()
+        const gradDate: Certification = completedCertification(YOUR_GRADUATION);
+        const currentDate: string = getCurrentDate();
+
+        function Insight(props: {title: string, img: {link: string, alt: string}}): JSX.Element {
+            return (
+                <div className="insight">
+                    <img src={props.img.link} alt={props.img.alt}/>
+                    <h2>{props.title}</h2>
+                </div>
+            );
+        }
+
+        const CALENDAR: string = "https://img.icons8.com/fluency-systems-regular/24/333333/tear-off-calendar.png";
+        const MARKER: string = "https://img.icons8.com/ios/24/333333/place-marker--v1.png";
+        const APPLICATIONS: string = "https://img.icons8.com/ios/24/333333/overview-pages-3.png";
+        const GRADUATION: string = "https://img.icons8.com/pastel-glyph/24/333333/graduation-cap--v3.png";
+        const RATIO: string = "https://img.icons8.com/external-outlines-amoghdesign/24/333333/external-analysis-education-vol-01-outlines-amoghdesign.png";
+        const TROPICS: string = "https://img.icons8.com/ios/24/333333/tropics.png";
 
         return (
             <div id={"insert-header"}>
-                <div className="insight">
-                    <img src="https://img.icons8.com/fluency-systems-regular/24/333333/tear-off-calendar.png"
-                         alt={"calender"}/>
-                    <h2 id={"insert-header-title"}>{currentDate}</h2>
-                </div>
-                <div className="insight">
-                    <img src="https://img.icons8.com/ios/24/333333/place-marker--v1.png" alt={"location"}/>
-                    <h2>Most applied: {dataLocations.name}, {dataLocations.value}</h2>
-                </div>
-                <div className="insight">
-                    <img src="https://img.icons8.com/ios/24/333333/overview-pages-3.png" alt={"applications"}/>
-                    <h2>{dataResults?.length} applications.</h2>
-                </div>
-                <div className="insight">
-                    <img src="https://img.icons8.com/pastel-glyph/24/333333/graduation-cap--v3.png"
-                         alt={"graduation"}/>
-                    <h2>{gradDate.rounded_days_elapsed} days since graduation.</h2>
-                </div>
-                <div className="insight">
-                    <img
-                        src="https://img.icons8.com/external-outlines-amoghdesign/24/333333/external-analysis-education-vol-01-outlines-amoghdesign.png"
-                        alt={"ratio"}/>
-                    <h2>{Number(dataResults?.length / gradDate.days_elapsed).toFixed(2)} applications per day.</h2>
-                </div>
-                <div className="insight">
-                    <iframe
-                        title={"dot"}
-                        src="https://global-mind.org/gcpdot/gcp.html"
-                        height="24" width="24" scrolling="no" frameBorder="0">
-                    </iframe>
-                    <h2>{"Global Consciousness Project"}</h2>
-                </div>
+                <Insight title={currentDate} img={{link: CALENDAR, alt: "calendar"}}/>
+                <Insight title={`Most Applied: ${dataLocations?.name}, ${dataLocations?.value}`} img={{link: MARKER, alt: "marker"}}/>
+                <Insight title={`${dataResults?.length} applications`} img={{link: APPLICATIONS, alt: "applications"}}/>
+                <Insight title={`${gradDate.rounded} days since graduation`} img={{link: GRADUATION, alt: "graduation"}}/>
+                <Insight title={`${Number(dataResults && dataResults?.length / gradDate.elapsed).toFixed(2)} applications per day`} img={{link: RATIO, alt: "ratio"}}/>
+                <Insight title={`${Number(dataRemote).toFixed(2)}% remote`} img={{link: TROPICS, alt: "tropics"}}/>
             </div>
         );
     }
 
-    const Message = () => {
+    function Message(): JSX.Element {
         return (
             <div className={"message"}>
                 <p id={"insert-message"}></p>
@@ -101,24 +124,24 @@ function Insert() {
         );
     }
 
-    const ChangeMessage = (message: string) => {
-        const mess = document.getElementById("insert-message");
+    function changeMessage(message: string): void {
+        const mess = document.getElementById("insert-message") as HTMLDivElement;
         mess!.innerHTML = message;
     }
 
-    const ActiveMessage = (bool = false) => {
+    function activeMessage(bool = false): void {
         const message = document.getElementsByClassName("message")[0];
         if (!bool) message.classList.remove("active");
         else {
             message.classList.add("active");
             setTimeout(() => {
                 message.classList.remove("active");
-                ChangeMessage("");
+                changeMessage("");
             }, 2000);
         }
     }
 
-    function InputFields() {
+    function InputFields(): JSX.Element {
         const [lock, setLock] = useState(true);
         const [inputValues, setInputValues] = useState({
             title: "",
@@ -128,7 +151,7 @@ function Insert() {
             url: ""
         });
 
-        const input = [
+        const input: InputProps[] = [
             {name: "title", type: "text", placeholder: "Title"},
             {name: "location", type: "text", placeholder: "Location"},
             {name: "employer", type: "text", placeholder: "Employer"},
@@ -144,7 +167,7 @@ function Insert() {
             }
         }, [inputValues]);
 
-        function POSTData(data: any) {
+        function POSTData(data: any): void {
             fetch('http://localhost:8000/v1/careers/', {
                 method: 'POST',
                 headers: {
@@ -159,7 +182,7 @@ function Insert() {
         }
 
         useEffect(() => {
-            function HandleClick(e: any) {
+            function HandleClick(e: any): void {
                 if (e.key === "Enter") {
                     const submit = document.getElementById("insert-submit");
                     if (submit && !lock) submit.click();
@@ -170,14 +193,35 @@ function Insert() {
             return () => document.removeEventListener('keydown', HandleClick); // clean up
         });
 
-        function resetInputValues() {
+        function resetInputValues(): void {
             setInputValues({title: "", location: "", employer: "", description: "", url: ""});
+        }
+
+        function handleSubmit(values: any): void {
+            POSTData(values);
+            changeMessage("Successfully added a new career!");
+            activeMessage(true);
+        }
+
+        function SubmitIcon(): JSX.Element {
+            const locked = <img src="https://img.icons8.com/ios-glyphs/24/F6BD60/lock--v1.png" alt={"padlock"}/>;
+            const unlocked = <img src="https://img.icons8.com/material/24/F6BD60/checkmark--v1.png" alt={"unlock"}/>
+            return lock ? locked : unlocked;
+        }
+
+        function ResetButton(): JSX.Element {
+            return (
+                <button className="buttons" id={"insert-reset"} onClick={resetInputValues}>
+                    <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png" alt={"reset"}/>
+                    Reset
+                </button>
+            );
         }
 
         return (
             <div id="insert-input-fields">
                 <div id="insert-input-fields-wrapper">
-                    {input.map((input, index) => {
+                    {input?.map((input, index) => {
                         return (
                             <input
                                 key={index}
@@ -192,28 +236,15 @@ function Insert() {
                     })}
                 </div>
                 <div id={"insert-buttons"}>
-                    <button
-                        className="buttons"
-                        id={"insert-reset"}
-                        onClick={resetInputValues}
-                    >
-                        <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png" alt={"reset"}/>
-                        Reset
-                    </button>
+                    <ResetButton/>
                     <button
                         className="buttons"
                         id={"insert-submit"}
                         type="submit"
                         disabled={lock}
-                        onClick={() => {
-                            POSTData(inputValues);
-                            ChangeMessage("Successfully added a new career!");
-                            ActiveMessage(true);
-                        }}
+                        onClick={() => handleSubmit(inputValues)}
                     >
-                        {lock ?
-                            <img src="https://img.icons8.com/ios-glyphs/24/F6BD60/lock--v1.png" alt={"padlock"}/> :
-                            <img src="https://img.icons8.com/material/24/F6BD60/checkmark--v1.png" alt={"unlock"}/>}
+                        <SubmitIcon/>
                     </button>
                 </div>
             </div>
