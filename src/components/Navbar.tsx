@@ -1,13 +1,18 @@
 import React from "react";
 import {Link, useLocation} from "react-router-dom";
 
-function Navbar() {
+interface NavItemProps {
+    name: string;
+    link: string;
+}
 
-    const location = useLocation();
+function Navbar(): JSX.Element {
 
-    function HandleMobileMenu() {
-        const active = "navbar-list-active";
-        const button = document.querySelector(".navbar-list");
+    const location: any = useLocation();
+
+    function HandleMobileMenu(): void {
+        const active: string = "navbar-list-active";
+        const button = document.querySelector(".navbar-list") as HTMLUListElement;
         if (button!.classList.contains(active)) {
             button!.classList.remove(active);
         }
@@ -16,25 +21,24 @@ function Navbar() {
         }
     }
 
-    function List() {
+    const items: NavItemProps[] = [
+        {name: 'Insert', link: '/'},
+        {name: 'View', link: '/view'},
+        {name: 'Resources', link: '/resources'}
+    ];
 
-        const items = [
-            {name: 'Insert', link: '/'},
-            {name: 'View', link: '/view'},
-            {name: 'Resources', link: '/resources'}
-        ];
+    function List(props: {arr: NavItemProps[]}): JSX.Element {
+
+        function handleClick(): void {
+            if (window.innerWidth < 992) HandleMobileMenu();
+        }
 
         return (
             <div id="navbar-list">
                  <ul id={"navbar-list-wrapper"} className={"navbar-list"}>
-                    {items.map((item, index) => {
+                    {props.arr.map((item, index) => {
                         return (
-                            <li
-                                key={index}
-                                onClick={() => {
-                                    if (window.innerWidth < 992) HandleMobileMenu()
-                                }}
-                            >
+                            <li key={index} onClick={handleClick}>
                                 <Link
                                     className={location.pathname === item.link ? "nav-item-active" : "nav-item"}
                                     to={item.link}
@@ -48,19 +52,15 @@ function Navbar() {
         )
     }
 
-    function Logo() {
+    function Logo(): JSX.Element {
 
-         function Button() {
+        const LOGO_IMG: string = "https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/48/333333/external-bee-nature-resource-vitaliy-gorbachev-fill-vitaly-gorbachev.png";
+        const BURGER: string = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/333333/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png";
+
+         function Button(): JSX.Element {
             return (
-                <button
-                    id={"mobile-menu"}
-                    className={"mobile-menu"}
-                    onClick={HandleMobileMenu}
-                >
-                    <img
-                        src="https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/333333/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png"
-                        alt={"hamburger-menu"}
-                    />
+                <button id={"mobile-menu"} className={"mobile-menu"} onClick={HandleMobileMenu}>
+                    <img src={BURGER} alt={"hamburger-menu"}/>
                 </button>
             );
         }
@@ -70,7 +70,7 @@ function Navbar() {
                 <div id={"navbar-logo-wrapper"}>
                     <Button/>
                     <Link to={"/"}>Busy Bee</Link>
-                    <img src="https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/48/333333/external-bee-nature-resource-vitaliy-gorbachev-fill-vitaly-gorbachev.png" alt="bee"/>
+                    <img src={LOGO_IMG} alt="bee"/>
                 </div>
             </div>
         );
@@ -79,7 +79,7 @@ function Navbar() {
     return (
         <nav id={"navbar"}>
             <div id={"navbar-wrapper"}>
-                <List/>
+                <List arr={items}/>
                 <Logo/>
             </div>
         </nav>

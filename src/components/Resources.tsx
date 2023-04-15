@@ -1,8 +1,15 @@
 import {CSSTransition} from "react-transition-group";
 
-function Resources() {
+interface ResourceProps {
+    title: string;
+    link: string;
+    image?: string;
+}
 
-    const resources = [
+
+function Resources(): JSX.Element {
+
+    const resources: ResourceProps[] = [
         {title: "Glassdoor", link: "https://glassdoor.ca", image: "https://img.icons8.com/external-tal-revivo-bold-tal-revivo/24/333333/external-glassdoor-a-website-where-current-and-former-employees-anonymously-review-companies-logo-bold-tal-revivo.png"},
         {title: "LinkedIn", link: "https://linkedin.com/", image: "https://img.icons8.com/ios-filled/24/333333/linkedin.png"},
         {title: "Indeed", link: "https://indeed.ca/", image: "https://img.icons8.com/windows/24/333333/indeed.png"},
@@ -12,20 +19,17 @@ function Resources() {
         {title: "ITjobs.ca", link: "https://www.itjobs.ca/en/"}
     ]
 
+    const FALLBACK_IMAGE: string = "https://img.icons8.com/ios-glyphs/24/333333/search--v1.png";
+
     return (
         <CSSTransition in={true} appear={true} timeout={1000} classNames="fade">
             <div id={"resources-content"}>
                 <div id={"resources-content-wrapper"}>
                     {resources.map((item, index) => {
                         return (
-                            <a
-                                href={item.link}
-                                key={index}
-                                rel={"noreferrer"}
-                                target={"_blank"}
-                            >
+                            <a href={item.link} key={index} rel={"noreferrer"} target={"_blank"}>
                                 {item.title}
-                                <img src={item.image ? item.image : "https://img.icons8.com/ios-glyphs/24/333333/search--v1.png"} alt={item.title}/>
+                                <img src={item.image ? item.image : FALLBACK_IMAGE} alt={item.title}/>
                             </a>
                         )
                     })}

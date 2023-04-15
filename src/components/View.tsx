@@ -2,16 +2,26 @@ import {useEffect, useRef, useState} from "react";
 import {CSSTransition} from "react-transition-group";
 import {useQuery} from 'react-query';
 
-function View() {
+interface DataProps {
+    id: number;
+    applied: string;
+    title: string;
+    location: string;
+    employer: string;
+    description: string;
+    url: string;
+}
 
-    const [dataResults, setDataResults] = useState([]);
-    const [active, setActive] = useState(false);
+function View(): JSX.Element {
+
+    const [dataResults, setDataResults] = useState<DataProps[]>([]);
+    const [active, setActive] = useState<boolean>(false);
     const searchInput = useRef<HTMLInputElement>(null);
-    const api = "http://localhost:8000/v1/careers";
-    const ENDPOINT = "http://localhost:8000/v1/careers/search/"
+    const ENDPOINT: string = "http://localhost:8000/v1/careers";
+    const search: string = "http://localhost:8000/v1/careers/search/"
 
-    async function fetchData() {
-        const response = await fetch(api);
+    async function fetchData(): Promise<DataProps[] | void> {
+        const response = await fetch(ENDPOINT);
         const data = await response.json();
         setDataResults(data);
     }
@@ -22,12 +32,12 @@ function View() {
         const input = searchInput.current;
         if (!input) return;
 
-        async function handler() {
+        async function handler(): Promise<DataProps[] | void> {
             const value = (input as HTMLInputElement)?.value;
             if (value.length < 2 && !active) {
                 setDataResults([]);
             } else if (value.length > 1) {
-                const response = await fetch(ENDPOINT + value);
+                const response = await fetch(search + value);
                 const data = await response.json();
                 await setDataResults(data);
             } else {
@@ -43,7 +53,7 @@ function View() {
     }, [active]);
 
 
-    const placeholders = [
+    const placeholders: string[] = [
         "Search for a life changing opportunity [...]",
         "Search for a career that will make you fulfilled [...]",
         "Search for a career that will make you wealthy [...]",
@@ -52,21 +62,29 @@ function View() {
         "Search for a career that will make you successful [...]",
     ]
 
-    const [placeholder, setPlaceholder] = useState(placeholders[0]);
-    const PLACEHOLDER_DELAY = 1000 * 3
+    const [placeholder, setPlaceholder] = useState<string>(placeholders[0]);
+    const PLACEHOLDER_DELAY: number = 1000 * 3
 
-    function randomPlaceholder() {
+    function randomPlaceholder(): void {
         setPlaceholder(placeholders[Math.floor(Math.random() * placeholders.length)]);
     }
 
     useEffect(() => {
-        const changePlaceholder = setInterval(() => {
+        const changePlaceholder: any = setInterval(() => {
             randomPlaceholder();
         }, PLACEHOLDER_DELAY)
-        return () => {
-            clearInterval(changePlaceholder);
-        }
+
+        // clean up
+        return () => clearInterval(changePlaceholder);
     })
+
+    function handleCopy(item: DataProps, index: number): void {
+        navigator.clipboard.writeText(item["url"]);
+        const img = document.getElementById("copy" + index) as HTMLImageElement;
+        img.src = "https://img.icons8.com/material/16/333333/checkmark--v1.png"
+    }
+
+    const APPOINTMENT_IMG: string = "https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png";
 
     return (
         <CSSTransition in={true} appear={true} timeout={500} classNames="fade">
@@ -81,14 +99,8 @@ function View() {
                                 ref={searchInput}
                             />
                             <p>{dataResults.length} results</p>
-                            <button
-                                className={"header-buttons"}
-                                id={"reset-button"}
-                                onClick={fetchData}
-                            >
-                                <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png"
-                                     alt={"reset"}/>
-                                Reset
+                            <button className={"header-buttons"} id={"reset-button"} onClick={fetchData}>
+                                <img src={APPOINTMENT_IMG} alt={"reset"}/>{"Reset"}
                             </button>
                         </div>
                     </div>
@@ -104,7 +116,7 @@ function View() {
                         </tr>
                         </thead>
                         <tbody>
-                        {dataResults.map((item: any, index: number) => (
+                        {dataResults?.map((item: DataProps, index: number) => (
                             <tr key={index}>
                                 <td className={"applied"}>{item["applied"]}</td>
                                 <td className={"title"}>{item["title"]}</td>
@@ -112,15 +124,8 @@ function View() {
                                 <td className={"employer"}>{item["employer"]}</td>
                                 <td className={"description"}>{item["description"]}</td>
                                 <td className={"url"}>
-                                    <img
-                                        id={"copy" + index}
-                                        src="https://img.icons8.com/material-rounded/16/333333/copy.png"
-                                        alt={"copy"}
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(item["url"]);
-                                            const img = document.getElementById("copy" + index) as HTMLImageElement;
-                                            img.src = "https://img.icons8.com/material/16/333333/checkmark--v1.png"
-                                        }}
+                                    <img id={"copy" + index} src="https://img.icons8.com/material-rounded/16/333333/copy.png" alt={"copy"}
+                                        onClick={() => handleCopy(item, index)}
                                     />
                                     {item["url"]}
                                 </td>
