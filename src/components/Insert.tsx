@@ -88,7 +88,7 @@ function Insert(): JSX.Element {
         const gradDate: Certification = completedCertification(YOUR_GRADUATION);
         const currentDate: string = getCurrentDate();
 
-        function Insight(props: {title: string, img: {link: string, alt: string}}): JSX.Element {
+        function Insight(props: { title: string, img: { link: string, alt: string } }): JSX.Element {
             return (
                 <div className="insight">
                     <img src={props.img.link} alt={props.img.alt}/>
@@ -107,10 +107,14 @@ function Insert(): JSX.Element {
         return (
             <div id={"insert-header"}>
                 <Insight title={currentDate} img={{link: CALENDAR, alt: "calendar"}}/>
-                <Insight title={`Most Applied: ${dataLocations?.name}, ${dataLocations?.value}`} img={{link: MARKER, alt: "marker"}}/>
+                <Insight title={`Most Applied: ${dataLocations?.name}, ${dataLocations?.value}`}
+                         img={{link: MARKER, alt: "marker"}}/>
                 <Insight title={`${dataResults?.length} applications`} img={{link: APPLICATIONS, alt: "applications"}}/>
-                <Insight title={`${gradDate.rounded} days since graduation`} img={{link: GRADUATION, alt: "graduation"}}/>
-                <Insight title={`${Number(dataResults && dataResults?.length / gradDate.elapsed).toFixed(2)} applications per day`} img={{link: RATIO, alt: "ratio"}}/>
+                <Insight title={`${gradDate.rounded} days since graduation`}
+                         img={{link: GRADUATION, alt: "graduation"}}/>
+                <Insight
+                    title={`${Number(dataResults && dataResults?.length / gradDate.elapsed).toFixed(2)} applications per day`}
+                    img={{link: RATIO, alt: "ratio"}}/>
                 <Insight title={`${Number(dataRemote).toFixed(2)}% remote`} img={{link: TROPICS, alt: "tropics"}}/>
             </div>
         );
@@ -210,31 +214,30 @@ function Insert(): JSX.Element {
         }
 
         function ResetButton(): JSX.Element {
+            const ICON: string = "https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png";
             return (
                 <button className="buttons" id={"insert-reset"} onClick={resetInputValues}>
-                    <img src="https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png" alt={"reset"}/>
-                    Reset
+                    <img src={ICON} alt={"reset"}/>
+                    {"Reset"}
                 </button>
             );
         }
 
         return (
             <div id="insert-input-fields">
-                <div id="insert-input-fields-wrapper">
-                    {input?.map((input, index) => {
-                        return (
-                            <input
-                                key={index}
-                                className="input-field"
-                                value={inputValues[input.name as keyof typeof inputValues]}
-                                type={input.type}
-                                name={input.name}
-                                placeholder={input.placeholder}
-                                onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
-                            />
-                        )
-                    })}
-                </div>
+                {input?.map((input, index) => {
+                    return (
+                        <input
+                            key={index}
+                            className="input-field"
+                            value={inputValues[input.name as keyof typeof inputValues]}
+                            type={input.type}
+                            name={input.name}
+                            placeholder={input.placeholder}
+                            onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
+                        />
+                    )
+                })}
                 <div id={"insert-buttons"}>
                     <ResetButton/>
                     <button
