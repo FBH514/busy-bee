@@ -34,15 +34,13 @@ function View(): JSX.Element {
 
         async function handler(): Promise<DataProps[] | void> {
             const value = (input as HTMLInputElement)?.value;
-            if (value.length < 2 && !active) {
-                setDataResults([]);
-            } else if (value.length > 1) {
+            if (value.length < 2) {
+                await fetchData().then();
+            }
+            else if (value.length > 1) {
                 const response = await fetch(search + value);
                 const data = await response.json();
                 await setDataResults(data);
-            } else {
-                setActive(true)
-                await fetchData().then();
             }
         }
 
