@@ -97,12 +97,14 @@ function Insert(): JSX.Element {
             );
         }
 
-        const CALENDAR: string = "https://img.icons8.com/fluency-systems-regular/24/333333/tear-off-calendar.png";
-        const MARKER: string = "https://img.icons8.com/ios/24/333333/place-marker--v1.png";
-        const APPLICATIONS: string = "https://img.icons8.com/ios/24/333333/overview-pages-3.png";
-        const GRADUATION: string = "https://img.icons8.com/pastel-glyph/24/333333/graduation-cap--v3.png";
-        const RATIO: string = "https://img.icons8.com/external-outlines-amoghdesign/24/333333/external-analysis-education-vol-01-outlines-amoghdesign.png";
-        const TROPICS: string = "https://img.icons8.com/ios/24/333333/tropics.png";
+        const COLOR: string = "F6BD60";
+        const SIZE: string = "24";
+        const CALENDAR: string = `https://img.icons8.com/ios/${SIZE}/${COLOR}/clock--v1.png`;
+        const MARKER: string = `https://img.icons8.com/ios/${SIZE}/${COLOR}/place-marker--v1.png`;
+        const APPLICATIONS: string = `https://img.icons8.com/ios/${SIZE}/${COLOR}/overview-pages-3.png`;
+        const GRADUATION: string = `https://img.icons8.com/pastel-glyph/${SIZE}/${COLOR}/graduation-cap--v3.png`;
+        const RATIO: string = `https://img.icons8.com/external-outlines-amoghdesign/${SIZE}/${COLOR}/external-analysis-education-vol-01-outlines-amoghdesign.png`;
+        const REMOTE: string = `https://img.icons8.com/ios/${COLOR}/${SIZE}/imac.png`;
 
         return (
             <div id={"insert-header"}>
@@ -115,7 +117,7 @@ function Insert(): JSX.Element {
                 <Insight
                     title={`${Number(dataResults && dataResults?.length / gradDate.elapsed).toFixed(2)} applications per day`}
                     img={{link: RATIO, alt: "ratio"}}/>
-                <Insight title={`${Number(dataRemote).toFixed(2)}% remote`} img={{link: TROPICS, alt: "tropics"}}/>
+                <Insight title={`${Number(dataRemote).toFixed(2)}% remote`} img={{link: REMOTE, alt: "REMOTE"}}/>
             </div>
         );
     }
