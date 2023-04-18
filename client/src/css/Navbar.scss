@@ -55,7 +55,7 @@
 
   li, a {
     text-decoration: none;
-    color: rgba(var(--black), 0.2);
+    color: rgba(var(--black), 0.3);
     cursor: pointer;
 
     @media screen and (max-width: 991px) {
@@ -103,7 +103,7 @@
     color: rgba(var(--black));
     cursor: pointer;
     transition: 0.3s all ease-in-out;
-    font-family: 'Gloria Hallelujah', cursive;
+    //font-family: 'Gloria Hallelujah', cursive;
 
     @media screen and (max-width: 991px) {
       font-size: 1.5rem;
