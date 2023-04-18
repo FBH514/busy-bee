@@ -15,10 +15,9 @@ interface DataProps {
 function View(): JSX.Element {
 
     const [dataResults, setDataResults] = useState<DataProps[]>([]);
-    const [active, setActive] = useState<boolean>(false);
     const searchInput = useRef<HTMLInputElement>(null);
     const ENDPOINT: string = "http://localhost:8000/v1/careers";
-    const search: string = "http://localhost:8000/v1/careers/search/"
+    const search: string = "http://localhost:8000/v1/careers/search/";
 
     async function fetchData(): Promise<DataProps[] | void> {
         const response = await fetch(ENDPOINT);
@@ -26,7 +25,7 @@ function View(): JSX.Element {
         setDataResults(data);
     }
 
-    const {} = useQuery('results', fetchData);
+    useQuery('results', fetchData);
 
     useEffect(() => {
         const input = searchInput.current;
@@ -48,7 +47,7 @@ function View(): JSX.Element {
 
         // Clean up
         return () => input.removeEventListener("input", handler);
-    }, [active]);
+    });
 
 
     const placeholders: string[] = [
