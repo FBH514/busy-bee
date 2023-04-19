@@ -1,29 +1,61 @@
+import os
 import sqlite3
 
 
 class Database:
+    """Defines a Singleton SQLite3 Database with standard CRUD operations"""
 
     def __init__(self, db_name: str, query: str) -> None:
         """
-        Constructor for the Database class
+        Constructor method for the Database class
         :param db_name: str
         :param query: str
-        :return: None
         """
-        if not db_name.endswith('.db'):
-            raise ValueError('Database name must end with .db')
+        if not db_name.endswith(f".db"):
+            raise ValueError(f"Database name must end with .db")
         self.db_name = db_name
         self.conn = sqlite3.connect(self.db_name)
         self.cursor = self.conn.cursor()
         self.cursor.execute(query)
         self.conn.commit()
 
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the Database object to be used for display
+        :return: str
+        """
+        return f"{self.select(os.getenv('COUNT'))} items in the database."
+
     def __repr__(self) -> str:
         """
-        Returns a string representation of the object
+        Returns a string representation of the Database object to be used for debugging
         :return: None
         """
         return str(vars(self))
+
+    def __enter__(self) -> 'Database':
+        """
+        Enters the runtime context related to this object
+        :return: Database
+        """
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """
+        Exits the runtime context related to this object
+        :param exc_type:
+        :param exc_val:
+        :param exc_tb:
+        :return: None
+        """
+        self.conn.close()
+
+    def commit(self) -> None:
+        """
+        Commits changes to the database
+        :return: None
+        """
+        self.conn.commit()
 
     def insert(self, query: str, data: dict) -> None:
         """
@@ -34,22 +66,13 @@ class Database:
         """
         with self.conn:
             self.cursor.execute(query,data)
-        self.conn.commit()
+        self.commit()
 
     def select(self, query: str) -> list:
         """
         Returns all rows in the database
         :param query: str
         :return: None
-        """
-        with self.conn:
-            return self.cursor.execute(query).fetchall()
-
-    def most_applied_location(self, query: str) -> list:
-        """
-        Views the most applied location.
-        :param query: str
-        :return: list
         """
         with self.conn:
             return self.cursor.execute(query).fetchall()
@@ -61,7 +84,9 @@ class Database:
         :param data: dict
         :return: None
         """
-        pass
+        with self.conn:
+            self.cursor.execute(query)
+        self.commit()
 
     def delete(self, query: str, data: dict) -> None:
         """
@@ -70,4 +95,6 @@ class Database:
         :param data: dict
         :return: None
         """
-        pass
+        with self.conn:
+            self.cursor.execute(query)
+        self.commit()
