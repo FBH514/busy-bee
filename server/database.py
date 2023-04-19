@@ -40,12 +40,12 @@ class Database:
         """
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    def __exit__(self, exc_type: Exception, exc_val: Exception, exc_tb: Exception) -> None:
         """
         Exits the runtime context related to this object
-        :param exc_type:
-        :param exc_val:
-        :param exc_tb:
+        :param exc_type: Exception
+        :param exc_val: Exception
+        :param exc_tb: Exception
         :return: None
         """
         self.conn.close()
@@ -85,7 +85,7 @@ class Database:
         :return: None
         """
         with self.conn:
-            self.cursor.execute(query)
+            self.cursor.execute(query, data)
         self.commit()
 
     def delete(self, query: str, data: dict) -> None:
@@ -96,5 +96,5 @@ class Database:
         :return: None
         """
         with self.conn:
-            self.cursor.execute(query)
+            self.cursor.execute(query, data)
         self.commit()
