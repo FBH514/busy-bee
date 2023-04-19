@@ -1,3 +1,4 @@
+import functools
 import os
 import time
 
@@ -10,7 +11,7 @@ from starlette.responses import Response
 from database import Database
 
 load_dotenv()
-app = FastAPI()
+app: FastAPI = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,42 +22,52 @@ app.add_middleware(
 )
 
 
-MAX_AGE = 86400
-def set_headers(response: Response) -> None:
+def cache(function: callable) -> callable:
     """
-    Sets the headers for the response.
-    :param response: Response
-    :return: None
+    Sets caching headers for the response.
+    :param function: callable
+    :return: callable
     """
-    response.headers['Cache-Control'] = f"public, max-age={MAX_AGE}"
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        response = args[0]
+        response.headers['Cache-Control'] = f"public, max-age={60 ** 2 * 24}"
+        return function(*args, **kwargs)
+    return wrapper
 
 
-# /v1/careers
+CAREER_KEYS: tuple = ("id", "applied", "title", "location", "employer", "description", "url")
+def list_of_dicts(iterable: list, keys: tuple = CAREER_KEYS) -> list[dict]:
+    """
+    Converts a list of tuples into a list of dictionaries.
+    :param iterable: iter
+    :param keys: list[str]
+    :return: list[dict]
+    """
+    data: list[dict] = []
+    for item in iterable:
+        new_dict = {keys[_]: item[_] for _ in range(len(keys))}
+        data.append(new_dict)
+    return data
+
+
+# GET /v1/careers
+@cache
 @app.get("/v1/careers")
-async def get_careers(response: Response) -> list:
+async def get_careers(response: Response) -> list[dict]:
     """
     Returns all the careers in the database.
     :param response: Response
     :return: list
     """
-    set_headers(response)
-    data = {"careers": []}
-    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
-    for item in db.select(os.getenv("VIEW_ALL")):
-        data["careers"].append({
-            "id": item[0],
-            "applied": item[1],
-            "title": item[2],
-            "location": item[3],
-            "employer": item[4],
-            "description": item[5],
-            "url": item[6]
-        })
-    data['careers'].reverse()
-    return data["careers"]
+    with Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE")) as db:
+        data: list[dict] = list_of_dicts(db.select(os.getenv("VIEW_ALL")), CAREER_KEYS)
+        data.reverse()
+        return data
 
 
-# /v1/careers/remote
+# GET /v1/careers/remote
+@cache
 @app.get(f"/v1/careers/remote")
 def get_remote_percentage(response: Response) -> float:
     """
@@ -64,44 +75,45 @@ def get_remote_percentage(response: Response) -> float:
     :param response: Response
     :return: float
     """
-    set_headers(response)
-    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
-    return db.select(os.getenv("REMOTE"))[0][0]
+    with Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE")) as db:
+        return db.select(os.getenv("REMOTE"))[0][0]
 
 
-# /v1/careers/search/{query}
+# GET /v1/careers/search/{query}
+@cache
 @app.get("/v1/careers/search/{query}")
 async def get_careers_by_query(query: str) -> list:
     """
     Returns all the careers in the database.
     :param query: str
-    :return: list
+    :return: list[dict]
     """
-    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
-    data = db.select(os.getenv("VIEW_ALL"))
-    results = []
-    for item in data:
-        weight = 0
-        if query.lower() in item[3].lower(): weight += 5
-        if query.lower() in item[4].lower(): weight += 5
-        if query.lower() in item[5].strip().lower(): weight += 2
-        results.append({
-            "id": item[0],
-            "applied": item[1],
-            "title": item[2],
-            "location": item[3],
-            "employer": item[4],
-            "description": item[5],
-            "url": item[6],
-            "weight": weight
-        })
 
-    results = [item for item in results if item["weight"] > 0]
-    results.sort(key=lambda x: x["weight"], reverse=True)
-    return results
+    def set_score(item: dict, query: str) -> int:
+        """
+        Sets the score for the item.
+        :param item: dict
+        :param query: str
+        :return: dict
+        """
+        weight: int = 0
+        if query.lower() in item['location'].lower(): weight += 5
+        if query.lower() in item['employer'].lower(): weight += 5
+        if query.lower() in item['description'].strip().lower(): weight += 2
+        return weight
+
+    with Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE")) as db:
+        data = db.select(os.getenv("VIEW_ALL"))
+        data = list_of_dicts(data, CAREER_KEYS)
+        for item in data:
+            item['weight'] = set_score(item, query)
+        data = [item for item in data if item['weight'] > 0]
+        data.sort(key=lambda x: x['weight'], reverse=True)
+        return data
 
 
-# /v1/careers/data/locations
+# GET /v1/careers/data/locations
+@cache
 @app.get("/v1/careers/data/locations")
 async def get_most_applied_locations(response: Response) -> dict:
     """
@@ -109,38 +121,41 @@ async def get_most_applied_locations(response: Response) -> dict:
     :param response: Response
     :return: dict
     """
-    set_headers(response)
-    db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
-    result = db.most_applied_location(os.getenv("MOST_APPLIED_LOCATION"))
-    return {"name": result[0][0], "value": result[0][1]}
+    with Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE")) as db:
+        result = db.select(os.getenv("MOST_APPLIED_LOCATION"))
+        return {"name": result[0][0], "value": result[0][1]}
 
 
-# /v1/careers
+# POST /v1/careers
 @app.post("/v1/careers")
 async def create_career(request: Request) -> dict:
     """
-    Creates a new career
+    Makes a new career entry in the database.
+    :param request: Request
     :return: dict
     """
-    response = await request.json()
-    date = time.strftime("%Y-%m-%d")
-    title = response['title']
-    location = response['location']
-    employer = response['employer']
-    description = response['description']
-    url = response['url']
-    data = {
-        'applied': date,
-        'title': title,
-        'location': location,
-        'employer': employer,
-        'description': description,
-        'url': url
-    }
+    response: dict = await request.json()
+
+    def data(data: dict) -> dict:
+        date = time.strftime("%Y-%m-%d")
+        title = response['title']
+        location = response['location']
+        employer = response['employer']
+        description = response['description']
+        url = response['url']
+        return {
+            'applied': date,
+            'title': title,
+            'location': location,
+            'employer': employer,
+            'description': description,
+            'url': url
+        }
+
     try:
-        db = Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE"))
-        db.insert(os.getenv("INSERT_INTO"), data)
-        return {'status': "Success!"}
+        with Database(os.getenv('DB_NAME'), os.getenv("CREATE_TABLE")) as db:
+            db.insert(os.getenv("INSERT_INTO"), data(response))
+            return {'status': "Success!"}
     except Exception as e:
         print(e)
         return {'status': "Failed!"}
