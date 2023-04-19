@@ -22,18 +22,20 @@ app.add_middleware(
 )
 
 
-def cache(function: callable) -> callable:
+def cache(cache_time: int = 60) -> callable:
     """
     Sets caching headers for the response.
-    :param function: callable
+    :param cache_time: int, default=60
     :return: callable
     """
-    @functools.wraps(function)
-    def wrapper(*args, **kwargs):
-        response = args[0]
-        response.headers['Cache-Control'] = f"public, max-age={60 ** 2 * 24}"
-        return function(*args, **kwargs)
-    return wrapper
+    def decorator(function: callable) -> callable:
+        @functools.wraps(function)
+        def wrapper(*args, **kwargs):
+            response = args[0]
+            response.headers['Cache-Control'] = f"public, max-age={60 * cache_time}"
+            return function(*args, **kwargs)
+        return wrapper
+    return decorator
 
 
 CAREER_KEYS: tuple = ("id", "applied", "title", "location", "employer", "description", "url")
@@ -52,7 +54,7 @@ def list_of_dicts(iterable: list, keys: tuple = CAREER_KEYS) -> list[dict]:
 
 
 # GET /v1/careers
-@cache
+@cache(60)
 @app.get("/v1/careers")
 async def get_careers(response: Response) -> list[dict]:
     """
@@ -67,7 +69,7 @@ async def get_careers(response: Response) -> list[dict]:
 
 
 # GET /v1/careers/remote
-@cache
+@cache(1)
 @app.get(f"/v1/careers/remote")
 def get_remote_percentage(response: Response) -> float:
     """
@@ -80,7 +82,7 @@ def get_remote_percentage(response: Response) -> float:
 
 
 # GET /v1/careers/search/{query}
-@cache
+@cache(60)
 @app.get("/v1/careers/search/{query}")
 async def get_careers_by_query(query: str) -> list:
     """
@@ -113,7 +115,7 @@ async def get_careers_by_query(query: str) -> list:
 
 
 # GET /v1/careers/data/locations
-@cache
+@cache(1)
 @app.get("/v1/careers/data/locations")
 async def get_most_applied_locations(response: Response) -> dict:
     """
