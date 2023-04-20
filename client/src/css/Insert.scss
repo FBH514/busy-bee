@@ -190,7 +190,7 @@
   font-size: 1.5rem;
   color: rgba(var(--mustard));
   background: rgba(var(--black), 1);
-  border: rgba(var(--primary)) solid 1px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   padding: 1rem 2rem;
   z-index: -999;
