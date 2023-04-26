@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:sqlite:identifier.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="careers-tracker" uuid="8bf53c8e-1a21-4fae-bebb-af63543f9708">
+    <data-source source="LOCAL" name="mock" uuid="d9c37571-9eb5-4c0b-ae15-f5021cb7670a">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/careers-tracker.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/mock.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
@@ -20,11 +20,11 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="mock" uuid="d9c37571-9eb5-4c0b-ae15-f5021cb7670a">
+    <data-source source="LOCAL" name="careers-tracker" uuid="84d63dec-3e31-4580-bbd4-e3e6e8134107">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/mock.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/server/careers-tracker.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

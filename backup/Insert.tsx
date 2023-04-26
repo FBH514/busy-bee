@@ -54,7 +54,7 @@ const post_headers = {'Content-Type': 'application/json'}
 
 const LOCKED = <img src="https://img.icons8.com/ios-glyphs/24/F6BD60/lock--v1.png" alt={"padlock"}/>;
 const UNLOCKED = <img src="https://img.icons8.com/material/24/F6BD60/checkmark--v1.png" alt={"unlock"}/>
-const RESET_ICON: string = "https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png";
+const RESET: string = "https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png";
 const MESSAGE_DELAY = 2000;
 
 const input: InputProps[] = [
@@ -67,10 +67,45 @@ const input: InputProps[] = [
 
 export default function Insert(): JSX.Element {
 
+    const [lock, setLock] = useState(true);
+    const [inputValues, setInputValues] = useState({
+        title: "",
+        location: "",
+        employer: "",
+        description: "",
+        url: ""
+    });
+
     async function GET(endpoint: string): Promise<any> {
         const response = await fetch(endpoint);
         return await response.json();
     }
+
+    function POSTData(data: any): void {
+        fetch(CAREERS_ENDPOINT, {method: METHOD.POST, headers: post_headers, body: JSON.stringify(data)}
+        ).then(response => {return response.json()}).then(data => {
+            if (data['status'] === 'Success!') resetInputValues();
+        });
+    }
+
+    useEffect(() => {
+        if (inputValues.title && inputValues.location && inputValues.employer && inputValues.description && inputValues.url) {
+            setLock(false);
+        } else {
+            setLock(true);
+        }
+    }, [inputValues]);
+
+    useEffect(() => {
+        function HandleClick(e: any): void {
+            if (e.key === "Enter") {
+                const submit = document.getElementById("insert-submit");
+                if (submit && !lock) submit.click();
+            }
+        }
+        document.addEventListener('keydown', HandleClick);
+        return () => document.removeEventListener('keydown', HandleClick); // clean up
+    }, [lock]);
 
     const {
         isLoading: isLoadingCareers,
@@ -103,31 +138,19 @@ export default function Insert(): JSX.Element {
         return {elapsed: daysElapsed, rounded: roundedDaysElapsed};
     }
 
-    function Message(): JSX.Element {
-        return (
-            <div className={"message"}>
-                <p id={"insert-message"}></p>
-            </div>
-        );
+    function resetInputValues(): void {
+        setInputValues({title: "", location: "", employer: "", description: "", url: ""});
     }
 
-    function changeMessage(message: string): void {
-        const mess = document.getElementById("insert-message") as HTMLDivElement;
-        if (message) {
-            mess!.innerHTML = message;
-        }
+    function handleSubmit(values: any): void {
+        POSTData(values);
+        changeMessage("Successfully added a new career!");
+        activeMessage(true);
     }
 
-    function activeMessage(bool = false): void {
-        const message = document.getElementsByClassName("message")[0];
-        if (!bool) message.classList.remove("active");
-        else {
-            message.classList.add("active");
-            setTimeout(() => {
-                message.classList.remove("active");
-                changeMessage("");
-            }, MESSAGE_DELAY);
-        }
+    function handleInput(e: any): void {
+        const {name, value} = e.target;
+        setInputValues({...inputValues, [name]: value});
     }
 
     function Header(): JSX.Element {
@@ -170,81 +193,58 @@ export default function Insert(): JSX.Element {
         );
     }
 
+    function Message(): JSX.Element {
+        return (
+            <div className={"message"}>
+                <p id={"insert-message"}></p>
+            </div>
+        );
+    }
+
+    function changeMessage(message: string): void {
+        const mess = document.getElementById("insert-message") as HTMLDivElement;
+        mess!.innerHTML = message;
+    }
+
+    function activeMessage(bool = false): void {
+        const message = document.getElementsByClassName("message")[0];
+        if (!bool) message.classList.remove("active");
+        else {
+            message.classList.add("active");
+            setTimeout(() => {
+                message.classList.remove("active");
+                changeMessage("");
+            }, MESSAGE_DELAY);
+        }
+    }
+
     function InputFields(): JSX.Element {
-
-        const [lock, setLock] = useState(true);
-        const [inputValues, setInputValues] = useState({
-            title: "",
-            location: "",
-            employer: "",
-            description: "",
-            url: ""
-        });
-
-        useEffect(() => {
-            if (inputValues.title !== "" && inputValues.location !== "" && inputValues.employer !== "" && inputValues.description !== "" && inputValues.url !== "") {
-                setLock(false);
-            } else {
-                setLock(true);
-            }
-        }, [inputValues]);
-
-        useEffect(() => {
-            function HandleClick(e: any): void {
-                if (e.key === "Enter") {
-                    const submit = document.getElementById("insert-submit");
-                    if (submit && !lock) submit.click();
-                }
-            }
-
-            document.addEventListener('keydown', HandleClick);
-            return () => document.removeEventListener('keydown', HandleClick); // clean up
-        });
 
         function SubmitIcon(): JSX.Element {
             return lock ? LOCKED : UNLOCKED;
         }
 
-        function POST(data: any): void {
-            fetch(CAREERS_ENDPOINT, {method: METHOD.POST, headers: post_headers, body: JSON.stringify(data)}
-            ).then(response => {
-                return response.json()
-            }).then(data => {
-                if (data['status'] === 'Success!') resetInputValues();
-            });
-        }
-
-        function handleSubmit(values: any): void {
-            POST(values);
-            changeMessage("Successfully added a new career!");
-            activeMessage(true);
-        }
-
         function ResetButton(): JSX.Element {
             return (
                 <button className="buttons" id={"insert-reset"} onClick={resetInputValues}>
-                    <img src={RESET_ICON} alt={"reset"}/>
+                    <img src={RESET} alt={"reset"}/>
                     {"Reset"}
                 </button>
             );
         }
 
-        function resetInputValues(): void {
-            setInputValues({title: "", location: "", employer: "", description: "", url: ""});
-        }
-
         return (
             <div id="insert-input-fields">
-                {input?.map((input, index) => {
+                {input?.map((input) => {
                     return (
                         <input
-                            key={index}
+                            key={input.name}
                             className="input-field"
                             value={inputValues[input.name as keyof typeof inputValues]}
                             type={input.type}
                             name={input.name}
                             placeholder={input.placeholder}
-                            onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
+                            onInput={handleInput}
                         />
                     )
                 })}

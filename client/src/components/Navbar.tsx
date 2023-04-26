@@ -1,41 +1,59 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
-interface NavItemProps {
+export interface NavItemProps {
     name: string;
     link: string;
 }
 
-function Navbar(): JSX.Element {
+const ICON_COLOR = "333333";
+const LOGO_ICON: string = `https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/48/${ICON_COLOR}/external-bee-nature-resource-vitaliy-gorbachev-fill-vitaly-gorbachev.png`;
+const BURGER_ICON: string = `https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/${ICON_COLOR}/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png`;
 
-    const location: any = useLocation();
+function Navbar(props: {items: NavItemProps[]}): JSX.Element {
 
-    function HandleMobileMenu(): void {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const items = props.items;
+
+    useEffect(() => {
+        function handler(e: KeyboardEvent) {
+            if (e.key === '1') navigate(items[0].link);
+            if (e.key === '2') navigate(items[1].link);
+            if (e.key === '3') navigate(items[2].link);
+        }
+        document.addEventListener("keydown", handler);
+        return () => document.removeEventListener("keydown", handler);
+    });
+
+    useEffect(() => {
+        function handleResize() {
+            if (window.innerWidth < 992) handleMobileMenu();
+        }
+        document.addEventListener("resize", handleResize);
+        return () => document.removeEventListener("resize", handleResize);
+    });
+
+    function handleMobileMenu(): void {
         const active: string = "navbar-list-active";
         const button = document.querySelector(".navbar-list") as HTMLUListElement;
         if (button!.classList.contains(active)) {
             button!.classList.remove(active);
-        }
-        else {
+        } else {
             button!.classList.add(active);
         }
     }
 
-    const items: NavItemProps[] = [
-        {name: 'Insert', link: '/'},
-        {name: 'View', link: '/view'},
-        {name: 'Resources', link: '/resources'}
-    ];
+    function handleClick(): void {
+        if (window.innerWidth < 992) handleMobileMenu();
+    }
 
-    function List(props: {arr: NavItemProps[]}): JSX.Element {
-
-        function handleClick(): void {
-            if (window.innerWidth < 992) HandleMobileMenu();
-        }
+    function List(props: { arr: NavItemProps[] }): JSX.Element {
 
         return (
             <div id="navbar-list">
-                 <ul id={"navbar-list-wrapper"} className={"navbar-list"}>
+                <ul id={"navbar-list-wrapper"} className={"navbar-list"}>
                     {props.arr.map((item, index) => {
                         return (
                             <li key={index} onClick={handleClick}>
@@ -54,23 +72,20 @@ function Navbar(): JSX.Element {
 
     function Logo(): JSX.Element {
 
-        const LOGO_IMG: string = "https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/48/333333/external-bee-nature-resource-vitaliy-gorbachev-fill-vitaly-gorbachev.png";
-        const BURGER: string = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/333333/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png";
-
-         function Button(): JSX.Element {
+        function Button(): JSX.Element {
             return (
-                <button id={"mobile-menu"} className={"mobile-menu"} onClick={HandleMobileMenu}>
-                    <img src={BURGER} alt={"hamburger-menu"}/>
+                <button id={"mobile-menu"} className={"mobile-menu"} onClick={handleMobileMenu}>
+                    <img src={BURGER_ICON} alt={"hamburger-menu"}/>
                 </button>
             );
         }
 
-        return(
+        return (
             <div id={"navbar-logo"}>
                 <div id={"navbar-logo-wrapper"}>
                     <Button/>
                     <Link to={"/"}>Busy Bee</Link>
-                    <img src={LOGO_IMG} alt="bee"/>
+                    <img src={LOGO_ICON} alt="bee"/>
                 </div>
             </div>
         );
