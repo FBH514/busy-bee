@@ -46,7 +46,10 @@ const REMOTE_ICON: string = `https://img.icons8.com/ios/${INSIGHT_ICON_COLOR}/${
 const YOUR_GRADUATION: string = "2022-12-14";
 
 // endpoints
-const CACHE = {cacheTime: 24 * 60 * 60 * 1000};
+const CACHE = {
+    cacheTime: 24 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false
+};
 const CAREERS_ENDPOINT: string = "http://localhost:8000/v1/careers/";
 const REMOTE_ENDPOINT: string = "http://localhost:8000/v1/careers/remote";
 const LOCATIONS_ENDPOINT: string = "http://localhost:8000/v1/careers/data/locations";
