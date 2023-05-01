@@ -1,35 +1,26 @@
 import React, {useEffect} from "react";
 import {Link, useLocation} from "react-router-dom";
-import {useNavigate} from "react-router-dom";
+import Button from "./Button";
 
 export interface NavItemProps {
     name: string;
     link: string;
 }
 
-const ICON_COLOR = "333333";
-const LOGO_ICON: string = `https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/48/${ICON_COLOR}/external-bee-nature-resource-vitaliy-gorbachev-fill-vitaly-gorbachev.png`;
-const BURGER_ICON: string = `https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/${ICON_COLOR}/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png`;
+enum icons {
+    LOGO_ICON = `https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/48/18181b/external-bee-nature-resource-vitaliy-gorbachev-fill-vitaly-gorbachev.png`,
+    BURGER_ICON = `https://img.icons8.com/external-anggara-basic-outline-anggara-putra/32/18181b/external-option-social-media-interface-anggara-basic-outline-anggara-putra-2.png`
+}
 
+const BREAKPOINT: number = 992;
 function Navbar(props: {items: NavItemProps[]}): JSX.Element {
 
     const location = useLocation();
-    const navigate = useNavigate();
     const items = props.items;
 
     useEffect(() => {
-        function handler(e: KeyboardEvent) {
-            if (e.key === '1') navigate(items[0].link);
-            if (e.key === '2') navigate(items[1].link);
-            if (e.key === '3') navigate(items[2].link);
-        }
-        document.addEventListener("keydown", handler);
-        return () => document.removeEventListener("keydown", handler);
-    });
-
-    useEffect(() => {
         function handleResize() {
-            if (window.innerWidth < 992) handleMobileMenu();
+            if (window.innerWidth < BREAKPOINT) handleMobileMenu();
         }
         document.addEventListener("resize", handleResize);
         return () => document.removeEventListener("resize", handleResize);
@@ -46,7 +37,7 @@ function Navbar(props: {items: NavItemProps[]}): JSX.Element {
     }
 
     function handleClick(): void {
-        if (window.innerWidth < 992) handleMobileMenu();
+        if (window.innerWidth < BREAKPOINT) handleMobileMenu();
     }
 
     function List(props: { arr: NavItemProps[] }): JSX.Element {
@@ -70,32 +61,17 @@ function Navbar(props: {items: NavItemProps[]}): JSX.Element {
         )
     }
 
-    function Logo(): JSX.Element {
-
-        function Button(): JSX.Element {
-            return (
-                <button id={"mobile-menu"} className={"mobile-menu"} onClick={handleMobileMenu}>
-                    <img src={BURGER_ICON} alt={"hamburger-menu"}/>
-                </button>
-            );
-        }
-
-        return (
-            <div id={"navbar-logo"}>
-                <div id={"navbar-logo-wrapper"}>
-                    <Button/>
-                    <Link to={"/"}>Busy Bee</Link>
-                    <img src={LOGO_ICON} alt="bee"/>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <nav id={"navbar"}>
             <div id={"navbar-wrapper"}>
                 <List arr={items}/>
-                <Logo/>
+                <div id={"navbar-logo"}>
+                    <div id={"navbar-logo-wrapper"}>
+                        <Button id={"mobile-menu"} className={"mobile-menu"} params={{onClick: handleMobileMenu, icon: icons.BURGER_ICON}}/>
+                        <Link to={"/"}>Busy Bee</Link>
+                        <img src={icons.LOGO_ICON} alt="bee"/>
+                    </div>
+                </div>
             </div>
         </nav>
     );

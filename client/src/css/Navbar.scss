@@ -57,6 +57,9 @@
     text-decoration: none;
     color: rgba(var(--black), 0.3);
     cursor: pointer;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
 
     @media screen and (max-width: 991px) {
       padding-left: 1rem;
@@ -64,7 +67,7 @@
     }
 
     &:hover {
-      color: rgba(var(--primary), 0.8);
+      color: rgba(var(--secondary), 1);
     }
   }
 
@@ -79,9 +82,9 @@
     }
 
     &:before {
-      content: '•';
+      content: url("https://img.icons8.com/material-sharp/16/18181b/star--v1.png");
       margin-right: 0.5rem;
-      height: 2px;
+      //height: 2px;
     }
   }
 }
@@ -102,15 +105,13 @@
     text-decoration: none;
     color: rgba(var(--black));
     cursor: pointer;
-    transition: 0.3s all ease-in-out;
-    //font-family: 'Gloria Hallelujah', cursive;
 
     @media screen and (max-width: 991px) {
       font-size: 1.5rem;
     }
 
     &:hover {
-      color: rgba(var(--secondary), 1);
+      transform: translateX(-10px);
     }
   }
 

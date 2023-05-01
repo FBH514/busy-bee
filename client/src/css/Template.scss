@@ -1,11 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --white: 245, 245, 245; // hex: #F5F5F5
-  --black: 51, 51, 51; // hex: #333333
+  --white: 216, 216, 216; // hex: #d4d4d8
+  //--white: 245, 245, 245; // hex: #F5F5F5
+
+  --black: 24, 24, 27; // hex: #18181b
+  //--black: 51, 51, 51; // hex: #333333
+
   --mustard: 246, 189, 96; // hex: #F6BD60
-  --primary: 188, 108, 37; // hex: #BC6C25
-  --secondary: 122, 23, 16; // hex: #7A1710
+  //--mustard: 246, 189, 96; // hex: #F6BD60
+
+  --primary: 133, 77, 14; // hex: #164e63
+  //--primary: 188, 108, 37; // hex: #BC6C25
+
+  --secondary: 192, 65, 12; // hex: #c2410c
+  //--secondary: 122, 23, 16; // hex: #7A1710
 }
 
 * {
@@ -14,12 +23,20 @@
   box-sizing: border-box;
 }
 
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(var(--black), 1);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(var(--mustard), 1);
+}
+
 body {
-  background: linear-gradient(
-                  75deg,
-                  #FFEDCB,
-                  rgba(var(--mustard), 1)
-  );
+  background: rgba(var(--white), 1);
 
   ::-webkit-scrollbar {
     display: none;
@@ -35,40 +52,40 @@ body {
   position: relative;
 }
 
-#root::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  //background: url("https://images.unsplash.com/photo-1553949815-6bbea89fb801?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1004&q=80");
-  background: url("../assets/images/trees.png") no-repeat top left;
-  opacity: 0.1;
-  background-size: cover;
-  filter: grayscale(100%);
-  transform: scaleX(-1);
-  mix-blend-mode: multiply;
-  z-index: -1;
-  animation: bg-move ease-in-out 10s infinite alternate;
-
-  @media screen and (min-width: 1600px) {
-    background-size: 200%;
-  }
-
-  @media screen and (max-width: 991px) {
-    animation: none;
-  }
-
-  @keyframes bg-move {
-    0% {
-      filter: contrast(1);
-    }
-    100% {
-      filter: contrast(1.5);
-    }
-  }
-}
+//#root::after {
+//  content: "";
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  width: 100%;
+//  height: 100%;
+//  //background: url("https://images.unsplash.com/photo-1553949815-6bbea89fb801?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1004&q=80");
+//  background: url("../assets/images/trees.png") no-repeat top left;
+//  opacity: 0.1;
+//  background-size: cover;
+//  filter: grayscale(100%);
+//  transform: scaleX(-1);
+//  mix-blend-mode: multiply;
+//  z-index: -1;
+//  animation: bg-move ease-in-out 10s infinite alternate;
+//
+//  @media screen and (min-width: 1600px) {
+//    background-size: 200%;
+//  }
+//
+//  @media screen and (max-width: 991px) {
+//    animation: none;
+//  }
+//
+//  @keyframes bg-move {
+//    0% {
+//      filter: contrast(1);
+//    }
+//    100% {
+//      filter: contrast(1.5);
+//    }
+//  }
+//}
 
 
 #loading {

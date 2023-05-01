@@ -1,6 +1,8 @@
-import {useEffect, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {useQuery} from "react-query";
 import {CSSTransition} from "react-transition-group";
+import Input from "./Input";
+import Button from "./Button";
 
 interface CareerProps {
     id: number;
@@ -28,11 +30,8 @@ interface Certification {
     rounded: number;
 }
 
-enum METHOD {
-    POST = "POST"
-}
 
-// insight icons
+// icons
 const INSIGHT_ICON_COLOR: string = "F6BD60";
 const INSIGHT_ICON_SIZE: string = "24";
 const CALENDAR_ICON: string = `https://img.icons8.com/ios/${INSIGHT_ICON_SIZE}/${INSIGHT_ICON_COLOR}/clock--v1.png`;
@@ -41,23 +40,39 @@ const APPS_ICON: string = `https://img.icons8.com/ios/${INSIGHT_ICON_SIZE}/${INS
 const GRAD_ICON: string = `https://img.icons8.com/pastel-glyph/${INSIGHT_ICON_SIZE}/${INSIGHT_ICON_COLOR}/graduation-cap--v3.png`;
 const RATIO_ICON: string = `https://img.icons8.com/external-outlines-amoghdesign/${INSIGHT_ICON_SIZE}/${INSIGHT_ICON_COLOR}/external-analysis-education-vol-01-outlines-amoghdesign.png`;
 const REMOTE_ICON: string = `https://img.icons8.com/ios/${INSIGHT_ICON_COLOR}/${INSIGHT_ICON_SIZE}/imac.png`;
+const RESET_ICON: string = `https://img.icons8.com/ios/${INSIGHT_ICON_SIZE}/${INSIGHT_ICON_COLOR}/recurring-appointment.png`;
 
 // grad date
 const YOUR_GRADUATION: string = "2022-12-14";
 
 // endpoints
+const post_headers = {
+    'Content-Type': 'application/json'
+}
+
 const CACHE = {
-    cacheTime: 24 * 60 * 60 * 1000,
+    cacheTime: 60 * 60 * 1000 * 24,
     refetchOnWindowFocus: false
 };
-const CAREERS_ENDPOINT: string = "http://localhost:8000/v1/careers/";
-const REMOTE_ENDPOINT: string = "http://localhost:8000/v1/careers/remote";
-const LOCATIONS_ENDPOINT: string = "http://localhost:8000/v1/careers/data/locations";
-const post_headers = {'Content-Type': 'application/json'}
+
+enum METHODS {
+    POST = "POST"
+}
+
+enum endpoints {
+    CAREERS = "http://localhost:8000/v1/careers/",
+    REMOTE = "http://localhost:8000/v1/careers/remote",
+    LOCATIONS = "http://localhost:8000/v1/careers/data/locations"
+}
+
+enum queryKeys {
+    CAREERS = "careers",
+    REMOTE = "remote",
+    LOCATIONS = "locations"
+}
 
 const LOCKED = <img src="https://img.icons8.com/ios-glyphs/24/F6BD60/lock--v1.png" alt={"padlock"}/>;
 const UNLOCKED = <img src="https://img.icons8.com/material/24/F6BD60/checkmark--v1.png" alt={"unlock"}/>
-const RESET_ICON: string = "https://img.icons8.com/ios/24/F6BD60/recurring-appointment.png";
 const MESSAGE_DELAY = 2000;
 
 const input: InputProps[] = [
@@ -70,6 +85,8 @@ const input: InputProps[] = [
 
 export default function Insert(): JSX.Element {
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     async function GET(endpoint: string): Promise<any> {
         const response = await fetch(endpoint);
         return await response.json();
@@ -77,16 +94,26 @@ export default function Insert(): JSX.Element {
 
     const {
         isLoading: isLoadingCareers,
-        data: dataResults
-    } = useQuery<CareerProps[]>('results', () => GET(CAREERS_ENDPOINT), CACHE)
+        data: dataResults,
+        refetch: refetchCareers
+    } = useQuery<CareerProps[]>(queryKeys.CAREERS, () => GET(endpoints.CAREERS), CACHE);
     const {
         isLoading: isLoadingLocations,
-        data: dataLocations
-    } = useQuery<LocationProps>('locations', () => GET(LOCATIONS_ENDPOINT), CACHE);
+        data: dataLocations,
+        refetch: refetchLocations
+    } = useQuery<LocationProps>(queryKeys.LOCATIONS, () => GET(endpoints.LOCATIONS), CACHE);
     const {
         isLoading: isLoadingRemote,
-        data: dataRemote
-    } = useQuery<number>('remote', () => GET(REMOTE_ENDPOINT), CACHE);
+        data: dataRemote,
+        refetch: refetchRemote
+    } = useQuery<number>(queryKeys.REMOTE, () => GET(endpoints.REMOTE), CACHE);
+
+    useEffect(() => {
+        if (isSubmitting) {
+            refetchLocations();
+            refetchRemote();
+        }
+    }, [isSubmitting, refetchLocations, refetchRemote]);
 
     function getCurrentDate(): string {
         const date = new Date();
@@ -201,15 +228,15 @@ export default function Insert(): JSX.Element {
             }
 
             document.addEventListener('keydown', HandleClick);
-            return () => document.removeEventListener('keydown', HandleClick); // clean up
-        });
+            return () => document.removeEventListener('keydown', HandleClick);
+        }, [lock]);
 
         function SubmitIcon(): JSX.Element {
             return lock ? LOCKED : UNLOCKED;
         }
 
-        function POST(data: any): void {
-            fetch(CAREERS_ENDPOINT, {method: METHOD.POST, headers: post_headers, body: JSON.stringify(data)}
+        function POST(endpoint: string, data: any): void {
+            fetch(endpoint, {method: METHODS.POST, headers: post_headers, body: JSON.stringify(data)}
             ).then(response => {
                 return response.json()
             }).then(data => {
@@ -217,19 +244,15 @@ export default function Insert(): JSX.Element {
             });
         }
 
-        function handleSubmit(values: any): void {
-            POST(values);
+        async function handleSubmit(event: FormEvent<HTMLButtonElement>, values: any): Promise<void> {
+            event.preventDefault();
+            setIsSubmitting(true);
+            POST(endpoints.CAREERS, values);
+            setIsSubmitting(false);
             changeMessage("Successfully added a new career!");
             activeMessage(true);
-        }
-
-        function ResetButton(): JSX.Element {
-            return (
-                <button className="buttons" id={"insert-reset"} onClick={resetInputValues}>
-                    <img src={RESET_ICON} alt={"reset"}/>
-                    {"Reset"}
-                </button>
-            );
+            await refetchCareers();
+            await refetchLocations();
         }
 
         function resetInputValues(): void {
@@ -238,27 +261,28 @@ export default function Insert(): JSX.Element {
 
         return (
             <div id="insert-input-fields">
-                {input?.map((input, index) => {
-                    return (
-                        <input
-                            key={index}
-                            className="input-field"
-                            value={inputValues[input.name as keyof typeof inputValues]}
-                            type={input.type}
-                            name={input.name}
-                            placeholder={input.placeholder}
-                            onChange={(e) => setInputValues({...inputValues, [input.name]: e.target.value})}
-                        />
-                    )
-                })}
+                {input?.map((input, index) => (
+                    <Input
+                        key={index}
+                        className="input-field"
+                        params={{
+                            value: inputValues[input.name as keyof typeof inputValues],
+                            inputType: input.type,
+                            name: input.name,
+                            placeholder: input.placeholder,
+                            onChange: (e) => setInputValues({...inputValues, [input.name]: e.target.value})
+                        }}
+                    />
+                ))}
                 <div id={"insert-buttons"}>
-                    <ResetButton/>
+                    <Button className={"buttons"} id={"insert-reset"}
+                            params={{onClick: resetInputValues, value: "Reset", icon: RESET_ICON}}/>
                     <button
                         className="buttons"
                         id={"insert-submit"}
                         type="submit"
                         disabled={lock}
-                        onClick={() => handleSubmit(inputValues)}
+                        onClick={async (event) => handleSubmit(event, inputValues)}
                     >
                         <SubmitIcon/>
                     </button>
